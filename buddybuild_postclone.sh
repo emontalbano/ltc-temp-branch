@@ -8,9 +8,8 @@ npm -v
 echo -n "----> Node Version: "
 node --version
 
-npm cache clean
-npm uninstall -g cordova ionic gulp
-npm install -g cordova@8.0.0 ionic@3.20.0 gulp@2.0.0
+#npm uninstall -g cordova ionic gulp
+#npm install -g cordova@8.0.0 ionic@3.20.0 gulp@2.0.0
 
 echo -n "----> Cordova version: "
 cordova --version

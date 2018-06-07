@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-n 6.10.1
+n 8.9.4
 
 echo -n "----> npm Version: "
 npm -v

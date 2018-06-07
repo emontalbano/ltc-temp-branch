@@ -1,0 +1,33 @@
+@import 'theme/variables';
+
+jh-fingerprint-setup {
+  .scroll-content {
+    padding: 24px;
+  }
+  mat-icon {
+    color: white;
+    background-color: mat-color($jh-palette-blue, 500);
+    border-radius: 50%;
+    padding: 16px!important;
+    font-size: 64px!important;
+    height: 96px!important;
+    width: 96px!important;
+    margin: 24px auto;
+    display: block!important;
+  }
+
+  h1, .info {
+    margin-bottom: 40px;
+    span {
+      color: rgba(0,0,0,0.54);
+    }
+  }
+
+  button[mat-button] {
+    display:block;
+    width:100%;
+    color:white!important;
+    background: mat-color($jh-palette-blue, 500);
+    margin-top: 1rem;
+  }
+}

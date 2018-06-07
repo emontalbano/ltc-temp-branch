@@ -1,0 +1,8 @@
+<div *ngIf="gettingLocation">
+  <div style="margin-top:100px"></div>
+  <mat-spinner diameter="30"></mat-spinner>
+  <br />
+  Getting location data...
+</div>
+
+<img *ngIf="coords.longitude !== 0" [src]="'https://maps.googleapis.com/maps/api/staticmap?zoom=' + zoomLevel + '&size=400x1640&maptype=roadmap&scale=2&markers=color:red%7Clabel:A%7C' + coords.latitude + ',' + coords.longitude + '&center='+ (coords.latitude - 0.0009) + ',' + coords.longitude +'&path=color:0x0066FF00%7Cfillcolor:0x0066FF66%7Cenc:' + accuracyPath +'&key=' + apiKey"  />

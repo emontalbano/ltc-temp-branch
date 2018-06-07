@@ -1,0 +1,116 @@
+@import 'theme/variables';
+@import 'theming';
+jh-login {
+  background: mat-color($jh-palette-blue, 500);
+  background: -moz-linear-gradient(-45deg, mat-color($jh-palette-blue, 300) 0%, mat-color($jh-palette-blue, 400) 50%, mat-color($jh-palette-blue, 600) 100%);
+  background: -webkit-linear-gradient(-45deg, mat-color($jh-palette-blue, 300) 0%,mat-color($jh-palette-blue, 400) 50%,mat-color($jh-palette-blue, 600) 100%);
+  background: linear-gradient(135deg, mat-color($jh-palette-blue, 300) 0%,mat-color($jh-palette-blue, 400) 50%,mat-color($jh-palette-blue, 600) 100%);
+  padding: 48px 48px 0;
+
+  $dark-primary: mat-palette($jh-palette-dark);
+  $dark-accent:  mat-palette($mat-amber, A200, A100, A400);
+  $dark-warn:    mat-palette($mat-deep-orange);
+  $ltc-app-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+  
+  @include angular-material-theme($ltc-app-theme);
+
+  .logo-wrapper {
+    position: absolute;
+    text-align: center;
+    left: 0;
+    right: 0;
+    top: 10%;
+    transition: all .3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  }
+
+  h1 {
+    color: white;
+    font-weight: 200;
+    margin:60% 0 16px;
+    font-size: 24px;
+    transition-delay: .15s;
+    transition: all .3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  }
+
+  mat-form-field {
+    display:block;
+    width: 100%;
+    margin-top:0;    
+    input {
+      color: white!important;
+    }
+  }
+
+  .container {
+    height:100%;
+    overflow: hidden;
+  }
+
+  .mat-tab-group, .mat-tab-body-wrapper {
+    height: 100%;
+  }
+
+  mat-tab-body {
+    padding-bottom: 48px;
+  }
+
+  .loading  {
+    .logo-wrapper {
+      top: 50%;      
+      margin-top: -26px;
+    }
+
+    h1 {
+      margin-top: 400%!important;
+    }
+
+    button[mat-fab] {
+      bottom: -100px;
+    }
+  }
+
+  mat-tab-body {
+    margin: 0 -48px;
+    padding: 0 48px;
+  }
+
+  mat-tab-header.mat-tab-header {
+    display:none;
+  }
+
+  button[mat-fab] {
+    transition: all .3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    transition-delay: .8s;
+    position:absolute;
+    left: 50%;
+    margin-left:-20px;
+    bottom: 24px;
+    background-color: white;
+    mat-icon {
+      color: mat-color($jh-palette-blue, 500);
+    }
+  }
+
+  .centered {
+    margin-top: 20px;
+    text-align: center;
+    button.mat-raised-button.mat-primary {
+      margin-bottom: 24px;
+      background: white;
+      color: mat-color($jh-palette-blue, 500);
+    }
+    div { margin-top: 16px; }
+    a {
+      color:white;
+    }
+  }
+
+  .error {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.24);
+    color: white;
+    padding: 4px;
+    border-radius: 4px;
+    margin-bottom:2rem;
+  }
+}

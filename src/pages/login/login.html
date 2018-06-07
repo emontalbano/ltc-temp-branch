@@ -1,0 +1,70 @@
+<mat-tab-group [(selectedIndex)]="selectedTab" [ngClass]="loading ? 'loading' : ''">
+    <mat-tab label="Login" class="login">
+      <div class="container">
+        <div class="logo-wrapper">
+          <img src="assets/imgs/jh.png" />
+        </div>
+        <h1>LTC Provider Login</h1>
+        <div class="error" *ngIf="error">
+          {{ error }}
+        </div>
+        <mat-form-field [floatLabel]="true">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="model.username">
+        </mat-form-field>
+      
+        <mat-form-field [floatLabel]="true">
+          <mat-label>Password</mat-label>
+          <input type="password" [(ngModel)]="model.password" matInput>
+        </mat-form-field>
+      
+        <div class="centered">
+          <button mat-raised-button color="primary" (click)="onSubmit()">LOGIN</button>
+          <div><a (click)="setTab(2)">Forgot password?</a></div>
+          <div><a (click)="loginWithSalesforce()">Login with Salesforce</a></div>
+        </div>
+      </div>
+      <button mat-fab color="white" *ngIf="fingerprint_enabled" (click)="showFingerprint()"><mat-icon>fingerprint</mat-icon></button>
+    </mat-tab>
+    <mat-tab label="Enter Verification Code">
+      <div class="container">
+        <h1>Enter Verification Code</h1>
+        <mat-form-field [floatLabel]="true">
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="model.username">
+        </mat-form-field>
+      
+        <mat-form-field [floatLabel]="true">
+          <mat-label>Password</mat-label>
+          <input type="password" [(ngModel)]="model.password" matInput>
+        </mat-form-field>
+
+          <mat-form-field [floatLabel]="true">
+            <mat-label>Password Again</mat-label>
+            <input type="password" matInput>
+          </mat-form-field>
+      
+        <div class="centered">
+          <button mat-raised-button color="primary" (click)="onSubmit()">REGISTER</button>
+          
+          <div><a (click)="setTab(0)">Back</a></div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Forgot Password">
+        <div class="container">
+          <h1>Reset Password</h1>
+          <mat-form-field [floatLabel]="true">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="model.username">
+          </mat-form-field>
+        
+          <div class="centered">
+            <button mat-raised-button color="primary" (click)="onSubmit()">RESET PASSWORD</button>
+            
+            <div><a (click)="setTab(0)">Back</a></div>
+          </div>
+        </div>
+      </mat-tab>
+  </mat-tab-group>
+

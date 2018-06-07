@@ -1,0 +1,77 @@
+abstract SOBJECT [
+  member create update delete,
+  guest read
+] {
+  id string read-only,
+  lastmodifieddate datetime read-only,
+  createddate datetime read-only,
+  isdeleted boolean read-only
+}
+
+abstract OFFLINE {
+  pending_create boolean local-only : false,
+  pending_update boolean local-only : false,
+  pending_delete boolean local-only : false,
+  cache_age Integer local-only,
+  keep_fresh Integer local-only : 10 min,
+  prune Integer local-only : 2 days
+}
+
+account (SOBJECT, OFFLINE) {
+  keep_fresh integer local-only : 30 minutes,
+  name string searchable,
+  lastname string searchable,
+  firstname string searchable,
+  type string searchable
+}
+
+claim__c (SOBJECT, OFFLINE) {
+  keep_fresh integer local-only : 30 minutes,
+  associated_policy__c string read-only required searchable,
+  claim_status__c string searchable
+}
+
+ltc_claim_invoice_submission__c (SOBJECT) {
+  ltc_submission_status__c string required searchable,
+  ltc_associated_claim__c string read-only required searchable
+}
+
+ltc_claim_invoice__c (SOBJECT) {
+  ltc_invoice_submission__c string required searchable,
+  ltc_hourly_rate__c string searchable,
+  ltc_service_date_from__c string required searchable,
+  ltc_service_date_to__c string required searchable,
+  ltc_service_dates__c string read-only searchable,
+  ltc_submission_date__c datetime read-only searchable,
+  ltc_total_charges__c string required searchable,
+  ltc_type__c string searchable
+}
+
+policy__c (SOBJECT, OFFLINE) {
+  keep_fresh integer local-only : 30 minutes,
+  insured__c string searchable
+}
+
+time_log__c (SOBJECT, OFFLINE) {
+  keep_fresh integer local-only : 30 minutes,
+  ltc_related_claim__c string searchable,
+  ltc_check_in_date__c string,
+  ltc_check_in_time__c string,
+  ltc_check_out_time__c string,
+  type_of_care__c string,
+  ltc_hourly_rate__c string,
+  ltc_number_of_hours__c string,
+  ltc_related_invoice__c string,
+  ltc_check_in_type__c string,
+  ltc_check_out_type__c string,
+  ltc_check_in_geolocation__latitude__s string,
+  ltc_check_in_geolocation__longitude__s string,
+  ltc_check_in_geolocation__c string read-only,
+  ltc_check_out_geolocation__latitude__s string,
+  ltc_check_out_geolocation__longitude__s string,
+  ltc_check_out_geolocation__c string read-only,
+  ltc_check_in_geolocation_accuracy__c string,
+  check_out_geolocation_accuracy__c string,
+  ltc_check_in_datetime__c datetime
+}
+

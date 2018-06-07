@@ -1,0 +1,78 @@
+$font-path: "../assets/fonts";
+$app-direction: ltr;
+
+@import "ionic.globals";
+
+$colors: (
+  primary:    #488aff,
+  secondary:  #06A7E2,
+  danger:     #f53d3d,
+  light:      #f4f4f4,
+  dark:       #222
+);
+
+@import "ionic.theme.default";
+@import "ionic.ionicons";
+
+
+// Fonts
+// --------------------------------------------------
+
+@import "roboto";
+@import "noto-sans";
+@import 'theming';
+@include mat-core();
+
+$jh-palette-dark: (
+  100: rgba(255,255,255,0.3),
+  200: rgba(255,255,255,0.5),
+  300: rgba(255,255,255,0.7),
+  400: rgba(255,255,255,0.5),
+  500: rgba(255,255,255,0.5),
+  600: white,
+  700: white,
+  contrast: (
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $dark-primary-text,
+    600: $dark-primary-text,
+    700: $dark-primary-text
+  )
+);
+
+$jh-palette-blue: (
+  100: #06A7E2,
+  200: #1495db,
+  300: #006BA6,
+  400: #005990,
+  500: #003e6b,
+  600: #092759,
+  700: #0a2e55,
+  contrast: (
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $light-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+  )
+);
+$ltc-app-primary: mat-palette($jh-palette-blue);
+$ltc-app-accent:  mat-palette($mat-blue, A200, A100, A400);
+$ltc-app-warn:    mat-palette($mat-deep-orange);
+$ltc-app-theme: mat-light-theme($ltc-app-primary, $ltc-app-accent, $ltc-app-warn);
+@include angular-material-theme($ltc-app-theme);
+
+
+@mixin radial-gradient($from, $to) {
+	background: -moz-radial-gradient(center, circle cover, $from 0%, $to 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, $from), color-stop(100%, $to));
+	background: -webkit-radial-gradient(center, circle cover, $from 0%, $to 100%);
+	background: -o-radial-gradient(center, circle cover, $from 0%, $to 100%);
+	background: -ms-radial-gradient(center, circle cover, $from 0%, $to 100%);
+	background: radial-gradient(center, circle cover, $from 0%, $to 100%);
+	background-color: $from;
+}

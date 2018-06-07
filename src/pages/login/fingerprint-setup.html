@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>Setup Fingerprint Sign On</ion-title>
+  </ion-navbar>
+  <jh-nav-pending></jh-nav-pending>
+</ion-header>
+<ion-content>
+  <mat-icon>fingerprint</mat-icon>
+  <h1 *ngIf="fp_status === 'setup'">Fingerprint Sign On is almost ready</h1>
+  <div *ngIf="fp_status === 'suggestion'" class="info">
+    <h1>Sign into your account using your fingerprint</h1>
+    <span>You can choose to sign into the John Hancock app using your fingerprint. Want to check in with a client but you don't have an internet connection? Fingerprint sign on allows you to log into your account and make certain changes. Once you reconnect, your changes will sync automatically.
+      <br /><br />This feature can be enabled or disabled in your app Settings at any time.</span>
+  </div>
+
+  <button mat-button (click)="showFingerprint()">ENROLL FINGERPRINT</button>
+
+  <button mat-button (click)="noThanks()">NO THANKS</button>
+</ion-content>

@@ -1,0 +1,32 @@
+@import "theme/variables";
+
+jh-settings-billing, jh-settings-fingerprint {
+  .mat-form-field {
+    width: 100%;
+  }
+  .mat-input-wrapper.mat-form-field-wrapper {
+    font-size:14px;
+  }
+  button[mat-dialog-close] {
+    color: mat-color($mat-grey, 500);
+  }
+  
+  mat-dialog-actions {
+    flex-direction: row-reverse;
+  }
+
+  .mat-checkbox-layout {
+    margin: 24px 0;
+  }
+
+  mat-dialog-content span {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    color: rgba(0,0,0,0.87);
+  }
+
+  .prefix {
+    position: absolute;
+    left: -12px;
+  }
+}

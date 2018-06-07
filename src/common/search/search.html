@@ -1,0 +1,12 @@
+<div [ngClass]="isActive ? 'search_wrapper active' : 'search_wrapper'">
+  <div class="search_area">
+    <mat-icon aria-label="Search">search</mat-icon>
+    <input type="search" placeholder="Search..." id="search" (keydown)="onChange($event.target.value)" />
+    <button mat-icon-button (click)="clearSearch()">
+      <mat-icon aria-label="Clear">close</mat-icon>
+    </button>
+  </div>
+  <button mat-icon-button (click)="beginSearch()" class="begin_search" color="white">
+    <mat-icon aria-label="Search">search</mat-icon>
+  </button>
+</div>

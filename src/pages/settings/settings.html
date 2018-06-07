@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>Settings</ion-title>
+  </ion-navbar>
+  <jh-nav-pending></jh-nav-pending>
+</ion-header>
+<ion-content>
+  <mat-list>
+    <mat-list-item>
+      <button mat-button (click)="editBilling()">
+        <mat-icon>attach_money</mat-icon>
+        <div>
+          <strong mat-line>Default Billing Rate</strong>
+          <p mat-line *ngIf="billing_rate !== ''">${{billing_rate}} / hour</p>
+          <p mat-line *ngIf="billing_rate === ''">Unset</p>
+        </div>
+      </button>
+    </mat-list-item>
+
+    <mat-list-item class="flex">
+      <button mat-button class="left" (click)="editFingerprint()" [disabled]="!available">
+        <mat-icon>fingerprint</mat-icon>
+        <div>
+          <strong mat-line>Fingerprint Login</strong>
+          <p mat-line *ngIf="!available">Not available on your device</p>
+          <p mat-line *ngIf="available && username === ''">Not set up</p>
+          <p mat-line *ngIf="available && username === 'nextlogin' && enabled">Setup on next login</p>
+          <p mat-line *ngIf="available && username !== 'nextlogin' && username !== '' && enabled">Fingerprint Sign In enabled for {{ username }}</p>
+          <p mat-line *ngIf="available && username !== 'nextlogin' && username !== '' && !enabled">Fingerprint Sign In disabled</p>
+        </div>
+      </button>
+      <section>
+        <mat-slide-toggle [checked]="enabled && available" [disabled]="!available" (change)="toggleFingerprint()">
+        </mat-slide-toggle>
+      </section>
+    </mat-list-item>
+  </mat-list>
+</ion-content>

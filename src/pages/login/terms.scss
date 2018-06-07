@@ -1,0 +1,31 @@
+@import 'theme/variables';
+jh-terms {
+  .toolbar-background {
+    background: mat-color($jh-palette-blue, 500)!important;
+  }
+  .info {
+    h4 {
+      text-align:center;
+      color: black;
+      font-weight:300;
+    }
+    color: rgba(0,0,0,0.54);
+    max-height: 85%;
+    overflow-y: scroll;
+    margin: 8px;
+    padding: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+  }
+  section {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 24px;
+  }
+  .primary {
+    background: mat-color($jh-palette-blue, 500);
+    color: white;
+    margin-left: 16px; 
+  }
+
+
+}

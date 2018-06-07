@@ -1,0 +1,22 @@
+<ion-menu [content]="content">
+  <ion-content>
+    <div name="sidenav-profile">
+      <img src="assets/imgs/default_profile.png" />
+      <span>
+        Ed Montalbano
+        <small>eddie.montalbano@gmail.com</small>
+      </span>
+    </div>
+
+    <button (click)="openPage('patients')"><mat-icon>people</mat-icon><span>CLIENTS</span></button>
+    
+    <button (click)="openPage('invoices')"><mat-icon>history</mat-icon><span>INVOICE HISTORY</span></button>
+
+    <button (click)="openPage('settings')"><mat-icon>settings</mat-icon><span>SETTINGS</span></button>
+
+    <button mat-button (click)="logout()">LOGOUT</button>
+  </ion-content>
+</ion-menu>
+
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
+

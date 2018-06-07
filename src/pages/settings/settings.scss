@@ -1,0 +1,42 @@
+jh-settings {
+  .flex {
+    display: flex;
+    .left {
+      flex-grow: 1;
+      border-right: 1px solid rgba(0,0,0,0.12);
+      margin-right: 16px
+    }    
+  }
+
+  mat-list {
+    margin: 4px 16px 0 -8px;
+
+    mat-list-item {
+      height: 80px!important;
+    }
+    button {
+      width: 100%;
+      display:block;
+      text-align:left!important;
+      height: 80px;
+      .mat-button-wrapper {
+        display: flex!important;
+      }
+      mat-icon {
+        color: rgba(0,0,0,0.37);
+        margin-right: 24px;
+      }      
+    }
+    strong {
+      line-height:16px;
+      font-size:16px!important;
+      font-weight: 500!important;
+    }
+    p {
+      line-height:15px;
+      font-size: 14px;
+      margin: 4px 0;
+      color: rgba(0,0,0,0.54);
+    }
+  }
+}

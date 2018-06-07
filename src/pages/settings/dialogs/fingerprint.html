@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Fingerprint Sign In</h1>
+<form [formGroup]="form" (ngSubmit)="submit(form)">
+  <mat-dialog-content>    
+    <span *ngIf="!enabled">This device can be unlocked with your fingerprint. Once enabled, it will be setup on your next login.</span>
+    <span *ngIf="enabled && username === 'nextlogin'">Fingerprint Sign In is currently set to enable after your next login.</span>
+    <span *ngIf="enabled && username !== 'nextlogin'">Fingerprint Sign In is currently linked to {{username}}.</span>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button color="primary" type="submit" *ngIf="!enabled">ENABLE</button>
+    <button mat-button color="primary" type="submit" *ngIf="enabled">RESET</button>
+    <button mat-button mat-dialog-close>CANCEL</button>
+  </mat-dialog-actions>
+</form>

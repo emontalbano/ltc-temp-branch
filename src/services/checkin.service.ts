@@ -19,7 +19,7 @@ export class CheckinService extends DetailService {
 
   forceInit() {
     if (this.type === '') {
-      this.setType('time_log__c');
+      this.setType('ltc_time_log__c');
     }
   }
 
@@ -27,13 +27,17 @@ export class CheckinService extends DetailService {
    * Creates a timelog object which marks the user as checked in for a given claim.   
    */
   checkin(data: any, claim_id: string, nav: NavController) {
-    if (typeof data !== 'undefined' && parseFloat(data.rate__c) > 0) {
+    if (typeof data !== "undefined" && parseFloat(data.rate__c) <= 0) {
+      data.rate__c = '0';
+    }
+    if (typeof data !== 'undefined') {
       this.setMetadata({'checkedin': claim_id});
+      this.setMetadata({'checkedindt': new Date()});
       let checkin = {
         ltc_hourly_rate__c: data.rate__c,
         ltc_related_claim__c: claim_id,
         ltc_check_in_datetime__c: new Date(),
-        ltc_check_out_time__c: null,
+        ltc_check_out_datetime__c: null,
         ltc_related_invoice__c: null
       };
       this.create(checkin).then( (payload: any) => {
@@ -46,7 +50,7 @@ export class CheckinService extends DetailService {
           silent: true,
           sound: null,
           priority: 2,
-          ongoing: true,
+          //ongoing: true,
           data: {id: 'test'}
         }]);
     
@@ -61,9 +65,9 @@ export class CheckinService extends DetailService {
         }
 
         this.runner = setInterval(updateFunc, 60000);
-        this.notification.on('click', (notification, state) => {
+        //this.notification.on('click', (notification, state) => {
           //nav.push(CheckOutPage, [ { id: claim_id }, checkin ]);
-        });
+        //});
 
         nav.pop();
       });
@@ -73,10 +77,22 @@ export class CheckinService extends DetailService {
   /**
    * Checks the user out from their previous check in
    */
-  checkout(data: any, nav) {
+  checkout(data: any, claim_id: string, nav) {
     if (typeof data !== 'undefined' && data !== '' && data.checkout__c !== '') {
+      const adls = ['Bathing', 'Continence', 'Dressing', 'Eating', 'Toileting', 'Transferring', 'Supervision', 'Other'];
+      let adlStr = '';
+      for (let adl in adls) {
+        if (data[adl]) {
+          if (adlStr.length !== 0) {
+            adlStr += ';';
+          }
+          adlStr += adl;
+        }
+      }
+      console.log(adlStr);
       this.setMetadata({'checkedin': ''});
       this.setMetadata({ 'checkedin_id': ''});
+      this.setMetadata({'checkedindt': ''});
       let checkout = data.checkout__c;
       if (typeof checkout.getHours !== 'function') {
         checkout = new Date(checkout);
@@ -85,13 +101,68 @@ export class CheckinService extends DetailService {
       const minutes = checkout.getMinutes() < 9 ? '0' + checkout.getMinutes() : checkout.getMinutes();
       let timeStr = hours + ':' + minutes + ':00';
 
-      this.update({
-        id: data.id,
-        ltc_check_out_time__c: timeStr
-      });
+      
       this.notification.cancel(1);
       clearInterval(this.runner);
+      localStorage.setItem('toast','Timesheet added successfully');
       nav.pop();
+      nav.pop();
+      if (new Date(data.checkin__c).toDateString() !== new Date(data.checkout__c).toDateString()) {
+        nav.pop();
+        const endDate = new Date(data.checkout__c);
+        let first = true;
+        for (let i = new Date(data.checkin__c); 
+            i.toDateString() !== endDate.toDateString(); 
+            i = new Date(i.getTime() + (60*60*24*1000))) {
+          let dateInstance = {
+            date: '',
+            start: '',
+            end: ''
+          }
+          if (first) {
+            first = false;
+            this.update({
+              id: data.id,
+              ltc_check_out_datetime__c: checkout,
+              ltc_hourly_rate__c: data.rate__c,
+              ltc_activities_for_daily_living__c: adlStr
+            });
+          } else {
+            let startInst = new Date(i);
+            startInst.setHours(0);
+            startInst.setMinutes(0);
+            startInst.setSeconds(0);
+            startInst.setMilliseconds(0);
+            let endInst = new Date(i);
+            endInst.setHours(23)
+            endInst.setMinutes(59);
+            endInst.setSeconds(59);
+            this.create({
+              ltc_hourly_rate__c: data.rate__c,
+              ltc_related_claim__c: claim_id,
+              ltc_check_in_datetime__c: startInst,
+              ltc_check_out_datetime__c: endInst
+            });
+          }
+        }
+        let startInst = new Date(endDate);
+        startInst.setHours(0);
+        startInst.setMinutes(0);
+        startInst.setSeconds(0);
+        startInst.setMilliseconds(0);
+        this.create({
+          ltc_hourly_rate__c: data.rate__c,
+          ltc_related_claim__c: claim_id,
+          ltc_check_in_datetime__c: startInst,
+          ltc_check_out_datetime__c: endDate
+        });
+
+      } else {
+        this.update({
+          id: data.id,
+          ltc_check_out_datetime__c: checkout
+        });
+      }
     }
   }
 
@@ -101,13 +172,15 @@ export class CheckinService extends DetailService {
   getCheckinStatus() {
     this.forceInit();
     // const user_id = this.sforce.getUserId();
-    this.sforce.query('SELECT Id, ltc_related_claim__c FROM time_log__c WHERE ltc_check_out_time__c = NULL LIMIT 1').then( (data: any) => {
+    this.sforce.query('SELECT Id, ltc_related_claim__c, LTC_Check_In_DateTime__c FROM ltc_time_log__c WHERE ltc_check_out_datetime__c = NULL LIMIT 1').then( (data: any) => {
       if (data.records.length > 0) {
         console.log(data.records[0]);
         this.setMetadata({ 'checkedin': data.records[0].LTC_Related_Claim__c });
         this.setMetadata({ 'checkedin_id': data.records[0].Id });
+        this.setMetadata({ 'checkedindt': data.records[0].LTC_Check_In_DateTime__c })
       } else {
         this.setMetadata({ 'checkedin': ''});
+        this.setMetadata({ 'checkedindt': ''});
         this.setMetadata({ 'checkedin_id': ''});
       }
     }).catch( err => {

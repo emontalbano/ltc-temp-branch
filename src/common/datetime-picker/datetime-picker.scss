@@ -1,4 +1,7 @@
 datetime-picker {
+  position:relative;
+  margin-left: 38px;
+  display:block;
   mat-label {
     font-size:11px;
     color: rgba(0,0,0,0.54);
@@ -15,5 +18,8 @@ datetime-picker {
       float: right;
       color: rgba(0,0,0,0.54);
     }
+  }
+  .prefix {
+    top: 27px;
   } 
 }

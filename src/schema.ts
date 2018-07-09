@@ -366,7 +366,7 @@ export const schema = {
       10
     ]
   },
-  "time_log__c":{
+  "ltc_time_log__c":{
     "properties":{
       "id":{
         "type":"string",
@@ -417,16 +417,13 @@ export const schema = {
         "type":"string",
         "searchable":true
       },
-      "ltc_check_in_date__c":{
+      "ltc_check_in_datetime__c":{
         "type":"string"
       },
-      "ltc_check_in_time__c":{
+      "ltc_check_out_datetime__c":{
         "type":"string"
       },
-      "ltc_check_out_time__c":{
-        "type":"string"
-      },
-      "type_of_care__c":{
+      "ltc_type_of_care__c":{
         "type":"string"
       },
       "ltc_hourly_rate__c":{
@@ -464,14 +461,8 @@ export const schema = {
         "type":"string",
         "read-only":true
       },
-      "ltc_check_in_geolocation_accuracy__c":{
+      "ltc_activities_for_daily_living__c": {
         "type":"string"
-      },
-      "check_out_geolocation_accuracy__c":{
-        "type":"string"
-      },
-      "ltc_check_in_datetime__c":{
-        "type":"datetime"
       }
     },
     "permissions":{
@@ -592,7 +583,7 @@ CREATE TABLE policy__c (
 )
 
 ;
-CREATE TABLE time_log__c (
+CREATE TABLE ltc_time_log__c (
 	local_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
 	id VARCHAR, 
 	lastmodifieddate DATETIME, 
@@ -605,10 +596,9 @@ CREATE TABLE time_log__c (
 	keep_fresh INTEGER, 
 	prune INTEGER, 
 	ltc_related_claim__c VARCHAR, 
-	ltc_check_in_date__c VARCHAR, 
-	ltc_check_in_time__c VARCHAR, 
-	ltc_check_out_time__c VARCHAR, 
-	type_of_care__c VARCHAR, 
+	ltc_check_in_datetime__c VARCHAR, 
+	ltc_check_out_datetime__c VARCHAR,
+	ltc_type_of_care__c VARCHAR, 
 	ltc_hourly_rate__c VARCHAR, 
 	ltc_number_of_hours__c VARCHAR, 
 	ltc_related_invoice__c VARCHAR, 
@@ -620,9 +610,6 @@ CREATE TABLE time_log__c (
 	ltc_check_out_geolocation__latitude__s VARCHAR, 
 	ltc_check_out_geolocation__longitude__s VARCHAR, 
 	ltc_check_out_geolocation__c VARCHAR, 
-	ltc_check_in_geolocation_accuracy__c VARCHAR, 
-	check_out_geolocation_accuracy__c VARCHAR, 
-	ltc_check_in_datetime__c DATETIME, 
 	CHECK (isdeleted IN (0, 1)), 
 	CHECK (pending_create IN (0, 1)), 
 	CHECK (pending_update IN (0, 1)), 
@@ -631,4 +618,4 @@ CREATE TABLE time_log__c (
 
 ;`;
 
-export const version = '5d04d4d3-d673-4066-aa56-cf9d330c3f95';
+export const version = '5d04d4d3-d673-4066-aa56-cf9d330c3f92';

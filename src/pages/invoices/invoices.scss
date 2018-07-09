@@ -1,0 +1,291 @@
+@import 'theme/variables';
+
+jh-invoices {
+  .refresh {
+    position:absolute;
+    right:8px;
+    top:14px;
+    mat-icon {
+      color: rgba(0,0,0,0.54);
+    }
+  }
+
+  h6 button[mat-icon-button] {
+    margin: -11px 0;
+  }
+
+  h6 mat-icon {
+    color: rgba(0,0,0,0.54);
+  }
+
+  .timesheet .mat-header-row {
+    display: none;
+  }
+  
+  .ng-animate {
+    button[mat-fab] {      
+      bottom:0;
+    }
+    .mat-tab-body-content {
+      min-height: 900px;
+    }
+  }
+  .standard .emptyView, .standard .emptyView {
+    display: none;
+  }
+
+  .mat-header-row {
+    min-height: 36px;
+  }
+  .mat-card-title {
+    margin-bottom: 11px;
+  }
+  .nodata .emptyView {
+    position: fixed;
+    margin: auto;
+    width: 80%;
+    margin-left: 10%;
+    top: 35%;
+    text-align: center;
+  }
+
+  .cancel {
+    color: mat-color($mat-grey, 500);
+  }
+
+  .pendingContent {
+    display: none;
+  }
+
+  .loading {
+    .emptyView, .standardView, button[mat-fab] {
+      display: none!important;
+    }
+    .pendingContent {
+      display:block;
+    }
+  }
+  
+  .invoiceHistory h4 {
+    margin-top: 64px;
+    text-align: center;
+    color: rgba(0,0,0,0.37);
+  }
+
+  .submitInvoice {
+    display: block;
+    text-align: center;
+    background: mat-color($jh-palette-blue, 300);
+    color: white!important;
+    margin: -1px -16px -24px!important;
+    width: calc(100% + 32px);
+    border-radius: 0;
+    height: 56px;
+  }
+  mat-card-content > .flex.right {
+    margin: 8px 0 -16px!important;
+  }
+
+  .nodata .standardView {
+    display: none;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+    font-size:16px;
+
+    &.right {
+      flex-direction: row-reverse;
+      button[mat-icon-button] {
+        margin-left:16px;
+        mat-icon {
+          background: #FF8900;
+          padding: 7px 0;
+          width: 36px!important;
+          height: 36px!important;
+          border-radius: 50%;
+          color: white;
+        }
+      }
+    }
+    
+    & > mat-icon {
+      color: rgba(0,0,0,0.37);
+      margin-right:16px;
+    }
+    div:first-child {
+      padding-right: 16px;
+    }
+
+  }
+
+  .standardView {
+    mat-table {
+      margin-left: -16px;
+      margin-right: -16px;
+      
+    }
+  }
+
+  .subtext {
+    display: block;
+    color: rgba(0,0,0,0.54);
+    margin-top: 3px;
+    font-size:14px;
+  }
+
+  .standard button[mat-fab] {
+    transition: all .3s ease-in-out;
+    position: fixed;
+    bottom: 72px;
+    right: 16px;
+  }
+
+  .nodata button[mat-fab] {
+    position: fixed;
+    left: 52%;
+    margin-left: -28px;
+    top: 50%;
+  }
+  h6 {
+    margin-top: 0;
+  }
+  mat-card {
+    margin: 8px;
+    
+  }
+
+  mat-cell {
+    flex: auto!important;
+    flex-grow: 1;
+    height: 56px;
+    padding: 8px 0;
+  }
+
+  .invoiceHistory mat-cell {
+    height: 32px;
+  }
+
+  mat-cell:nth-of-type(3), mat-header-cell:nth-of-type(3) {
+    text-align: right;
+  }
+  .mat-header-row, .mat-row {
+    padding: 0 18px;
+  }
+
+  .placeholderContent {
+    height: 185px;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+    
+    // Animation
+    animation-duration: 1.7s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-name: placeholderAnimate;
+    background: #f6f7f8; // Fallback
+    background: linear-gradient(to right, #eee 2%, #ddd 18%, #eee 33%);
+    background-size: 1300px; // Animation Area
+    
+    &_item {
+        width: 100%;
+        height: 16px;
+        top:-16px;
+        position: absolute;
+        background: #fff;
+        z-index: 2;
+        
+        &:after,
+        &:before {
+            width: inherit;
+            height: inherit;
+            content: '';
+            position: absolute;
+        }
+        
+        &:nth-child(1) {
+            top: 96px;
+            left: 0;
+            height:8px;
+            width:185px;
+        }
+        &:nth-child(2) {
+          top: 80px;
+          right: 85px;
+          left:185px;
+          height: auto;
+          bottom:0;
+          width: inherit;
+      }
+      &:nth-child(3) {
+        top: 80px;
+        right: 0;
+        width:85px;
+        height:8px;
+      }
+  
+      &:nth-child(4) {
+        top: 116px;
+        right: 0;
+        width:85px;
+        height:28px;
+      }
+      &:nth-child(5) {
+        top: 120px;      
+        left: 0;
+        width:185px;
+      }
+      &:nth-child(6) {
+        top: 152px;
+        left: 0;
+        height:8px;
+        width:185px;
+      }
+      &:nth-child(7) {
+        top: 172px;
+        right: 0;
+        width:85px;
+        height:28px;
+      }
+      &:nth-child(8) {
+        top: 178px;
+        left: 0;
+        height:8px;
+        width:185px;
+      }
+      &:nth-child(9) {
+        top: 56px;
+        left: 0;
+        right: 0;
+        height:24px;
+      }
+      &:nth-child(10) {
+        top: 24px;
+        left: 0;
+        height:16px;
+      }
+      &:nth-child(11) {
+        top: 40px;
+        left: 40px;
+        right:50px;
+        width: auto;
+        height:16px;
+      }
+  
+      &:nth-child(12) {
+        top: 0px;
+        left: 120px;
+        height:30px;
+      }
+    }
+  }
+}
+
+
+@keyframes placeholderAnimate {
+  0%{ background-position: -650px 0; }
+  100%{ background-position: 650px 0; }
+}

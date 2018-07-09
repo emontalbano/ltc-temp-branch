@@ -30,9 +30,11 @@ export class BaseComponent implements OnInit {
   beforeGet() { }
 
   ngOnInit() {
-    this.search.query.subscribe( data => {
-      this.sObjects.search(data);
-    });
+    if (this.search && this.search.query) {
+      this.search.query.subscribe( data => {
+        this.sObjects.search(data);
+      });
+    }
   }
 
 }

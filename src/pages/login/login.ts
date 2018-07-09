@@ -1,12 +1,13 @@
 import {Component, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store';
 import { SalesforceService } from '../../services';
-//import { ContactComponent } from '../contacts/contacts';
+import { ContactComponent } from '../contacts/contacts';
 import { Nav, NavParams, NavController } from 'ionic-angular';
 import { CacheService } from '../../services/cache.service';
 import { FingerprintWrapper, SJCLWrapper } from '../../common';
 import { FingerprintSetupComponent } from './fingerprint-setup';
 import { TermsPage } from './terms';
+import { schema } from '../../schema';
 
 /**
  * Login Object
@@ -48,6 +49,13 @@ export class LoginComponent {
       oauthData = JSON.parse(oauthData);
     }
 
+    for (let key in schema) {
+      this.store.dispatch({
+        type: 'clear_' + key,
+        payload: { data: '' }
+      });
+    }
+
     //Timeout to set loading to false if querying salesforce fails.
     setTimeout(() => {
       this.loading = false;
@@ -55,9 +63,9 @@ export class LoginComponent {
 
     //Initializes salesforce connection
     this.sforce.init({
-      appId: '3MVG9d3kx8wbPieHBpF8GIw2hY.rWIkaI.5M71yZGZKXw0pTThTrymPHZNPinLkvJno7m4bhW6Gylu2vxUqF8',
+      appId: '3MVG9Vik22TUgUpgLFVHNW35ZmrgYVK1TpecLWmQAkHA1J.MnLchn5pwra6fDf0E.orE8cTdKchmKaIeikIcn',
       apiVersion: 'v39.0',
-      loginURL: 'https://portaldev6-jhltc.cs91.force.com/provider',
+      loginURL: 'https://portalsit6-jhltc.cs19.force.com/provider',
       oauthCallbackURL: 'http://localhost:8100/assets/oauthcallback.html',
       oauth: oauthData
     });
@@ -65,7 +73,7 @@ export class LoginComponent {
     if (oauthData) {
       const userId = this.sforce.getUserId()
       this.sforce.query('SELECT Id, Name FROM Account WHERE Id = \'' + userId + '\' LIMIT 1').then(data => {
-        this.unlockCacher();
+        // this.unlockCacher();
         
       }).catch(err => {
         this.loading = false;
@@ -73,10 +81,9 @@ export class LoginComponent {
     } else {
       setTimeout(() => {
         this.loading = false;
-      }, 300);
+      }, 300);     
       
-      this.setupFingerprintLogin();
-      
+      this.setupFingerprintLogin();      
 
     }
    }
@@ -135,6 +142,7 @@ export class LoginComponent {
 
     this.sforce.jhLogin(this.model.username, this.model.password).then( data => {
       if (this.needFingerprintSetup()) {
+        this.gotoRoot();
         this.nav.setRoot(FingerprintSetupComponent, {'username': this.model.username, 'cipher': this.sjcl.encrypt(this.model.password)});
       } else {
         this.gotoRoot();
@@ -158,12 +166,9 @@ export class LoginComponent {
   loginWithSalesforce() {
     this.sforce.login().then( data => {
       localStorage.setItem('sf_oauth', JSON.stringify(data));
-      if (this.needFingerprintSetup()) {
-        const userid = data.id.split('/').pop();
-        this.nav.setRoot(FingerprintSetupComponent, {'username': userid, 'cipher': this.sjcl.encrypt(userid)});
-      } else {
-        this.gotoRoot();
-      }
+      const userid = data.id.split('/').pop();
+      this.gotoRoot(userid);
+      
     }, e => {
       console.log('Error', e);
     });
@@ -197,8 +202,14 @@ export class LoginComponent {
   }
 
 
-  gotoRoot() {
-    this.nav.setRoot(TermsPage);
+  gotoRoot(userid?: string) {
+    if ( localStorage.getItem('tos') !== 'true') {
+      this.nav.push(TermsPage);
+    } else if (this.needFingerprintSetup()) {
+      this.nav.setRoot(FingerprintSetupComponent, {'username': userid, 'cipher': this.sjcl.encrypt(userid)});
+    } else {
+      this.nav.setRoot(ContactComponent);
+    }
   }
 
   setTab(index: number) {

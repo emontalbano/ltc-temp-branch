@@ -1,6 +1,8 @@
 import {Component, Input, Output} from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { DatePicker } from '@ionic-native/date-picker';
+import { EventEmitter } from '@angular/core';
+
 
 @Component({
   selector: 'datetime-picker',
@@ -8,34 +10,36 @@ import { DatePicker } from '@ionic-native/date-picker';
   providers: [  ]
 })
 export class DateTimePickerComponent {
-  @Output()
-  public value: Date;
-
-  public formValue: Subject<any>;
+  
 
   @Input()
-  public label: String;
+  public value:Date;
+
+  @Input()
+  public label: string;
+
+  @Input()
+  public icon: string;
+
+  @Output()
+  public formValue = new EventEmitter<Date>();
 
   constructor(private datePicker: DatePicker) {
 
   }
-  
-  public setValue(value: any) {
-    this.formValue.next(value);
-    this.value = value;
-  }
 
   ngOnInit() {
-    this.value = new Date();
+    this.formValue.emit(this.value);
   }
 
   openPicker() {
+    var val = (this.value) ? new Date(this.value) : new Date();
     this.datePicker.show({
-      date: this.value,
+      date: val,
       mode: 'datetime',
       androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
     }).then( 
-      date => this.setValue(date), 
+      date => { this.value = date; this.formValue.emit(date); }, 
       err => console.log('error when getting date: ', err) 
     );
   }

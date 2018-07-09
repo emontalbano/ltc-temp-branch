@@ -1,0 +1,20 @@
+jh-toast {
+  div {
+    &.open {
+      bottom: 64px!important;
+    }
+    background-color: rgba(0,0,0,0.70);
+    color: white;
+    position: fixed;
+    bottom: -64px;
+    padding-left: 24px;
+    transition: all .375s ease-in-out;
+    right: 24px;
+    mat-icon {
+      margin: 8px;
+      color:white;
+      fill: white;
+      vertical-align: middle;
+    }
+  }
+}

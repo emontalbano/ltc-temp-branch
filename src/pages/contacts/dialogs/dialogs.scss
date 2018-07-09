@@ -1,0 +1,188 @@
+@import "theme/variables";
+
+jh-check-out, jh-check-in-create, jh-edit-time, jh-submit-time {
+  .mat-form-field {
+    width: 100%;
+    margin: 8px 0;
+
+    &.readonly {
+      margin-left: 42px;
+      .prefix {
+        top: 5px;
+      }
+      mat-label {
+        font-size:12px;
+        color: rgba(0,0,0,0.54);
+      }
+      div {
+        font-size: 14px;
+        margin-top: 6px;
+      }
+    }
+    &.solo {
+      margin-left: 42px;
+      .prefix {
+        top: 23px;
+      }
+    }
+    datetime-picker {
+      display: block;
+    }
+  }
+  .mat-input-wrapper.mat-form-field-wrapper {
+    font-size:14px;
+    margin-left: 42px;
+  }
+  button[mat-dialog-close] {
+    color: mat-color($mat-grey, 500);
+  }
+  jh-static-map {
+    margin-left:-24px;
+    margin-right:-24px;
+    display:block;
+  }
+
+  .right-actions {
+    display: flex;
+    margin-top: 2rem;
+    flex-direction: row-reverse;
+  }
+
+  .mat-checkbox-inner-container {
+    margin-right: 16px;
+    margin-left: 8px;
+  }
+
+  .prefix {
+    position: absolute;
+    left: -12px;
+    mat-icon {
+      margin-left: -24px;
+      color: rgba(0,0,0,0.54);
+    }
+  }
+
+  jh-static-map + div.floating-card {
+    top: 8px;
+    &.hidden {
+      top: -500px;
+    }
+  }
+  .floating-card {
+    transition: all .3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+    position:absolute;
+    left:8px;
+    right:8px;
+    padding: 16px;
+    padding-top: 8px;
+    background:white;
+    border-radius: 3px;
+    box-shadow: 0 8px 17px 2px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);
+    &.hidden {
+      top: -500px;
+    }
+
+    h5 {
+      color: mat-color($jh-palette-blue, 500);
+      font-size: 15px;
+      font-weight: 500;
+      padding-top: 1rem;
+    }
+    
+  }
+
+   .red.left {
+     position: absolute;
+     left: 8px;
+     color: #c6401D;
+   }
+   .error {
+     margin-left: 40px;
+     margin-bottom:24px;
+     margin-top: -8px;
+     color: #c6401D;
+   }
+
+  .customer div {
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+
+  mat-tab-header {
+    margin-bottom: 24px;
+
+
+    /* Temporary */
+    display:none;
+
+
+
+  }
+  .mat-tab-label-content {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    min-width:83px;
+  }
+  .mat-tab-group.mat-primary .mat-tab-label:not(.mat-tab-disabled):focus, .mat-tab-group.mat-primary .mat-tab-link:not(.mat-tab-disabled):focus, .mat-tab-nav-bar.mat-primary .mat-tab-label:not(.mat-tab-disabled):focus, .mat-tab-nav-bar.mat-primary .mat-tab-link:not(.mat-tab-disabled):focus {
+    background-color: white;
+  }
+  .mat-tab-label-active {
+    color: mat-color($jh-palette-blue, 500);
+    opacity: 1;
+  }
+  .mat-tab-label {
+    height: 56px;
+    width: 50%;
+    /*flex-direction: column;*/
+  }
+  .mat-tab-labels {
+    /*justify-content: center;*/
+  }
+
+  table {
+    width: 100%;
+    margin-top: 16px;
+    thead {
+      font-weight: bold;
+      border-bottom: 1px solid rgba(0,0,0,0.12);
+      td {
+        padding-bottom: 8px;
+
+        &:nth-child(4) {
+          text-align: right;
+        }
+      }
+    }
+
+    tbody {
+      td {
+        padding-top: 8px;
+
+        &:nth-child(4) {
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+
+jh-check-out mat-checkbox {
+  display: block;
+  margin-top: 16px;
+}
+
+jh-submit-time {
+  .mat-checkbox-label {
+    font-size: 14px;
+  }
+  mat-dialog-actions {
+    flex-direction: row-reverse;
+  }
+  .legal {
+    margin-left: 42px;
+    font-size: 14px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+}

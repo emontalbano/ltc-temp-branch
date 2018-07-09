@@ -8,7 +8,7 @@ export class InvoiceService extends DetailService {
 
   forceInit() {
     if (this.type === '') {
-      this.setType('time_log__c');
+      this.setType('ltc_time_log__c');
     }
   }
 

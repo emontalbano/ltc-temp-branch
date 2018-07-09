@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>My Customers</ion-title>
+  </ion-navbar>  
+  <jh-nav-pending></jh-nav-pending>
+</ion-header>
+
+<ion-content padding *ngIf="meta | async as meta$">
+  <div [ngClass]="(!meta$.pending) ? 'standard' :  'loading'">
+    <div class="pendingContent">
+      <mat-card>
+        <div class="placeholderContent">
+          <div class="placeholderContent_item"></div>
+          <div class="placeholderContent_item"></div>
+          <div class="placeholderContent_item"></div>
+          <div class="placeholderContent_item"></div>
+          <div class="placeholderContent_item"></div>
+          <div class="placeholderContent_item"></div>
+          <div class="placeholderContent_item"></div>          
+        </div>
+      </mat-card>
+      <mat-card>
+          <div class="placeholderContent">
+            <div class="placeholderContent_item"></div>
+            <div class="placeholderContent_item"></div>
+            <div class="placeholderContent_item"></div>
+            <div class="placeholderContent_item"></div>
+            <div class="placeholderContent_item"></div>
+            <div class="placeholderContent_item"></div>
+            <div class="placeholderContent_item"></div>          
+          </div>
+        </mat-card>
+        <mat-card>
+            <div class="placeholderContent">
+              <div class="placeholderContent_item"></div>
+              <div class="placeholderContent_item"></div>
+              <div class="placeholderContent_item"></div>
+              <div class="placeholderContent_item"></div>
+              <div class="placeholderContent_item"></div>
+              <div class="placeholderContent_item"></div>
+              <div class="placeholderContent_item"></div>          
+            </div>
+          </mat-card>
+    </div>
+
+    <mat-list class="contacts">
+        <ng-template ngFor let-item [ngForOf]="(items | async)">
+          <mat-list-item (click)="openContactDetail(item)" [ngClass]="(meta$.checkedin === item.id) ? 'active' : ''">
+            <button mat-raised-button>
+              <mat-icon>person</mat-icon>
+              <div>
+                <h5 mat-line>{{item.associated_policy__r.insured__r.name}}</h5>
+              </div>
+              <div class="right" *ngIf="meta$.checkedin === item.id">
+                {{ meta$.checkedindt | timeEst }}
+              </div>
+              <button [disabled]='meta$.checkedin !== ""' *ngIf="false && meta$.checkedin !== item.id" mat-icon-button (click)="checkin($event, item)"><mat-icon svgIcon="check-in"></mat-icon></button>
+              <button color="warn" *ngIf="meta$.checkedin === item.id" mat-icon-button (click)="checkout($event, item, meta$.checkedin_id)"><mat-icon class="checkout">stop</mat-icon></button>
+            </button>
+          </mat-list-item>
+        </ng-template>
+      </mat-list>
+  </div>
+  <jh-toast></jh-toast>
+</ion-content>

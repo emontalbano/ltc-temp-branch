@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Create Time Entry</ion-title>
+  </ion-navbar>
+  <jh-nav-pending></jh-nav-pending>
+</ion-header>
+<ion-content padding>
+  <jh-static-map *ngIf="!form.value.manual && !errorMessage"></jh-static-map>
+  <div class="floating-card"> <!-- [ngClass]="locationComplete ? '' : 'hidden'" -->
+      <mat-tab-group>
+        <mat-tab class="checkin">
+          <ng-template mat-tab-label>
+            <mat-icon>schedule</mat-icon>
+            Check In
+          </ng-template>
+          <form [formGroup]="form" (ngSubmit)="submit(form)">
+            <h5>Check In with {{ claim.associated_policy__r.insured__r.name }}</h5>
+            
+            <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+            
+            <span>If you forgot to check in when you started caring for {{ claim.associated_policy__r.insured__r.name }}, please enter your time manually.</span>
+            
+            
+            <div class="right-actions">
+              <button mat-button color="primary" type="submit">CHECK IN</button> <!--[disabled]="!form.value.caring || !locationComplete"-->
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab class="edit">
+          <ng-template mat-tab-label>
+            <mat-icon>edit</mat-icon>
+            Manual Entry
+          </ng-template>
+
+          <div>
+            <form [formGroup]="form2" (ngSubmit)="submit(form2)">
+              <div class="mat-form-field solo">
+                  <span class="prefix">
+                    <mat-icon>schedule</mat-icon>
+                  </span>
+                  <datetime-picker label="Start Time"></datetime-picker>
+              </div>
+              <div class="mat-form-field solo">
+                <span class="prefix">
+                  <mat-icon>check</mat-icon>
+                </span>
+                <datetime-picker label="End Time"></datetime-picker>
+              </div>
+
+              <mat-form-field [floatLabel]="true">
+                  <mat-label>Hourly Rate</mat-label>
+                  <span class="prefix">
+                    <mat-icon>attach_money</mat-icon>
+                  </span>
+                  <input matInput formControlName="rate__c" >
+                </mat-form-field>
+
+                <div class="right-actions">
+                    <button mat-button color="primary" [disabled]="submitting" type="submit">CHECK IN</button>
+                  </div>
+            </form>
+            </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+      
+</ion-content>

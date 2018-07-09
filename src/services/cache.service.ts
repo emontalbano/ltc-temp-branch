@@ -85,7 +85,8 @@ export class CacheService {
 
   private async checkDb() {
     if (!this.db) {
-      return await this.unlockDatabase();
+      return false;
+      // return await this.unlockDatabase();
     } else {
       return true;
     }

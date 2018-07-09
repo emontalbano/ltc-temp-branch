@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import {StoreModule} from '@ngrx/store';
 
-import { LoginComponent, SettingsComponent } from '../pages';
+import { LoginComponent, ContactComponent, ContactDetailComponent, CheckInPage, CheckOutPage, EditTimeDialog, SettingsComponent, InvoicesComponent, SubmitTimeDialog } from '../pages';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { reducers, BaseReducer } from '../reducers';
 
@@ -48,7 +48,7 @@ import { MatAutocompleteModule,
 import {CdkTableModule} from '@angular/cdk/table';
 import { BaseService, SalesforceService, DetailService, CacheService, SObjectService, CheckinService, InvoiceService, ClaimService } from '../services';
 import { CommonModule } from '@angular/common';
-import { SearchComponent, RateFormatPipe, TimeEstimatePipe, PendingComponent, StaticMapComponent, DateTimePickerComponent, SJCLWrapper, FingerprintWrapper } from '../common';
+import { SearchComponent, RateFormatPipe, TimeEstimatePipe, PendingComponent, StaticMapComponent, DateTimePickerComponent, SJCLWrapper, FingerprintWrapper, Toast } from '../common';
 import { HttpClientModule } from '@angular/common/http';
 import { BillingDialog, FingerprintSignInDialog } from '../pages/settings/dialogs';
 import { FingerprintSetupComponent } from '../pages/login/fingerprint-setup';
@@ -61,6 +61,12 @@ import { TermsPage } from '../pages/login/terms';
   declarations: [
     AppComponent,
     LoginComponent,
+    ContactComponent,
+    ContactDetailComponent,
+    CheckInPage,
+    CheckOutPage,
+    EditTimeDialog,
+    SubmitTimeDialog,
     SearchComponent,
     RateFormatPipe,
     TimeEstimatePipe,
@@ -70,8 +76,10 @@ import { TermsPage } from '../pages/login/terms';
     BillingDialog,
     FingerprintSignInDialog,
     FingerprintSetupComponent,
+    InvoicesComponent,
     DateTimePickerComponent,
-    TermsPage
+    TermsPage,
+    Toast
   ],
   imports: [
     BrowserModule,
@@ -115,12 +123,20 @@ import { TermsPage } from '../pages/login/terms';
     MatStepperModule,
     ReactiveFormsModule,
     StoreModule.forRoot(reducers),
-    IonicModule.forRoot(AppComponent),
+    IonicModule.forRoot(AppComponent, {
+      mode: 'md'
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     AppComponent,
     LoginComponent,
+    ContactComponent,
+    ContactDetailComponent,
+    CheckInPage,
+    CheckOutPage,
+    EditTimeDialog,
+    SubmitTimeDialog,
     SearchComponent,
     PendingComponent,
     StaticMapComponent,
@@ -128,8 +144,10 @@ import { TermsPage } from '../pages/login/terms';
     BillingDialog,
     FingerprintSignInDialog,
     FingerprintSetupComponent,
+    InvoicesComponent,
     DateTimePickerComponent,
-    TermsPage
+    TermsPage,
+    Toast
   ],
   providers: [
     StatusBar,

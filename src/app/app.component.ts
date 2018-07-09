@@ -3,9 +3,9 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, MenuController, Nav, MenuToggle, Navbar } from 'ionic-angular';
 
 import { LoginComponent, 
-  //ContactComponent, 
-  SettingsComponent
-  //InvoicesComponent, CheckInPage 
+  ContactComponent, 
+  SettingsComponent,
+  InvoicesComponent, CheckInPage, CheckOutPage 
 } from '../pages';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -24,9 +24,10 @@ export class AppComponent {
 
   rootPage = LoginComponent;
   pages = {
-    'settings': SettingsComponent
-    //'patients': ContactComponent,
-    //'invoices': InvoicesComponent
+    'settings': SettingsComponent,
+    'patients': ContactComponent,
+    'invoices': InvoicesComponent,
+    'terms': TermsPage
   }
 
   constructor(
@@ -49,6 +50,9 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.iconRegistry.addSvgIcon(
+        'care',
+        this.sanitizer.bypassSecurityTrustResourceUrl('./assets/icon/care.svg')
+      ).addSvgIcon(
         'check-in',
         this.sanitizer.bypassSecurityTrustResourceUrl('./assets/icon/clock-in.svg')
       ).addSvgIcon(
@@ -68,6 +72,8 @@ export class AppComponent {
     this.menu.close();
     if (page === 'settings') {
       this.nav.push(this.pages[page]);
+    } else if (page === 'terms') {
+      this.nav.push(this.pages[page], true);
     } else {
       this.nav.setRoot(this.pages[page]);
     }

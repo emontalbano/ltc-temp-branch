@@ -2,7 +2,8 @@ import { combineReducers } from '@ngrx/store';
 const defaultState = {
   'pending': false,
   'refreshing': false,
-  'checkedin': ''
+  'checkedin': '',
+  'checkindt': '',
 };
 
 /**

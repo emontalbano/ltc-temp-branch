@@ -135,10 +135,11 @@ export class RateFormatPipe implements PipeTransform {
     try {
       end = new Date(end);
       start = new Date(start);
-      if (rate) {
-        return (timeDiffNumber(start, end) * rate / 60).toFixed(2);
+      if (!rate) {
+        rate = 0;
       }
-      return timeDiff(start, end);
+      return (timeDiffNumber(start, end) * rate / 60).toFixed(2);      
+      
     } catch (e) {
       return 'INVALID DATE';
     }
@@ -154,9 +155,10 @@ export class RateFormatPipe implements PipeTransform {
   name: 'timeEst'
 })
 export class TimeEstimatePipe implements PipeTransform {
-  transform(start: any, end: any, asNumber?: boolean): any {
+  transform(start: any, end?: any, asNumber?: boolean): any {
+
     try {
-      end = new Date(end);
+      end = (end) ? new Date(end) : new Date();
       start = new Date(start);
       if (asNumber) {
         return (timeDiffNumber(start, end) / 60).toFixed(2);
@@ -178,13 +180,9 @@ export const timeDiff = (startDate, endDate) => {
     let timeStr = '' + hh;  
     timeDiff -= hh * 1000 * 60 * 60;
     const mm = Math.floor(timeDiff / 1000 / 60);
-    if(mm < 10) {
-      timeStr += ':0' + mm;
-    } else {
-      timeStr += ':' + mm;
-    }  
+    timeStr += 'h ' + mm+ 'm';
     return timeStr;
-  } catch (e) { return '0:00'; }
+  } catch (e) { return '0h 0m'; }
 }
 
 /**

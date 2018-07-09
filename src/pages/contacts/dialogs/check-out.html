@@ -1,0 +1,104 @@
+<ion-header>
+    <ion-navbar color="primary">
+      <ion-title>Check Out Details</ion-title>
+    </ion-navbar>
+    <jh-nav-pending></jh-nav-pending>
+  </ion-header>
+  <ion-content padding>
+    <form [formGroup]="form" (ngSubmit)="submit(form)">
+        <div class="customer">
+          <span>Customer</span>
+          <div>{{ claim.associated_policy__r.insured__r.name }}</div>
+        </div>
+
+        <jh-static-map *ngIf="false && !form.value.manual && !errorMessage"></jh-static-map>
+
+        <div class="floating-card" *ngIf="step === 1"> <!-- [ngClass]="locationComplete ? '' : 'hidden'" -->
+
+            <h5>Check Out</h5>
+            <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+            <datetime-picker label="Start Time" icon="schedule" [value]="form.value.checkin__c" (formValue)="setCheckin_dt($event)"></datetime-picker>
+            <span class="error" *ngIf="startError && startError.length > 0">
+              {{ startError }}
+            </span>
+            
+            <datetime-picker label="End Time" icon="check" [value]="form.value.checkout__c" (formValue)="setCheckout_dt($event)"></datetime-picker>
+            <span class="error" *ngIf="endError && endError.length > 0">
+                {{ endError }}
+              </span>
+            <mat-form-field [floatLabel]="true">
+              <mat-label>Hourly Rate</mat-label>
+              <span class="prefix">
+                <mat-icon>attach_money</mat-icon>
+              </span>
+              <input matInput formControlName="rate__c" >
+            </mat-form-field>
+            <span class="error" *ngIf="rateError && rateError.length > 0">
+              {{ rateError }}
+            </span>
+            <div class="right-actions">
+              <button mat-button color="primary" [disabled]="submitting" class='left red' type="button">Delete Entry</button>
+              <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">Next</button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
+            </div>
+        </div>
+
+        <div class="floating-card" *ngIf="step === 2"> <!-- [ngClass]="locationComplete ? '' : 'hidden'" -->
+
+          <h5>Check Out Confirmation</h5>
+          Service spans multiple days. Please confirm these details are correct.
+
+          <table>
+            <thead>
+              <tr>
+                <td>Date</td>
+                <td>Start Time</td>
+                <td>End Time</td>
+                <td>Rate</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let day of dayData">
+                <td>{{ day.date }}</td>
+                <td>{{ day.start }}</td>
+                <td>{{ day.end }}</td>
+                <td>${{ form.value.rate__c }}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div class="right-actions">
+            <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">Next</button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
+          </div>
+      </div>
+
+        <div class="floating-card" *ngIf="step === 3"> <!-- [ngClass]="locationComplete ? '' : 'hidden'" -->
+
+          <h5>Activities for Daily Living</h5>
+          <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+          
+          <mat-checkbox formControlName="Bathing">Bathing</mat-checkbox>
+          <mat-checkbox formControlName="Continence">Continence</mat-checkbox>
+          <mat-checkbox formControlName="Dressing">Dressing</mat-checkbox>
+          <mat-checkbox formControlName="Eating">Eating</mat-checkbox>
+          <mat-checkbox formControlName="Toileting">Toileting</mat-checkbox>
+          <mat-checkbox formControlName="Transferring">Transferring/Mobility</mat-checkbox>
+          <mat-checkbox formControlName="Supervision">Supervision/Safety</mat-checkbox>
+          <mat-checkbox formControlName="Other"><span *ngIf="!form.value.Other">Other</span>
+              <mat-form-field [floatLabel]="true" *ngIf="form.value.Other">
+                  <mat-label>Other</mat-label>
+                  <input matInput formControlName="othertext" >
+                </mat-form-field>
+          </mat-checkbox>
+          
+          <div style="text-align: center">
+            After checking out this timesheet is added to the current invoice.
+          </div>
+
+          
+          <div class="right-actions">
+            <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">Add to Current Invoice</button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
+          </div>
+      </div>
+        
+    </form>
+  </ion-content>

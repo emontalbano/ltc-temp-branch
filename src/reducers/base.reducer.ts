@@ -25,7 +25,8 @@ export class BaseReducer {
     'insert': this.doInsert,
     'set': this.doSet,
     'delete': this.doDelete,
-    'update_pending': this.doUpdatePending
+    'update_pending': this.doUpdatePending,
+    'clear': this.doClear
   };
 
   public interactions = {};
@@ -119,6 +120,10 @@ export class BaseReducer {
   
   doReset(state, action) {
     return this.initial_filter;
+  }
+
+  doClear(state, action) {
+    return [];
   }
 
   // ==================================================================

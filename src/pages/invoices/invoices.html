@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Invoice History</ion-title>
+  </ion-navbar>
+  <jh-nav-pending></jh-nav-pending>
+</ion-header>
+<ion-content *ngIf="meta | async as meta$" [ngClass]="(meta$.pending) ? 'loading' :  'standard'">
+  <div class="standardView" *ngIf="!hasInvoices">
+    <h4>No invoices to show</h4>
+  </div>
+  <div class="standardView invoiceHistory" *ngIf="hasInvoices">
+    <mat-card>
+      <mat-card-title>
+        <h6 *ngIf="filter === ''">All Invoices</h6>
+        <h6 *ngIf="filter !== ''">{{ filter }}'s Invoices 
+          <button mat-icon-button (click)="filterPatient('','')"><mat-icon>close</mat-icon></button></h6>
+        <button mat-icon-button class="refresh" (click)="refreshInvoice()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </mat-card-title>
+      <mat-card-content>
+        <mat-table #table [dataSource]="invoice_ds">
+          <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef>Dates</mat-header-cell>
+            <mat-cell *matCellDef="let item">
+              <div class="flex">
+                {{ item.createddate | date: 'shortDate' }}
+              </div>                    
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="user">
+            <mat-header-cell *matHeaderCellDef>Patient</mat-header-cell>
+            <mat-cell *matCellDef="let item"> 
+              <a (click)="filterPatient(item.contact__c, item.contact__r.name)">{{ item.contact__c }}</a>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="billing">
+            <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+            <mat-cell *matCellDef="let item"> 
+              $123.00
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ion-content>

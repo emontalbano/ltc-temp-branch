@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Verify Invoice Details</h1>
+<form [formGroup]="form" (ngSubmit)="submit(form)">
+  <mat-dialog-content>
+    <div class="mat-form-field readonly">
+      <span class="prefix">
+        <mat-icon>date_range</mat-icon>
+      </span>
+      <mat-label>Date Range</mat-label>
+      <div>1/15/18 - 1/16/18</div>
+    </div>
+
+    <div class="mat-form-field readonly">
+      <span class="prefix">
+        <mat-icon>attach_money</mat-icon>
+      </span>
+      <mat-label>Total Charges</mat-label>
+      <div>$123.45</div>
+    </div>
+
+    <div class="legal">
+        I agree that the information I have submitted is correct to the best of my knowledge.
+    </div>
+    
+    <div><mat-checkbox formControlName="attest">I plead the fifth</mat-checkbox></div>
+  
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button color="primary" [disabled]="!form.value.attest" type="submit">SUBMIT INVOICE</button>
+    <button mat-button mat-dialog-close>CANCEL</button>
+  </mat-dialog-actions>
+</form>

@@ -1,4 +1,4 @@
-import { DetailService, SalesforceService, CacheService } from ".";
+import { DetailService, SalesforceService, CacheService, InvoiceService } from ".";
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import { Store } from "@ngrx/store";
@@ -7,13 +7,14 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Nav, NavParams, NavController } from 'ionic-angular';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { timeDiff } from '../common/utils';
+import { identifierModuleUrl } from "@angular/compiler";
 
 @Injectable()
 export class CheckinService extends DetailService {
   public type = '';
   private runner: any;
 
-  constructor(protected http: Http, protected store: Store<any>, public sforce: SalesforceService, public cacher: CacheService, private notification: LocalNotifications, private dialog: MatDialog) {
+  constructor(protected http: Http, protected store: Store<any>, public sforce: SalesforceService, public cacher: CacheService, private notification: LocalNotifications, private dialog: MatDialog, private invoices: InvoiceService) {
     super(http, store, sforce, cacher);
   }
 
@@ -40,37 +41,49 @@ export class CheckinService extends DetailService {
         ltc_check_out_datetime__c: null,
         ltc_related_invoice__c: null
       };
-      this.create(checkin).then( (payload: any) => {
-        this.setMetadata({ 'checkedin_id': payload.id });
-        checkin['id'] = payload.id;
-        this.notification.schedule([{
-          id: 1,
-          title: 'You are currently checked in with a client.',
-          text: 'Checked in for 0:00.',
-          silent: true,
-          sound: null,
-          priority: 2,
-          //ongoing: true,
-          data: {id: 'test'}
-        }]);
-    
-        const startTime = new Date();
-        const noti = this.notification;
-        let updateFunc = () => {
-          const timeStr = timeDiff(startTime, new Date());
-          noti.update({
+
+      this.invoices.getInitialInvoiceId(checkin).then( id => {
+        checkin.ltc_related_invoice__c = id;
+
+        this.create(checkin).then( (payload: any) => {
+          this.setMetadata({ 'checkedin_id': payload.id });
+          
+          checkin['id'] = payload.id;
+          
+          
+          /*this.notification.schedule([{
             id: 1,
-            text: 'Checked in for ' + timeStr
-          });
-        }
-
-        this.runner = setInterval(updateFunc, 60000);
-        //this.notification.on('click', (notification, state) => {
-          //nav.push(CheckOutPage, [ { id: claim_id }, checkin ]);
-        //});
-
-        nav.pop();
+            title: 'You are currently checked in with a client.',
+            text: 'Checked in for 0:00.',
+            silent: true,
+            sound: null,
+            priority: 2,
+            //ongoing: true,
+            data: {id: 'test'}
+          }]);
+      
+          const startTime = new Date();
+          const noti = this.notification;
+          let updateFunc = () => {
+            const timeStr = timeDiff(startTime, new Date());
+            noti.update({
+              id: 1,
+              text: 'Checked in for ' + timeStr
+            });
+          }
+  
+          this.runner = setInterval(updateFunc, 60000);
+          //this.notification.on('click', (notification, state) => {
+            //nav.push(CheckOutPage, [ { id: claim_id }, checkin ]);
+          //});*/
+  
+          nav.pop();
+        });
+        
       });
+
+      
+      
     }
   }
 

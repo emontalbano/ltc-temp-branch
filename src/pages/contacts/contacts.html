@@ -55,10 +55,12 @@
                 <h5 mat-line>{{item.associated_policy__r.insured__r.name}}</h5>
               </div>
               <div class="right" *ngIf="meta$.checkedin === item.id">
-                {{ meta$.checkedindt | timeEst }}
+                <span *ngIf="endTime | async as $endTime">
+                  {{ meta$.checkedindt | timeEst:$endTime }}
+                </span>
               </div>
               <button [disabled]='meta$.checkedin !== ""' *ngIf="false && meta$.checkedin !== item.id" mat-icon-button (click)="checkin($event, item)"><mat-icon svgIcon="check-in"></mat-icon></button>
-              <button color="warn" *ngIf="meta$.checkedin === item.id" mat-icon-button (click)="checkout($event, item, meta$.checkedin_id)"><mat-icon class="checkout">stop</mat-icon></button>
+              <button color="warn" *ngIf="meta$.checkedin === item.id" mat-icon-button (click)="checkoutdt($event, item, meta$.checkedin_id, meta$.checkedindt)"><mat-icon class="checkout">stop</mat-icon></button>
             </button>
           </mat-list-item>
         </ng-template>

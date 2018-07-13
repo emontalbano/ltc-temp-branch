@@ -43,7 +43,7 @@
               <mat-table #table [dataSource]="checkins_ds">
                 <ng-container matColumnDef="date">
                   <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-                  <mat-cell *matCellDef="let item" (click)="editTimeEntry(item)">
+                  <mat-cell *matCellDef="let item" (click)="checkout(item)">
                     <div *ngIf="item.ltc_check_out_datetime__c !== null" class="flex">
                       <div *ngIf="submittingInvoice">
                         <mat-checkbox [(ngModel)]="invoiceMap[item.id]"></mat-checkbox>
@@ -55,7 +55,7 @@
                       </div>
                     </div>
                     <div *ngIf="item.ltc_check_out_datetime__c === null" class="flex">
-                        <mat-icon>location_on</mat-icon>
+                        <mat-icon>location_ff</mat-icon>
                         <div>
                           {{ item.ltc_check_in_datetime__c | date: 'shortTime' }}
                           <span class="subtext">{{ item.ltc_check_in_datetime__c | date: 'shortDate'}}</span>
@@ -89,5 +89,9 @@
           <mat-icon>play_arrow</mat-icon>
         </button>
       </div>
+      <button mat-button class="bottom-button">
+        <mat-icon>history</mat-icon>
+        All Invoices
+      </button>
       <jh-toast></jh-toast>
 </ion-content>

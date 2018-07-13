@@ -7,6 +7,7 @@ import { ViewChild, ElementRef } from '@angular/core';
 import { SearchComponent, BaseComponent } from '../../common';
 import { CheckinService, InvoiceService, ClaimService } from '../../services';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'jh-contacts',
@@ -17,7 +18,8 @@ export class ContactComponent extends BaseComponent {
   public meta: any;
   public checkedin: string;
   public checkedindt: string;
-
+  public endTime: Subject<Date>;
+  public checkinObj: any;
   constructor(protected sObjects: ClaimService, 
               protected checkins: CheckinService, 
               protected store: Store<any>, 
@@ -38,9 +40,21 @@ export class ContactComponent extends BaseComponent {
         this.navCtrl.setRoot(ContactDetailComponent, items[0]);
       }
     });
+
+    this.endTime = new Subject<Date>();
+    this.endTime.next(new Date());
+    this.endTime.next(new Date());
+    let timerInterval = setInterval( () => {
+      this.endTime.next(new Date());
+    }, 1000);
+
     this.meta.subscribe( metadata => {
       this.checkedin = metadata.checkedin;
       this.checkedindt = metadata.checkedindt;
+      this.checkinObj = {
+        id: this.checkedin,
+        ltc_check_in_datetime__c: this.checkedindt
+      }
     });
   }
 
@@ -48,6 +62,14 @@ export class ContactComponent extends BaseComponent {
     this.navCtrl.push(ContactDetailComponent, contact);
   }
 
+  checkoutdt(event, contact, checkin_id, checkin_dt) {
+    event.stopPropagation();
+    const checkin = {
+      id: checkin_id,
+      ltc_check_in_datetime__c: checkin_dt
+    };
+    this.navCtrl.push(CheckOutPage, [contact, checkin]);
+  }
   checkout(event, contact, checkin_id) {
     event.stopPropagation();
     const checkin = { id: checkin_id };

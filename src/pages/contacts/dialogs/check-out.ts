@@ -1,7 +1,7 @@
 import {Component, ViewChild, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { StaticMapComponent } from '../../../common';
+import { StaticMapComponent, createDateObject } from '../../../common';
 import { getGeoCoords } from '../../../common/utils';
 import { NavController, NavParams } from 'ionic-angular';
 import { CheckinService } from '../../../services';
@@ -71,6 +71,7 @@ export class CheckOutPage {
     this.sObjects.setType('ltc_time_log__c');
   }
 
+
   ngOnInit() {
     if (this.step === 1 && this.formData.checkin__c === '') {
       console.log(this.checkin);
@@ -81,10 +82,10 @@ export class CheckOutPage {
     this.form = this.formBuilder.group(this.formData);
     
     if (this.step === 2) {
-      const endDate = new Date(this.form.value.checkout__c);
+      const endDate = createDateObject(this.form.value.checkout__c);
       let dateArray = [];
       const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-      for (let i = new Date(this.form.value.checkin__c); 
+      for (let i = createDateObject(this.form.value.checkin__c); 
           i.toDateString() !== endDate.toDateString(); 
           i = new Date(i.getTime() + (60*60*24*1000))) {
         let dateInstance = {
@@ -115,7 +116,7 @@ export class CheckOutPage {
   next() {
     console.log('here');
     if (this.step === 1 && this.validateStep1()) {
-      if (new Date(this.form.value.checkin__c).toDateString() !== new Date(this.form.value.checkout__c).toDateString()) {
+      if (createDateObject(this.form.value.checkin__c).toDateString() !== createDateObject(this.form.value.checkout__c).toDateString()) {
         this.navCtrl.push(CheckOutPage, [
           this.claim,
           this.checkin,
@@ -146,8 +147,8 @@ export class CheckOutPage {
     let error = false;
     this.form.controls.checkin__c.setValue(this.checkin_dt);
     this.form.controls.checkout__c.setValue(this.checkout_dt);
-    const start = new Date(this.form.value.checkin__c);
-    const end = new Date(this.form.value.checkout__c);
+    const start = createDateObject(this.form.value.checkin__c);
+    const end = createDateObject(this.form.value.checkout__c);
     this.startError = '';
     this.endError = '';
     this.rateError = '';

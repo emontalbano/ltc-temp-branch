@@ -6,7 +6,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 //import { ContactComponent, ContactDetailComponent, CheckOutPage } from '../pages'
 import { Nav, NavParams, NavController } from 'ionic-angular';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { timeDiff } from '../common/utils';
+import { timeDiff, createDateObject } from '../common/utils';
 import { identifierModuleUrl } from "@angular/compiler";
 
 @Injectable()
@@ -108,7 +108,7 @@ export class CheckinService extends DetailService {
       this.setMetadata({'checkedindt': ''});
       let checkout = data.checkout__c;
       if (typeof checkout.getHours !== 'function') {
-        checkout = new Date(checkout);
+        checkout = createDateObject(checkout);
       }
       const hours = checkout.getHours() < 9 ? '0' + checkout.getHours() : checkout.getHours();
       const minutes = checkout.getMinutes() < 9 ? '0' + checkout.getMinutes() : checkout.getMinutes();
@@ -120,11 +120,11 @@ export class CheckinService extends DetailService {
       localStorage.setItem('toast','Timesheet added successfully');
       nav.pop();
       nav.pop();
-      if (new Date(data.checkin__c).toDateString() !== new Date(data.checkout__c).toDateString()) {
+      if (createDateObject(data.checkin__c).toDateString() !== createDateObject(data.checkout__c).toDateString()) {
         nav.pop();
-        const endDate = new Date(data.checkout__c);
+        const endDate = createDateObject(data.checkout__c);
         let first = true;
-        for (let i = new Date(data.checkin__c); 
+        for (let i = createDateObject(data.checkin__c); 
             i.toDateString() !== endDate.toDateString(); 
             i = new Date(i.getTime() + (60*60*24*1000))) {
           let dateInstance = {
@@ -158,7 +158,7 @@ export class CheckinService extends DetailService {
             });
           }
         }
-        let startInst = new Date(endDate);
+        let startInst = createDateObject(endDate);
         startInst.setHours(0);
         startInst.setMinutes(0);
         startInst.setSeconds(0);

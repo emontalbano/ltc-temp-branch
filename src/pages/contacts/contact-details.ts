@@ -5,7 +5,7 @@ import { SObjectService, CheckinService, InvoiceService } from '../../services';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { NavController } from 'ionic-angular';
 import { NavParams } from 'ionic-angular';
-import { DataSourceWrapper, timeDiffNumber } from '../../common';
+import { DataSourceWrapper, timeDiffNumber, createDateObject } from '../../common';
 import { Observer } from 'rxjs/Observer';
 import { Observable } from 'rxjs/Observable';
 import { CheckOutPage, CheckInPage, SubmitTimeDialog } from './';
@@ -75,7 +75,7 @@ export class ContactDetailComponent {
         this.invoiceMap[a.id] = true; 
         if (a.ltc_check_out_datetime__c !== null) {
           //let timeArr = a.ltc_check_out_datetime__c.split(':');
-          let checkout = new Date(a.ltc_check_out_datetime__c);
+          let checkout = createDateObject(a.ltc_check_out_datetime__c);
           //checkout.setHours(timeArr[0]);
           //checkout.setMinutes(timeArr[1]);
           a.checkout = checkout;

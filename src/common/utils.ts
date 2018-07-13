@@ -122,6 +122,14 @@ export class DataSourceWrapper {
   disconnect() { }
 }
 
+export function createDateObject(str) {
+  let d = new Date(str);
+  if (d.getTime() === d.getTime()) {
+    return d;
+  } else {
+    return new Date(str.replace(/\..+/gi, ''));
+  }
+}
 
 /**
  * Given a start time and end time, returns the time difference in hours:minutes. 
@@ -133,12 +141,13 @@ export class DataSourceWrapper {
 export class RateFormatPipe implements PipeTransform {
   transform(start: any, end: any, rate?: number): any {
     try {
-      end = new Date(end);
-      start = new Date(start);
+      let endDate = createDateObject(end);
+      let startDate = createDateObject(start);
+      
       if (!rate) {
         rate = 0;
       }
-      return (timeDiffNumber(start, end) * rate / 60).toFixed(2);      
+      return (timeDiffNumber(startDate, endDate) * rate / 60).toFixed(2);      
       
     } catch (e) {
       return 'INVALID DATE';
@@ -158,8 +167,8 @@ export class TimeEstimatePipe implements PipeTransform {
   transform(start: any, end?: any, asNumber?: boolean): any {
 
     try {
-      end = (end) ? new Date(end) : new Date();
-      start = new Date(start);
+      end = (end) ? createDateObject(end) : new Date();
+      start = createDateObject(start);
       if (asNumber) {
         return (timeDiffNumber(start, end) / 60).toFixed(2);
       }

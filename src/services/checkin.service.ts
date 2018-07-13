@@ -28,63 +28,64 @@ export class CheckinService extends DetailService {
    * Creates a timelog object which marks the user as checked in for a given claim.   
    */
   checkin(data: any, claim_id: string, nav: NavController) {
-    if (typeof data !== "undefined" && parseFloat(data.rate__c) <= 0) {
-      data.rate__c = '0';
-    }
-    if (typeof data !== 'undefined') {
-      this.setMetadata({'checkedin': claim_id});
-      this.setMetadata({'checkedindt': new Date()});
-      let checkin = {
-        ltc_hourly_rate__c: data.rate__c,
-        ltc_related_claim__c: claim_id,
-        ltc_check_in_datetime__c: new Date(),
-        ltc_check_out_datetime__c: null,
-        ltc_related_invoice__c: null
-      };
+    return new Promise<any>( (resolve, reject) => {
+      if (typeof data !== "undefined" && parseFloat(data.rate__c) <= 0) {
+        data.rate__c = '0';
+      }
+      if (typeof data !== 'undefined') {
+        this.setMetadata({'checkedin': claim_id});
+        this.setMetadata({'checkedindt': new Date()});
+        let checkin = {
+          ltc_hourly_rate__c: data.rate__c,
+          ltc_related_claim__c: claim_id,
+          ltc_check_in_datetime__c: new Date(),
+          ltc_check_out_datetime__c: null,
+          ltc_related_invoice__c: null
+        };
 
-      this.invoices.getInitialInvoiceId(checkin).then( id => {
-        checkin.ltc_related_invoice__c = id;
+        this.invoices.getInitialInvoiceId(checkin).then( id => {
+          checkin.ltc_related_invoice__c = id;
 
-        this.create(checkin).then( (payload: any) => {
-          this.setMetadata({ 'checkedin_id': payload.id });
-          
-          checkin['id'] = payload.id;
-          
-          
-          /*this.notification.schedule([{
-            id: 1,
-            title: 'You are currently checked in with a client.',
-            text: 'Checked in for 0:00.',
-            silent: true,
-            sound: null,
-            priority: 2,
-            //ongoing: true,
-            data: {id: 'test'}
-          }]);
-      
-          const startTime = new Date();
-          const noti = this.notification;
-          let updateFunc = () => {
-            const timeStr = timeDiff(startTime, new Date());
-            noti.update({
+          this.create(checkin).then( (payload: any) => {
+            this.setMetadata({ 'checkedin_id': payload.id });
+            
+            checkin['id'] = payload.id;
+            
+            
+            /*this.notification.schedule([{
               id: 1,
-              text: 'Checked in for ' + timeStr
-            });
-          }
-  
-          this.runner = setInterval(updateFunc, 60000);
-          //this.notification.on('click', (notification, state) => {
-            //nav.push(CheckOutPage, [ { id: claim_id }, checkin ]);
-          //});*/
-  
-          nav.pop();
-        });
+              title: 'You are currently checked in with a client.',
+              text: 'Checked in for 0:00.',
+              silent: true,
+              sound: null,
+              priority: 2,
+              //ongoing: true,
+              data: {id: 'test'}
+            }]);
         
-      });
+            const startTime = new Date();
+            const noti = this.notification;
+            let updateFunc = () => {
+              const timeStr = timeDiff(startTime, new Date());
+              noti.update({
+                id: 1,
+                text: 'Checked in for ' + timeStr
+              });
+            }
+    
+            this.runner = setInterval(updateFunc, 60000);
+            //this.notification.on('click', (notification, state) => {
+              //nav.push(CheckOutPage, [ { id: claim_id }, checkin ]);
+            //});*/
+            resolve(true);
+          });
+          
+        });
 
-      
-      
-    }
+        
+        
+      }
+    });
   }
 
   /**

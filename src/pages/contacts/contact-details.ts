@@ -31,6 +31,7 @@ export class ContactDetailComponent {
   public hasInvoices: boolean;
   public hasActive: boolean = false;
   public meta: Observable<any>;
+  public checking_in: boolean;
   public checkins_ds: DataSourceWrapper;
   public invoice_ds: DataSourceWrapper;
   public displayedColumns = ['date', 'billing'];
@@ -210,6 +211,10 @@ export class ContactDetailComponent {
 
   checkin() {
     const rate = (localStorage.getItem('billing_rate') === null) ? '' : localStorage.getItem('billing_rate');
-    this.sObjects.checkin({ rate__c: rate }, this.contact['id'], this.navCtrl);
+    this.checking_in = true;
+    this.sObjects.checkin({ rate__c: rate }, this.contact['id'], this.navCtrl).then( success => {
+      this.sObjects.getAll();
+      this.checking_in = false;
+    });
   }
 }

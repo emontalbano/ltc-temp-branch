@@ -2,6 +2,7 @@ import {Component, Input, Output} from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { DatePicker } from '@ionic-native/date-picker';
 import { EventEmitter } from '@angular/core';
+import { createDateObject } from '../utils';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class DateTimePickerComponent {
   }
 
   openPicker() {
-    var val = (this.value) ? new Date(this.value) : new Date();
+    var val = (this.value) ? createDateObject(this.value) : new Date();
     this.datePicker.show({
       date: val,
       mode: 'datetime',

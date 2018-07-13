@@ -85,7 +85,7 @@
 
             </mat-card-content>
         </div>
-        <button mat-fab (click)="checkin()" *ngIf="!hasActive && !submittingInvoice">
+        <button mat-fab (click)="checkin()" [disabled]='checking_in' *ngIf="!hasActive && !submittingInvoice">
           <mat-icon>play_arrow</mat-icon>
         </button>
       </div>

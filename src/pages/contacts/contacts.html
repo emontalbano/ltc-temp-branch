@@ -50,7 +50,6 @@
         <ng-template ngFor let-item [ngForOf]="(items | async)">
           <mat-list-item (click)="openContactDetail(item)" [ngClass]="(meta$.checkedin === item.id) ? 'active' : ''">
             <button mat-raised-button>
-              <mat-icon>person</mat-icon>
               <div>
                 <h5 mat-line>{{item.associated_policy__r.insured__r.name}}</h5>
               </div>

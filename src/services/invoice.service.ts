@@ -70,39 +70,67 @@ export class InvoiceService extends DetailService {
 
   async getRecordType() {
     return new Promise<any>( (resolve, reject) => {
-      if (localStorage.getItem('recordType') !== null) {
-        resolve(localStorage.getItem('recordType'));
+      if (localStorage.getItem('recordTypes') !== null) {
+        resolve(localStorage.getItem('recordTypes').split(','));
       } else {
-        this.sforce.query('SELECT Id FROM RecordType WHERE Name = \'Independent Care Provider\'').then( (data:any) => {
-          const recordType = data.records[0]['Id'];
-          localStorage.setItem('recordType', recordType);
-          resolve(recordType);
+        this.sforce.query('SELECT Id, DeveloperName FROM RecordType WHERE DeveloperName = \'Independent_Care_Provider\' OR DeveloperName = \'LTC_ICP_Time_Log\' OR DeveloperName = \'LTC_Authenticated_Submission\'').then( (data:any) => {
+          let recordTypes = ['','',''];
+          for (var i=0; i<data.records.length; i++) {
+            if (data.records[i].DeveloperName === 'Independent_Care_Provider') {
+              recordTypes[0] = data.records[i]['Id']
+            } else if (data.records[i].DeveloperName === 'LTC_ICP_Time_Log') {
+              recordTypes[1] = data.records[i]['Id']
+            } else if (data.records[i].DeveloperName === 'LTC_Authenticated_Submission') {
+              recordTypes[2] = data.records[i]['Id']
+            }
+          }
+          localStorage.setItem('recordTypes', recordTypes.join(','));
+          resolve(recordTypes);
         });
       }
     });
   }
 
   async createInitialInvoice(obj) {
+    
     return new Promise<any>( (resolve, reject) => {
-      this.type = 'ltc_claim_invoice_submission__c';
-      this.create({
-        ltc_associated_claim__c: obj.ltc_related_claim__c,
-        ltc_submission_status__c: 'To Submit',
-        LTC_Agree_With_Fraud_Disclaimer__c: false
-      }).then( result => {
-        this.type = 'ltc_claim_invoice__c';
-        this.getRecordType().then(recordType => {
-          this.create({
-            ltc_service_date_to__c: obj.ltc_check_in_datetime__c,
-            ltc_service_date_from__c: obj.ltc_check_in_datetime__c,
-            ltc_total_charges__c: 0,
-            ltc_hourly_rate__c: obj.ltc_hourly_rate__c,
-            ltc_invoice_submission__c: result['id'],
-            RecordType: recordType
-          }).then( res2 => {
-            resolve(res2['id']);
-          }).catch( err => reject(err) );
-        });
+
+      const userId = this.sforce.getUserId();
+      const query = this.sforce.query('SELECT Id, Name, PersonEmail FROM Account WHERE Id in (SELECT AccountId from User WHERE id = \''+userId+'\')');
+      query.then( (userDataRec:any) => {
+        const userData = userDataRec.records[0];
+
+        this.sforce.query('SELECT ID FROM Party_Role__c WHERE Party__c = \''+ userData['Id'] + '\' AND Claim__c = \'' + obj.ltc_related_claim__c + '\'').then ( (party: any) => {
+          this.getRecordType().then(recordTypes => {
+            this.type = 'ltc_claim_invoice_submission__c';
+            this.create({
+              ltc_associated_claim__c: obj.ltc_related_claim__c,
+              ltc_submission_status__c: 'To Submit',
+              LTC_Agree_With_Fraud_Disclaimer__c: false,
+              RecordTypeId: recordTypes[2],
+              LTC_Provider_Name__c: userData['Name'],
+              LTC_Provider_Email__c: userData['PersonEmail']
+            }).then( result => {
+              this.type = 'ltc_claim_invoice__c';
+              
+              this.create({
+                ltc_service_date_to__c: obj.ltc_check_in_datetime__c,
+                ltc_service_date_from__c: obj.ltc_check_in_datetime__c,
+                ltc_total_charges__c: 0,
+                LTC_Cast_Iron_Pull_Status__c: 'New',
+                LTC_Expected_File_Count__c: 0,
+                ltc_hourly_rate__c: obj.ltc_hourly_rate__c,
+                ltc_invoice_submission__c: result['id'],
+                RecordTypeId: recordTypes[0],
+                LTC_Provider__c: userData['Id'],
+                LTC_Provider_Role__c: party.records[0]['Id']
+              }).then( res2 => {
+                resolve(res2['id']);
+              }).catch( err => reject(err) );
+
+            }); //claim invoice submission
+          }); //getrecorttype
+        }); // party
       });
     }); 
   }

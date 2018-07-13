@@ -40,11 +40,15 @@ export class CheckinService extends DetailService {
           ltc_related_claim__c: claim_id,
           ltc_check_in_datetime__c: new Date(),
           ltc_check_out_datetime__c: null,
-          ltc_related_invoice__c: null
+          ltc_related_invoice__c: null,
+          RecordTypeId: null
         };
 
         this.invoices.getInitialInvoiceId(checkin).then( id => {
           checkin.ltc_related_invoice__c = id;
+
+          const recordType = localStorage.getItem('recordTypes').split(',')[1];
+          checkin.RecordTypeId = recordType;
 
           this.create(checkin).then( (payload: any) => {
             this.setMetadata({ 'checkedin_id': payload.id });
@@ -96,7 +100,7 @@ export class CheckinService extends DetailService {
       const adls = ['Bathing', 'Continence', 'Dressing', 'Eating', 'Toileting', 'Transferring', 'Supervision', 'Other'];
       let adlStr = '';
       for (let adl in adls) {
-        if (data[adl]) {
+        if (data[adls[adl]]) {
           if (adlStr.length !== 0) {
             adlStr += ';';
           }

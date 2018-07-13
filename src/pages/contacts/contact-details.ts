@@ -59,7 +59,6 @@ export class ContactDetailComponent {
     this.checkins = this.sObjects.filteredItems;
     this.sObjects.setType('ltc_time_log__c');
     this.sObjects.setParentId(this.claim_id, 'ltc_related_claim__c');
-    this.sObjects.filter('ltc_related_invoice__c', null);
     this.sObjects.filter('ltc_check_out_datetime__c', null);
     this.sObjects.getAll();
     this.invoices.setType('ltc_claim_invoice__c');
@@ -213,7 +212,6 @@ export class ContactDetailComponent {
     const rate = (localStorage.getItem('billing_rate') === null) ? '' : localStorage.getItem('billing_rate');
     this.checking_in = true;
     this.sObjects.checkin({ rate__c: rate }, this.contact['id'], this.navCtrl).then( success => {
-      this.sObjects.getAll();
       this.checking_in = false;
     });
   }

@@ -178,7 +178,9 @@ export class CheckinService extends DetailService {
       } else {
         this.update({
           id: data.id,
-          ltc_check_out_datetime__c: checkout
+          ltc_check_out_datetime__c: checkout,
+          ltc_hourly_rate__c: data.rate__c,
+          ltc_related_claim__c: claim_id
         });
       }
     }

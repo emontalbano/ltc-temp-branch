@@ -119,6 +119,7 @@ export class InvoiceService extends DetailService {
                 ltc_total_charges__c: 0,
                 LTC_Cast_Iron_Pull_Status__c: 'New',
                 LTC_Expected_File_Count__c: 0,
+                LTC_Type__c: 'Independent Care Provider',
                 ltc_hourly_rate__c: obj.ltc_hourly_rate__c,
                 ltc_invoice_submission__c: result['id'],
                 RecordTypeId: recordTypes[0],

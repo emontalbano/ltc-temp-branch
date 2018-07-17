@@ -38,9 +38,9 @@ export class InvoiceService extends DetailService {
 
   getInitialInvoiceId(obj) {
     return new Promise<any>( (resolve, reject) => {
-      this.sforce.query('SELECT ID FROM LTC_Claim_Invoice_Submission__c WHERE LTC_Submission_Status__c = \'To Submit\' LIMIT 1').then( (data:any) => {
+      this.sforce.query('SELECT Id FROM LTC_Claim_Invoice_Submission__c WHERE LTC_Submission_Status__c = \'To Submit\' LIMIT 1').then( (data:any) => {
         console.log(data);
-        this.sforce.query('SELECT ID FROM LTC_Claim_Invoice__c WHERE ltc_invoice_submission__c = \''+data.records[0]['Id']+'\' LIMIT 1').then( (data2:any) => {
+        this.sforce.query('SELECT Id FROM LTC_Claim_Invoice__c WHERE ltc_invoice_submission__c = \''+data.records[0]['Id']+'\' LIMIT 1').then( (data2:any) => {
           console.log(data2);
           if (data2.records.length > 0) {
             resolve(data2.records[0]['Id']);
@@ -96,11 +96,11 @@ export class InvoiceService extends DetailService {
     return new Promise<any>( (resolve, reject) => {
 
       const userId = this.sforce.getUserId();
-      const query = this.sforce.query('SELECT Id, Name, PersonEmail FROM Account WHERE Id in (SELECT AccountId from User WHERE id = \''+userId+'\')');
+      const query = this.sforce.query('SELECT Id, Email, Account.Name, AccountId from User WHERE id = \''+userId+'\'');
       query.then( (userDataRec:any) => {
         const userData = userDataRec.records[0];
 
-        this.sforce.query('SELECT ID FROM Party_Role__c WHERE Party__c = \''+ userData['Id'] + '\' AND Claim__c = \'' + obj.ltc_related_claim__c + '\'').then ( (party: any) => {
+        this.sforce.query('SELECT Id, Claim__r.Policy_Number__c FROM Party_Role__c WHERE Party__c = \''+ userData['AccountId'] + '\' AND Claim__c = \'' + obj.ltc_related_claim__c + '\'').then ( (party: any) => {
           this.getRecordType().then(recordTypes => {
             this.type = 'ltc_claim_invoice_submission__c';
             this.create({
@@ -108,8 +108,9 @@ export class InvoiceService extends DetailService {
               ltc_submission_status__c: 'To Submit',
               LTC_Agree_With_Fraud_Disclaimer__c: false,
               RecordTypeId: recordTypes[2],
-              LTC_Provider_Name__c: userData['Name'],
-              LTC_Provider_Email__c: userData['PersonEmail']
+              LTC_Provider_Name__c: userData.Account['Name'],
+              LTC_Provider_Email__c: userData['Email'],
+              LTC_Policy_Number__c: party.records[0].Claim__r['Policy_Number__c']
             }).then( result => {
               this.type = 'ltc_claim_invoice__c';
               
@@ -119,12 +120,12 @@ export class InvoiceService extends DetailService {
                 ltc_total_charges__c: 0,
                 LTC_Cast_Iron_Pull_Status__c: 'New',
                 LTC_Expected_File_Count__c: 0,
-                LTC_Type__c: 'Independent Care Provider',
                 ltc_hourly_rate__c: obj.ltc_hourly_rate__c,
                 ltc_invoice_submission__c: result['id'],
                 RecordTypeId: recordTypes[0],
-                LTC_Provider__c: userData['Id'],
-                LTC_Provider_Role__c: party.records[0]['Id']
+                LTC_Provider__c: userData['AccountId'],
+                LTC_Provider_Role__c: party.records[0]['Id'],
+                LTC_Type__c : 'Independent Care Provider'
               }).then( res2 => {
                 resolve(res2['id']);
               }).catch( err => reject(err) );

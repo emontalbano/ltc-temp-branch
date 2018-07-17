@@ -44,10 +44,8 @@ export class CheckinService extends DetailService {
           RecordTypeId: null
         };
 
-        this.invoices.getInitialInvoiceId(checkin).then( id => {
-          checkin.ltc_related_invoice__c = id;
-
-          const recordType = localStorage.getItem('recordTypes').split(',')[1];
+        this.invoices.getRecordType().then(recordTypes => {
+          const recordType = recordTypes[1];
           checkin.RecordTypeId = recordType;
 
           this.create(checkin).then( (payload: any) => {
@@ -83,11 +81,7 @@ export class CheckinService extends DetailService {
             //});*/
             resolve(true);
           });
-          
         });
-
-        
-        
       }
     });
   }
@@ -115,6 +109,15 @@ export class CheckinService extends DetailService {
       if (typeof checkout.getHours !== 'function') {
         checkout = createDateObject(checkout);
       }
+      /*let checkin = {
+        ltc_hourly_rate__c: data.rate__c,
+        ltc_related_claim__c: claim_id,
+        ltc_check_in_datetime__c: checkout,
+        ltc_check_out_datetime__c: checkout,
+        ltc_related_invoice__c: null,
+        RecordTypeId: null
+      };*/
+
       const hours = checkout.getHours() < 9 ? '0' + checkout.getHours() : checkout.getHours();
       const minutes = checkout.getMinutes() < 9 ? '0' + checkout.getMinutes() : checkout.getMinutes();
       let timeStr = hours + ':' + minutes + ':00';
@@ -125,64 +128,68 @@ export class CheckinService extends DetailService {
       localStorage.setItem('toast','Timesheet added successfully');
       nav.pop();
       nav.pop();
-      if (createDateObject(data.checkin__c).toDateString() !== createDateObject(data.checkout__c).toDateString()) {
-        nav.pop();
-        const endDate = createDateObject(data.checkout__c);
-        let first = true;
-        for (let i = createDateObject(data.checkin__c); 
-            i.toDateString() !== endDate.toDateString(); 
-            i = new Date(i.getTime() + (60*60*24*1000))) {
-          let dateInstance = {
-            date: '',
-            start: '',
-            end: ''
+      //this.invoices.getInitialInvoiceId(checkin).then( id => {
+        //const invoiceId = id;
+        if (createDateObject(data.checkin__c).toDateString() !== createDateObject(data.checkout__c).toDateString()) {
+          nav.pop();
+          const endDate = createDateObject(data.checkout__c);
+          let first = true;
+          for (let i = createDateObject(data.checkin__c); 
+              i.toDateString() !== endDate.toDateString(); 
+              i = new Date(i.getTime() + (60*60*24*1000))) {
+            let dateInstance = {
+              date: '',
+              start: '',
+              end: ''
+            }
+            if (first) {
+              first = false;
+              this.update({
+                id: data.id,
+                ltc_check_out_datetime__c: checkout,
+                ltc_hourly_rate__c: data.rate__c,
+                ltc_activities_for_daily_living__c: adlStr
+                //,ltc_related_claim_invoice__c: invoiceId
+              });
+            } else {
+              let startInst = new Date(i);
+              startInst.setHours(0);
+              startInst.setMinutes(0);
+              startInst.setSeconds(0);
+              startInst.setMilliseconds(0);
+              let endInst = new Date(i);
+              endInst.setHours(23)
+              endInst.setMinutes(59);
+              endInst.setSeconds(59);
+              this.create({
+                ltc_hourly_rate__c: data.rate__c,
+                ltc_related_claim__c: claim_id,
+                ltc_check_in_datetime__c: startInst,
+                ltc_check_out_datetime__c: endInst
+                //,ltc_related_claim_invoice__c: invoiceId
+              });
+            }
           }
-          if (first) {
-            first = false;
-            this.update({
-              id: data.id,
-              ltc_check_out_datetime__c: checkout,
-              ltc_hourly_rate__c: data.rate__c,
-              ltc_activities_for_daily_living__c: adlStr
-            });
-          } else {
-            let startInst = new Date(i);
-            startInst.setHours(0);
-            startInst.setMinutes(0);
-            startInst.setSeconds(0);
-            startInst.setMilliseconds(0);
-            let endInst = new Date(i);
-            endInst.setHours(23)
-            endInst.setMinutes(59);
-            endInst.setSeconds(59);
-            this.create({
-              ltc_hourly_rate__c: data.rate__c,
-              ltc_related_claim__c: claim_id,
-              ltc_check_in_datetime__c: startInst,
-              ltc_check_out_datetime__c: endInst
-            });
-          }
+          let startInst = createDateObject(endDate);
+          startInst.setHours(0);
+          startInst.setMinutes(0);
+          startInst.setSeconds(0);
+          startInst.setMilliseconds(0);
+          this.create({
+            ltc_hourly_rate__c: data.rate__c,
+            ltc_related_claim__c: claim_id,
+            ltc_check_in_datetime__c: startInst,
+            ltc_check_out_datetime__c: endDate
+            //,ltc_related_claim_invoice__c: invoiceId
+          });
+        } else {
+          this.update({
+            id: data.id,
+            ltc_check_out_datetime__c: checkout
+            //,ltc_related_claim_invoice__c: invoiceId
+          });
         }
-        let startInst = createDateObject(endDate);
-        startInst.setHours(0);
-        startInst.setMinutes(0);
-        startInst.setSeconds(0);
-        startInst.setMilliseconds(0);
-        this.create({
-          ltc_hourly_rate__c: data.rate__c,
-          ltc_related_claim__c: claim_id,
-          ltc_check_in_datetime__c: startInst,
-          ltc_check_out_datetime__c: endDate
-        });
-
-      } else {
-        this.update({
-          id: data.id,
-          ltc_check_out_datetime__c: checkout,
-          ltc_hourly_rate__c: data.rate__c,
-          ltc_related_claim__c: claim_id
-        });
-      }
+      //});
     }
   }
 

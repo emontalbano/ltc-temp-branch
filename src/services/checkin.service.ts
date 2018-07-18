@@ -148,6 +148,7 @@ export class CheckinService extends DetailService {
               endInst.setHours(23)
               endInst.setMinutes(59);
               endInst.setSeconds(59);
+              endInst.setTime( endInst.getTime() + 1000);
               this.update({
                 id: data.id,
                 ltc_check_out_datetime__c: endInst,
@@ -165,6 +166,7 @@ export class CheckinService extends DetailService {
               endInst.setHours(23)
               endInst.setMinutes(59);
               endInst.setSeconds(59);
+              endInst.setTime( endInst.getTime() + 1000);
               this.create({
                 ltc_hourly_rate__c: data.rate__c,
                 ltc_related_claim__c: claim_id,

@@ -142,6 +142,15 @@ export class BaseService {
     });
     this.store.select(this.type)
   }
+
+  sort(field) {
+    this.store.select(this.type + '_interactivity');
+    this.store.dispatch({
+      type: 'sort_' + this.type,
+      payload: { data: field }
+    });
+    this.store.select(this.type);
+  }
   
 
   getAll(params: any) {

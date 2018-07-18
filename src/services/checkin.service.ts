@@ -144,9 +144,13 @@ export class CheckinService extends DetailService {
             }
             if (first) {
               first = false;
+              let endInst = new Date(i);
+              endInst.setHours(23)
+              endInst.setMinutes(59);
+              endInst.setSeconds(59);
               this.update({
                 id: data.id,
-                ltc_check_out_datetime__c: checkout,
+                ltc_check_out_datetime__c: endInst,
                 ltc_hourly_rate__c: data.rate__c,
                 ltc_activities_for_daily_living__c: adlStr
                 //,ltc_related_claim_invoice__c: invoiceId

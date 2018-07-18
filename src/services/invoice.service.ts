@@ -38,12 +38,12 @@ export class InvoiceService extends DetailService {
 
   getInitialInvoiceId(obj) {
     return new Promise<any>( (resolve, reject) => {
-      this.sforce.query('SELECT Id FROM LTC_Claim_Invoice_Submission__c WHERE LTC_Submission_Status__c = \'To Submit\' LIMIT 1').then( (data:any) => {
+      this.sforce.query('SELECT ID FROM LTC_Claim_Invoice_Submission__c WHERE LTC_Submission_Status__c = \'To Submit\' LIMIT 1').then( (data:any) => {
         console.log(data);
-        this.sforce.query('SELECT Id FROM LTC_Claim_Invoice__c WHERE ltc_invoice_submission__c = \''+data.records[0]['Id']+'\' LIMIT 1').then( (data2:any) => {
+        this.sforce.query('SELECT ID FROM LTC_Claim_Invoice__c WHERE ltc_invoice_submission__c = \''+data[0]['Id']+'\' LIMIT 1').then( (data2:any) => {
           console.log(data2);
-          if (data2.records.length > 0) {
-            resolve(data2.records[0]['Id']);
+          if (data2.length > 0) {
+            resolve(data2[0]['Id']);
           } else {
             this.createInitialInvoice(obj).then( id => {
               resolve(id);

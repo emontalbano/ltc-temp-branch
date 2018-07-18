@@ -33,7 +33,8 @@ export class ContactComponent extends BaseComponent {
     this.invoices.setType('ltc_claim_invoice__c');
     this.invoices.additionalFields = [];
     this.invoices.getAll();
-    this.invoices.filter('ltc_invoice_submission__r.ltc_associated_claim__c', '');
+    this.invoices.filter('ltc_invoice_submission__r.ltc_associated_claim__c', '');0
+    //this.invoices.sort('associated_policy__r.insured__r.name');
 
     this.items.subscribe( items => {
       if (items.length === 1) {

@@ -20,6 +20,7 @@ export class ContactComponent extends BaseComponent {
   public checkedindt: string;
   public endTime: Subject<Date>;
   public checkinObj: any;
+  public itemList: any = [];
   constructor(protected sObjects: ClaimService, 
               protected checkins: CheckinService, 
               protected store: Store<any>, 
@@ -32,13 +33,53 @@ export class ContactComponent extends BaseComponent {
     this.checkins.getCheckinStatus();
     this.invoices.setType('ltc_claim_invoice__c');
     this.invoices.additionalFields = [];
+    this.sObjects.sort('associated_policy__r.insured__r.name');
     this.invoices.getAll();
-    this.invoices.filter('ltc_invoice_submission__r.ltc_associated_claim__c', '');0
-    //this.invoices.sort('associated_policy__r.insured__r.name');
+    this.invoices.filter('ltc_invoice_submission__r.ltc_associated_claim__c', '');
+
+    this.meta.subscribe( metadata => {
+      this.checkedin = metadata.checkedin;
+      this.checkedindt = metadata.checkedindt;
+      this.checkinObj = {
+        id: this.checkedin,
+        ltc_check_in_datetime__c: this.checkedindt
+      }
+
+      if (this.checkedin.length > 0) {
+        if (this.itemList.length === 0) {
+          window.setTimeout( () => {
+            for (let i=0; i<this.itemList.length; i++) {
+              if (this.itemList[i]['id'] === this.checkedin) {
+                this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
+              }
+            }
+           }, 1000);
+        } else {
+          for (let i=0; i<this.itemList.length; i++) {
+            if (this.itemList[i]['id'] === this.checkedin) {
+              this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
+            }
+          }
+        }
+        
+      }
+    });
 
     this.items.subscribe( items => {
+      this.itemList = items;
       if (items.length === 1) {
         this.navCtrl.setRoot(ContactDetailComponent, items[0]);
+      } else {
+        localStorage.setItem('multiple-customers', 'true');
+      }
+
+      console.log(this.checkedin);
+      if (typeof this.checkedin !== 'undefined' && this.checkedin.length > 0) {
+        for (let i=0; i<this.itemList.length; i++) {
+          if (this.itemList[i]['id'] === this.checkedin) {
+            this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
+          }
+        }
       }
     });
 
@@ -49,14 +90,7 @@ export class ContactComponent extends BaseComponent {
       this.endTime.next(new Date());
     }, 1000);
 
-    this.meta.subscribe( metadata => {
-      this.checkedin = metadata.checkedin;
-      this.checkedindt = metadata.checkedindt;
-      this.checkinObj = {
-        id: this.checkedin,
-        ltc_check_in_datetime__c: this.checkedindt
-      }
-    });
+    
   }
 
   openContactDetail(contact) {

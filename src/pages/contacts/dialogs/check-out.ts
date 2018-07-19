@@ -139,7 +139,7 @@ export class CheckOutPage {
     } else if (this.step === 3) {
       this.submitting = true;
       this.form.value.id = this.checkin.id;
-      this.sObjects.checkout( this.form.value, this.claim['id'], this.navCtrl );
+      this.sObjects.checkout( this.form.value, this.claim, this.navCtrl );
     }
   }
 

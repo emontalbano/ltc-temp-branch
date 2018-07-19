@@ -47,7 +47,7 @@ export class CheckInPage {
 
   submit(form) {
     this.submitting = true;
-    this.sObjects.checkin(form.value, this.claim['id'], this.navCtrl);
+    this.sObjects.checkin(form.value, this.claim, this.navCtrl);
   }
 
   manualEntry() {

@@ -211,7 +211,10 @@ export class ContactDetailComponent {
   checkin() {
     const rate = (localStorage.getItem('billing_rate') === null) ? '' : localStorage.getItem('billing_rate');
     this.checking_in = true;
-    this.sObjects.checkin({ rate__c: rate }, this.contact['id'], this.navCtrl).then( success => {
+    this.sObjects.checkin({ rate__c: rate }, this.contact, this.navCtrl).then( success => {
+      if (localStorage.getItem('multiple-customers') === 'true') {
+        this.navCtrl.setRoot(ContactDetailComponent, this.contact);
+      }
       this.checking_in = false;
     });
   }

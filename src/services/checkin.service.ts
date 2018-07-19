@@ -8,6 +8,7 @@ import { Nav, NavParams, NavController } from 'ionic-angular';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { timeDiff, createDateObject } from '../common/utils';
 import { identifierModuleUrl } from "@angular/compiler";
+import { ContactComponent, ContactDetailComponent } from "../pages";
 
 @Injectable()
 export class CheckinService extends DetailService {
@@ -27,7 +28,8 @@ export class CheckinService extends DetailService {
   /**
    * Creates a timelog object which marks the user as checked in for a given claim.   
    */
-  checkin(data: any, claim_id: string, nav: NavController) {
+  checkin(data: any, claim: string, nav: NavController) {
+    const claim_id = claim['id'];
     return new Promise<any>( (resolve, reject) => {
       if (typeof data !== "undefined" && parseFloat(data.rate__c) <= 0) {
         data.rate__c = '0';
@@ -89,7 +91,8 @@ export class CheckinService extends DetailService {
   /**
    * Checks the user out from their previous check in
    */
-  checkout(data: any, claim_id: string, nav) {
+  checkout(data: any, claim: any, nav) {
+    const claim_id = claim['id'];
     if (typeof data !== 'undefined' && data !== '' && data.checkout__c !== '') {
       const adls = ['Bathing', 'Continence', 'Dressing', 'Eating', 'Toileting', 'Transferring', 'Supervision', 'Other'];
       let adlStr = '';
@@ -98,7 +101,7 @@ export class CheckinService extends DetailService {
           if (adlStr.length !== 0) {
             adlStr += ';';
           }
-          adlStr += adl;
+          adlStr += adls[adl];
         }
       }
       console.log(adlStr);
@@ -126,12 +129,10 @@ export class CheckinService extends DetailService {
       this.notification.cancel(1);
       clearInterval(this.runner);
       localStorage.setItem('toast','Timesheet added successfully');
-      nav.pop();
-      nav.pop();
+      
       //this.invoices.getInitialInvoiceId(checkin).then( id => {
         //const invoiceId = id;
-        if (createDateObject(data.checkin__c).toDateString() !== createDateObject(data.checkout__c).toDateString()) {
-          nav.pop();
+        if (createDateObject(data.checkin__c).toDateString() !== createDateObject(data.checkout__c).toDateString()) {          
           const endDate = createDateObject(data.checkout__c);
           let first = true;
           for (let i = createDateObject(data.checkin__c); 
@@ -195,6 +196,13 @@ export class CheckinService extends DetailService {
             //,ltc_related_claim_invoice__c: invoiceId
           });
         }
+        if (localStorage.getItem('multiple-customers') === 'true') {
+          nav.setRoot(ContactComponent);
+          nav.push(ContactDetailComponent, claim);
+        } else {
+          nav.setRoot(ContactDetailComponent, claim);
+        }
+        //nav.setRoot()
       //});
     }
   }

@@ -307,7 +307,7 @@ export class BaseReducer {
     return (state: any, action:any) => {
       const curState = Object.keys(state)[0];
       state = state[curState];
-      let lt = true;
+      let lt = false;
       if (action.payload.data === '') {
         state['current_sort'] = this.default_sort;
       } else {
@@ -315,7 +315,7 @@ export class BaseReducer {
       }
       let field = '';
       if (state['current_sort'][0] === '-') {
-        lt = false;
+        lt = true;
         field = state['current_sort'].substring(1);
       } else {
         field = state['current_sort'];
@@ -331,9 +331,9 @@ export class BaseReducer {
               a = a[path[i]];
               b = b[path[i]];              
             }
-            return a < b;
+            return a.toLowerCase() < b.toLowerCase();
           } else {
-            return a[field] < b[field];
+            return a[field].toLowerCase() < b[field].toLowerCase();
           }
         };
       } else {
@@ -345,9 +345,9 @@ export class BaseReducer {
               a = a[path[i]];
               b = b[path[i]];              
             }
-            return a > b;
+            return a.toLowerCase() > b.toLowerCase();
           } else {
-            return a[field] > b[field];
+            return a[field].toLowerCase() > b[field].toLowerCase();
           }
         };
       }

@@ -44,6 +44,25 @@ export class ContactComponent extends BaseComponent {
         id: this.checkedin,
         ltc_check_in_datetime__c: this.checkedindt
       }
+
+      if (this.checkedin.length > 0) {
+        if (this.itemList.length === 0) {
+          window.setTimeout( () => {
+            for (let i=0; i<this.itemList.length; i++) {
+              if (this.itemList[i]['id'] === this.checkedin) {
+                this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
+              }
+            }
+           }, 1000);
+        } else {
+          for (let i=0; i<this.itemList.length; i++) {
+            if (this.itemList[i]['id'] === this.checkedin) {
+              this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
+            }
+          }
+        }
+        
+      }
     });
 
     this.items.subscribe( items => {
@@ -52,7 +71,16 @@ export class ContactComponent extends BaseComponent {
         this.navCtrl.setRoot(ContactDetailComponent, items[0]);
       } else {
         localStorage.setItem('multiple-customers', 'true');
-      }      
+      }
+
+      console.log(this.checkedin);
+      if (typeof this.checkedin !== 'undefined' && this.checkedin.length > 0) {
+        for (let i=0; i<this.itemList.length; i++) {
+          if (this.itemList[i]['id'] === this.checkedin) {
+            this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
+          }
+        }
+      }
     });
 
     this.endTime = new Subject<Date>();
@@ -65,10 +93,8 @@ export class ContactComponent extends BaseComponent {
     
   }
 
-  openContactDetail(contact, checkedinId) {
-    if (typeof checkedinId === 'undefined' || checkedinId.length === 0 || checkedinId === contact['id']) {
-      this.navCtrl.push(ContactDetailComponent, contact);
-    }
+  openContactDetail(contact) {
+    this.navCtrl.push(ContactDetailComponent, contact);
   }
 
   checkoutdt(event, contact, checkin_id, checkin_dt) {

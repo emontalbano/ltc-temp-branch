@@ -29,6 +29,8 @@ export class AppComponent {
     'invoices': InvoicesComponent,
     'terms': TermsPage
   }
+  
+  public isCheckedIn: string = 'false';
 
   constructor(
     public platform: Platform,
@@ -66,6 +68,10 @@ export class AppComponent {
       //Before running this, check status of login details
       this.splashScreen.hide();
     });
+
+    setInterval( () => {
+      this.isCheckedIn = (localStorage.getItem('checked-in') === 'true') ? 'true' : 'false';
+    }, 4000);
   }
 
   openPage(page: string) {

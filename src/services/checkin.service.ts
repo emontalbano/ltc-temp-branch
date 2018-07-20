@@ -197,6 +197,7 @@ export class CheckinService extends DetailService {
             //,ltc_related_claim_invoice__c: invoiceId
           });
         }
+        localStorage.setItem('checked-in', 'false');
         if (localStorage.getItem('multiple-customers') === 'true') {
           nav.setRoot(ContactComponent);
           nav.push(ContactDetailComponent, claim);

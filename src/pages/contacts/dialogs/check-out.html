@@ -17,14 +17,14 @@
 
             <h5>Check Out</h5>
             <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-            <datetime-picker label="Start Time" icon="schedule" [value]="form.value.checkin__c" (formValue)="setCheckin_dt($event)"></datetime-picker>
-            <span class="error" *ngIf="startError && startError.length > 0">
-              {{ startError }}
-            </span>
+            <datetime-picker style="display:none!important" label="Start Time" icon="schedule" disabled="disabled" [value]="form.value.checkin__c" (formValue)="setCheckin_dt($event)"></datetime-picker>
             
             <datetime-picker label="End Time" icon="check" [value]="form.value.checkout__c" (formValue)="setCheckout_dt($event)"></datetime-picker>
             <span class="error" *ngIf="endError && endError.length > 0">
                 {{ endError }}
+              </span>
+              <span class="error" *ngIf="startError && startError.length > 0">
+                {{ startError }}
               </span>
             <mat-form-field [floatLabel]="true">
               <mat-label>Hourly Rate</mat-label>
@@ -33,6 +33,9 @@
               </span>
               <input matInput formControlName="rate__c" >
             </mat-form-field>
+            <span class="error" *ngIf="form.value.rate__c !== defaultRate" style="color: rgba(0,0,0,0.87)!important">
+              ${{ form.value.rate__c}} is not the standard hourly rate.
+            </span>
             <span class="error" *ngIf="rateError && rateError.length > 0">
               {{ rateError }}
             </span>
@@ -90,7 +93,7 @@
                 </mat-form-field>
           </mat-checkbox>
           
-          <div style="text-align: center">
+          <div style="text-align: center; padding-top: 16px;">
             After checking out this timesheet is added to the current invoice.
           </div>
 

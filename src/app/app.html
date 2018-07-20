@@ -8,11 +8,17 @@
       </span>
     </div>
 
-    <button (click)="openPage('patients')"><mat-icon>people</mat-icon><span>CLIENTS</span></button>
+    <button *ngIf="isCheckedIn !== 'true'" (click)="openPage('patients')"><mat-icon>people</mat-icon><span>CLIENTS</span></button>
     
-    <button (click)="openPage('settings')"><mat-icon>settings</mat-icon><span>SETTINGS</span></button>
+    <button *ngIf="isCheckedIn !== 'true'" (click)="openPage('settings')"><mat-icon>settings</mat-icon><span>SETTINGS</span></button>
 
-    <button (click)="openPage('terms')"><mat-icon>done</mat-icon><span>TERMS & CONDITIONS</span></button>
+    <button *ngIf="isCheckedIn !== 'true'" (click)="openPage('terms')"><mat-icon>done</mat-icon><span>TERMS & CONDITIONS</span></button>
+
+    <button *ngIf="isCheckedIn === 'true'" disabled='disabled'><mat-icon>people</mat-icon><span>CLIENTS</span></button>
+    
+    <button *ngIf="isCheckedIn === 'true'" disabled='disabled'><mat-icon>settings</mat-icon><span>SETTINGS</span></button>
+
+    <button *ngIf="isCheckedIn === 'true'" disabled='disabled'><mat-icon>done</mat-icon><span>TERMS & CONDITIONS</span></button>
 
     <button mat-button (click)="logout()">LOGOUT</button>
   </ion-content>

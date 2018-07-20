@@ -20,6 +20,9 @@ export class DateTimePickerComponent {
   public label: string;
 
   @Input()
+  public disabled: string;
+  
+  @Input()
   public icon: string;
 
   @Output()

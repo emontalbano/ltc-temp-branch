@@ -2,6 +2,6 @@
     <mat-icon>{{ icon }}</mat-icon>
   </span>
 <mat-label>{{ label }}</mat-label>
-<button mat-button (click)="openPicker()">
+<button [disabled]="disabled === 'disabled'" mat-button (click)="openPicker()">
   <mat-icon>date_range</mat-icon> {{ value | date: 'short' }}
 </button>

@@ -37,6 +37,7 @@ export class CheckOutPage {
   public rateError: string;
   public startError: string;
   public endError: string;
+  public defaultRate: string = localStorage.getItem('billing_rate');
 
   public formData = {
     id: '',
@@ -157,11 +158,11 @@ export class CheckOutPage {
       this.startError = 'Invalid check in date';
       error = true;
     } else if ( start >= end ) {
-      this.startError = 'Check in must be before check out.';
+      this.startError = 'Date and time must be after the Start Time.';
       error = true;
     }
     if ( end > new Date() ) {
-      this.endError = 'Check out cannot be in the future';
+      this.endError = 'Date and Time must be in the past';
       error = true;
     }
     if (!(parseInt(this.form.value.rate__c, 10) > 0)) {

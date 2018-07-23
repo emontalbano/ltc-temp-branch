@@ -48,6 +48,7 @@
 
     <mat-list class="contacts">
         <ng-template ngFor let-item [ngForOf]="(items | async)">
+          <div ng-data-runner="openItem(meta$.checkedin)" *ngIf="meta$.checkedin !== ''"></div>
           <mat-list-item (click)="openContactDetail(item, meta$.checkedin)" [ngClass]="(meta$.checkedin === item.id) ? 'active' : ''">
             <button mat-raised-button>
               <div>

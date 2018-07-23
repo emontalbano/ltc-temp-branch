@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Store} from '@ngrx/store';
 
 import {NavController} from 'ionic-angular';
@@ -30,7 +30,7 @@ export class ContactComponent extends BaseComponent {
     super(sObjects, store, navCtrl);
     this.setType('claim__c');
     this.meta = sObjects.meta;
-    this.checkins.getCheckinStatus();
+    this.checkins.getCheckinStatus(this.navCtrl);
     this.invoices.setType('ltc_claim_invoice__c');
     this.invoices.additionalFields = [];
     this.sObjects.sort('associated_policy__r.insured__r.name');
@@ -45,24 +45,13 @@ export class ContactComponent extends BaseComponent {
         ltc_check_in_datetime__c: this.checkedindt
       }
 
-      if (this.checkedin.length > 0) {
-        if (this.itemList.length === 0) {
-          window.setTimeout( () => {
-            for (let i=0; i<this.itemList.length; i++) {
-              if (this.itemList[i]['id'] === this.checkedin) {
-                this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
-              }
-            }
-           }, 1000);
-        } else {
-          for (let i=0; i<this.itemList.length; i++) {
-            if (this.itemList[i]['id'] === this.checkedin) {
-              this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
-            }
+      /* if (this.checkedin.length > 0) {        
+        for (let i=0; i<this.itemList.length; i++) {
+          if (this.itemList[i]['id'] === this.checkedin) {
+            this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
           }
         }
-        
-      }
+      } */
     });
 
     this.items.subscribe( items => {
@@ -73,14 +62,14 @@ export class ContactComponent extends BaseComponent {
         localStorage.setItem('multiple-customers', 'true');
       }
 
-      console.log(this.checkedin);
+      /* console.log(this.checkedin);
       if (typeof this.checkedin !== 'undefined' && this.checkedin.length > 0) {
         for (let i=0; i<this.itemList.length; i++) {
           if (this.itemList[i]['id'] === this.checkedin) {
             this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
           }
         }
-      }
+      } */
     });
 
     this.endTime = new Subject<Date>();
@@ -114,6 +103,16 @@ export class ContactComponent extends BaseComponent {
   checkin(event, contact) {
     event.stopPropagation();
     this.navCtrl.push(CheckInPage, contact);
+  }
+
+  openItem(checkinId) {
+    if (typeof checkinId !== 'undefined' && checkinId.length > 0 && this.itemList.length > 0) {
+      for (let i=0; i<this.itemList.length; i++) {
+        if (this.itemList[i]['id'] === checkinId) {
+          this.navCtrl.setRoot(ContactDetailComponent, this.itemList[i]);
+        }
+      }
+    }
   }
 
 }

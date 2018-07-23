@@ -212,15 +212,20 @@ export class CheckinService extends DetailService {
   /**
    * Gets the current check-in status for the current user.
    */
-  getCheckinStatus() {
+  getCheckinStatus(nav) {
     this.forceInit();
     // const user_id = this.sforce.getUserId();
-    this.sforce.query('SELECT Id, ltc_related_claim__c, LTC_Check_In_DateTime__c FROM ltc_time_log__c WHERE ltc_check_out_datetime__c = NULL LIMIT 1').then( (data: any) => {
+    this.sforce.query('SELECT Id, ltc_related_claim__c, LTC_Check_In_DateTime__c, LTC_Related_Claim__r.Associated_Policy__r.Insured__r.Name, LTC_Related_Claim__r.Id FROM ltc_time_log__c WHERE ltc_check_out_datetime__c = NULL LIMIT 1').then( (data: any) => {
       if (data.records.length > 0) {
         console.log(data.records[0]);
         this.setMetadata({ 'checkedin': data.records[0].LTC_Related_Claim__c });
         this.setMetadata({ 'checkedin_id': data.records[0].Id });
-        this.setMetadata({ 'checkedindt': data.records[0].LTC_Check_In_DateTime__c })
+        this.setMetadata({ 'checkedindt': data.records[0].LTC_Check_In_DateTime__c });
+        console.log(data.records[0]);
+        nav.setRoot(ContactDetailComponent, {
+          id: data.records[0].LTC_Related_Claim__r.Id,
+          associated_policy__r: { insured__r: { name: data.records[0].LTC_Related_Claim__r.Associated_Policy__r.Insured__r.Name } }
+        });
       } else {
         this.setMetadata({ 'checkedin': ''});
         this.setMetadata({ 'checkedindt': ''});

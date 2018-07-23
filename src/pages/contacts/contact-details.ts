@@ -69,6 +69,9 @@ export class ContactDetailComponent {
     this.hasInvoices = false;
     this.checkins_ds = new DataSourceWrapper(this.sObjects.filteredItems);
     this.invoice_ds = new DataSourceWrapper(this.invoices.filteredItems);
+
+    let initial = true;
+    this.checking_in = true;
     this.sObjects.filteredItems.subscribe( e => {
       this.invoiceMap = {};
       e.map( a => { 
@@ -84,6 +87,10 @@ export class ContactDetailComponent {
       this.hasCheckins = (e.length > 0);
       this.hasActive = (this.hasCheckins && e[0].ltc_check_out_datetime__c === null);
       this.currentInvoiceList = e;
+      if (initial) {
+        initial = false;
+        this.checking_in = false;
+      }
     });
 
     this.endTime = new Subject<Date>();

@@ -160,18 +160,18 @@ export class CheckOutPage {
     this.rateError = '';
 
     if (start.getFullYear() < 2017) {
-      this.startError = 'Invalid check in date';
+      this.startError = 'Invalid check in date.';
       error = true;
     } else if ( start >= end ) {
       this.startError = 'Date and time must be after the Start Time.';
       error = true;
     }
     if ( end > new Date() ) {
-      this.endError = 'Date and Time must be in the past';
+      this.endError = 'Date and Time must be in the past.';
       error = true;
     }
     if (!(parseInt(this.form.value.rate__c, 10) > 0)) {
-      this.rateError = 'Invalid hourly rate';
+      this.rateError = 'Invalid hourly rate.';
       error = true;
     }
 
@@ -180,7 +180,7 @@ export class CheckOutPage {
 
   validateStep3() {    
     if (this.form.value.Other && this.form.value.othertext.length === 0) {
-      this.otherTextError = 'Please enter a value for \'Other\'';
+      this.otherTextError = 'Please enter a value for \'Other\'.';
       return false;
     }
     return true;

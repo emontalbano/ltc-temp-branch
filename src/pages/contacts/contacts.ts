@@ -58,6 +58,7 @@ export class ContactComponent extends BaseComponent {
       this.itemList = items;
       if (items.length === 1) {
         this.navCtrl.setRoot(ContactDetailComponent, items[0]);
+        localStorage.setItem('multiple-customers', 'false');
       } else {
         localStorage.setItem('multiple-customers', 'true');
       }

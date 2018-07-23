@@ -1,6 +1,6 @@
 @import "theme/variables";
 
-jh-check-out, jh-check-in-create, jh-edit-time, jh-submit-time {
+jh-check-out, jh-check-in-create, jh-edit-time, jh-submit-time, jh-delete-time {
   .mat-form-field {
     width: 100%;
     margin: 8px 0;
@@ -167,12 +167,16 @@ jh-check-out, jh-check-in-create, jh-edit-time, jh-submit-time {
   }
 }
 
+.otherTb {
+  margin-top:-18px!important;
+}
+
 jh-check-out mat-checkbox {
   display: block;
   margin-top: 16px;
 }
 
-jh-submit-time {
+jh-submit-time, jh-delete-time {
   .mat-checkbox-label {
     font-size: 14px;
   }

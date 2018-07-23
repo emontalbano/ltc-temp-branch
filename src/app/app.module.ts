@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import {StoreModule} from '@ngrx/store';
 
-import { LoginComponent, ContactComponent, ContactDetailComponent, CheckInPage, CheckOutPage, EditTimeDialog, SettingsComponent, InvoicesComponent, SubmitTimeDialog } from '../pages';
+import { LoginComponent, ContactComponent, ContactDetailComponent, CheckInPage, CheckOutPage, EditTimeDialog, SettingsComponent, InvoicesComponent, SubmitTimeDialog, DeleteTimeDialog } from '../pages';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { reducers, BaseReducer } from '../reducers';
 
@@ -67,6 +67,7 @@ import { TermsPage } from '../pages/login/terms';
     CheckOutPage,
     EditTimeDialog,
     SubmitTimeDialog,
+    DeleteTimeDialog,
     SearchComponent,
     RateFormatPipe,
     TimeEstimatePipe,
@@ -137,6 +138,7 @@ import { TermsPage } from '../pages/login/terms';
     CheckOutPage,
     EditTimeDialog,
     SubmitTimeDialog,
+    DeleteTimeDialog,
     SearchComponent,
     PendingComponent,
     StaticMapComponent,

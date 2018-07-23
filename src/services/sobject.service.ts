@@ -140,6 +140,16 @@ export class SObjectService extends BaseService {
     return promise;
   }
 
+  async delete(id) {
+    const promise = this.sforce.del(this.type, id);
+    this.store.dispatch({
+      type: 'delete_' + this.type,
+      payload: {
+        id: id
+      }
+    })
+  }
+
   beforeUpdate() {}
   async update(newObj: any, callback?: any) {
     if (this.hasProperty('pending_update')) {

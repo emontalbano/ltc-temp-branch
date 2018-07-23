@@ -31,7 +31,7 @@ export class ContactDetailComponent {
   public hasInvoices: boolean;
   public hasActive: boolean = false;
   public meta: Observable<any>;
-  public checking_in: boolean;
+  public checking_in: boolean = true;
   public checkins_ds: DataSourceWrapper;
   public invoice_ds: DataSourceWrapper;
   public displayedColumns = ['date', 'billing'];
@@ -70,7 +70,7 @@ export class ContactDetailComponent {
     this.checkins_ds = new DataSourceWrapper(this.sObjects.filteredItems);
     this.invoice_ds = new DataSourceWrapper(this.invoices.filteredItems);
 
-    let initial = true;
+    let initial = 0;
     this.checking_in = true;
     this.sObjects.filteredItems.subscribe( e => {
       this.invoiceMap = {};
@@ -86,11 +86,10 @@ export class ContactDetailComponent {
       });      
       this.hasCheckins = (e.length > 0);
       this.hasActive = (this.hasCheckins && e[0].ltc_check_out_datetime__c === null);
-      this.currentInvoiceList = e;
-      if (initial) {
-        initial = false;
+      this.currentInvoiceList = e;      
+      setTimeout( () => {
         this.checking_in = false;
-      }
+      }, 3500);
     });
 
     this.endTime = new Subject<Date>();

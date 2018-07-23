@@ -43,7 +43,7 @@
               <mat-table #table [dataSource]="checkins_ds">
                 <ng-container matColumnDef="date">
                   <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-                  <mat-cell *matCellDef="let item" (click)="checkout(item)">
+                  <mat-cell *matCellDef="let item">
                     <div *ngIf="item.ltc_check_out_datetime__c !== null" class="flex">
                       <div *ngIf="submittingInvoice">
                         <mat-checkbox [(ngModel)]="invoiceMap[item.id]"></mat-checkbox>

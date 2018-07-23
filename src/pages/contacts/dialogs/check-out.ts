@@ -6,6 +6,8 @@ import { getGeoCoords } from '../../../common/utils';
 import { NavController, NavParams } from 'ionic-angular';
 import { CheckinService } from '../../../services';
 import { Subject } from 'rxjs/Subject';
+import { DeleteTimeDialog } from '.';
+import { MatDialogRef, MatDialog } from '@angular/material';
 
 
 @Component({
@@ -19,7 +21,8 @@ export class CheckOutPage {
   public errorMessage: string;
   public claim: any;
   public checkin: any;
-  public checkin_dt: Date;
+  public checkin_dt: Date;  
+  private deleteDialogRef: MatDialogRef<DeleteTimeDialog>;
   public setCheckin_dt(date: Date) {
     this.checkin_dt = date;
   }
@@ -37,6 +40,7 @@ export class CheckOutPage {
   public rateError: string;
   public startError: string;
   public endError: string;
+  public otherTextError: string;
   public defaultRate: string = localStorage.getItem('billing_rate');
 
   public formData = {
@@ -59,7 +63,8 @@ export class CheckOutPage {
   public step = 1;
 
   @ViewChild(StaticMapComponent) mapCmp : StaticMapComponent;
-  constructor(private formBuilder: FormBuilder,private sObjects: CheckinService, private navCtrl: NavController, private navParams: NavParams) {
+  constructor(private formBuilder: FormBuilder,private sObjects: CheckinService, private navCtrl: NavController, private navParams: NavParams,
+      private dialog: MatDialog) {
     if (typeof navParams.data === 'undefined' || (navParams.data.length !== 2 && navParams.data.length !== 4)) {
       this.errorMessage = 'Error: No checkin data provided';
     }
@@ -137,7 +142,7 @@ export class CheckOutPage {
         this.claim, this.checkin, this.form.value,
         3
       ]);
-    } else if (this.step === 3) {
+    } else if (this.step === 3 && this.validateStep3()) {
       this.submitting = true;
       this.form.value.id = this.checkin.id;
       this.sObjects.checkout( this.form.value, this.claim, this.navCtrl );
@@ -173,14 +178,33 @@ export class CheckOutPage {
     return !error;
   }
 
-  submit(form) {
+  validateStep3() {    
+    if (this.form.value.Other && this.form.value.othertext.length === 0) {
+      this.otherTextError = 'Please enter a value for \'Other\'';
+      return false;
+    }
+    return true;
+  }
 
+  submit(form) {
     console.log(form);
     return false;
     //this.submitting = true;
     //form.value.id = this.checkin.id;
     //form.value.checkout__c = new Date();
     //this.sObjects.checkout( form.value, this.navCtrl );
+  }
+
+  delete() {
+    this.deleteDialogRef = this.dialog.open(DeleteTimeDialog);
+    this.deleteDialogRef.afterClosed().subscribe( data => {
+      console.log('dialog closed');
+      console.log(data);
+
+      if (data === true) {
+        this.sObjects.delete(this.checkin.id);
+      }
+    });
   }
 
   getGeoCoordinates() {

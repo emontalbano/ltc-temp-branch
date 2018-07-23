@@ -124,7 +124,7 @@ export class CheckinService extends DetailService {
       const hours = checkout.getHours() < 9 ? '0' + checkout.getHours() : checkout.getHours();
       const minutes = checkout.getMinutes() < 9 ? '0' + checkout.getMinutes() : checkout.getMinutes();
       let timeStr = hours + ':' + minutes + ':00';
-
+      const othertext = (data.othertext) ? data.othertext : '';
       
       this.notification.cancel(1);
       clearInterval(this.runner);
@@ -154,7 +154,8 @@ export class CheckinService extends DetailService {
                 id: data.id,
                 ltc_check_out_datetime__c: endInst,
                 ltc_hourly_rate__c: data.rate__c,
-                ltc_activities_for_daily_living__c: adlStr
+                ltc_activities_for_daily_living__c: adlStr,
+                ltc_value_for_other__c: othertext
                 //,ltc_related_claim_invoice__c: invoiceId
               });
             } else {
@@ -172,7 +173,9 @@ export class CheckinService extends DetailService {
                 ltc_hourly_rate__c: data.rate__c,
                 ltc_related_claim__c: claim_id,
                 ltc_check_in_datetime__c: startInst,
-                ltc_check_out_datetime__c: endInst
+                ltc_check_out_datetime__c: endInst,
+                ltc_activities_for_daily_living__c: adlStr,
+                ltc_value_for_other__c: othertext
                 //,ltc_related_claim_invoice__c: invoiceId
               });
             }
@@ -186,14 +189,18 @@ export class CheckinService extends DetailService {
             ltc_hourly_rate__c: data.rate__c,
             ltc_related_claim__c: claim_id,
             ltc_check_in_datetime__c: startInst,
-            ltc_check_out_datetime__c: endDate
+            ltc_check_out_datetime__c: endDate,
+            ltc_activities_for_daily_living__c: adlStr,
+            ltc_value_for_other__c: othertext
             //,ltc_related_claim_invoice__c: invoiceId
           });
         } else {
           this.update({
             id: data.id,
             ltc_check_out_datetime__c: checkout,
-            ltc_hourly_rate__c: data.rate__c
+            ltc_hourly_rate__c: data.rate__c,
+            ltc_activities_for_daily_living__c: adlStr,
+            ltc_value_for_other__c: othertext
             //,ltc_related_claim_invoice__c: invoiceId
           });
         }

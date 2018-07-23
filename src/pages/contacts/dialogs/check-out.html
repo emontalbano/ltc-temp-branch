@@ -40,7 +40,7 @@
               {{ rateError }}
             </span>
             <div class="right-actions">
-              <button mat-button color="primary" [disabled]="submitting" class='left red' type="button">Delete Entry</button>
+              <button mat-button color="primary" [disabled]="submitting" class='left red' (click)="delete()" type="button">Delete Entry</button>
               <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">Next</button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
             </div>
         </div>
@@ -86,14 +86,13 @@
           <mat-checkbox formControlName="Toileting">Toileting</mat-checkbox>
           <mat-checkbox formControlName="Transferring">Transferring/Mobility</mat-checkbox>
           <mat-checkbox formControlName="Supervision">Supervision/Safety</mat-checkbox>
-          <mat-checkbox formControlName="Other"><span *ngIf="!form.value.Other">Other</span>
-              <mat-form-field [floatLabel]="true" *ngIf="form.value.Other">
-                  <mat-label>Other</mat-label>
-                  <input matInput formControlName="othertext" >
-                </mat-form-field>
-          </mat-checkbox>
+          <mat-checkbox formControlName="Other"><span *ngIf="!form.value.Other">Other</span></mat-checkbox>
+          <mat-form-field [floatLabel]="true" *ngIf="form.value.Other" class="otherTb">
+              <mat-label>Other</mat-label>
+              <input matInput formControlName="othertext" >
+            </mat-form-field>
           
-          <div style="text-align: center; padding-top: 16px;">
+          <div style="text-align: center; padding-top: 16px; color:rgba(0,0,0,0.54);">
             After checking out this timesheet is added to the current invoice.
           </div>
 

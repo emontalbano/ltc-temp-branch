@@ -241,6 +241,7 @@ export class CheckinService extends DetailService {
         this.setMetadata({ 'checkedindt': data.records[0].LTC_Check_In_DateTime__c });
         console.log(data.records[0]);
         localStorage.setItem('multiple-customers', 'true');
+        localStorage.setItem('checked-in', 'true');
         nav.setRoot(ContactDetailComponent, {
           id: data.records[0].LTC_Related_Claim__r.Id,
           associated_policy__r: { insured__r: { name: data.records[0].LTC_Related_Claim__r.Associated_Policy__r.Insured__r.Name } }

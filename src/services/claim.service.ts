@@ -13,6 +13,6 @@ export class ClaimService extends DetailService {
   }
 
   buildWhere() {
-    return '';
+    return 'WHERE Claim_Status__c = \'Active\'';
   }
 }

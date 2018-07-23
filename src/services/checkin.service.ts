@@ -157,6 +157,8 @@ export class CheckinService extends DetailService {
                 ltc_activities_for_daily_living__c: adlStr,
                 ltc_value_for_other__c: othertext
                 //,ltc_related_claim_invoice__c: invoiceId
+              }).then( data => {
+                this.returnHome(nav, claim);
               });
             } else {
               let startInst = new Date(i);
@@ -177,6 +179,8 @@ export class CheckinService extends DetailService {
                 ltc_activities_for_daily_living__c: adlStr,
                 ltc_value_for_other__c: othertext
                 //,ltc_related_claim_invoice__c: invoiceId
+              }).then( data => {
+                this.returnHome(nav, claim);
               });
             }
           }
@@ -193,6 +197,8 @@ export class CheckinService extends DetailService {
             ltc_activities_for_daily_living__c: adlStr,
             ltc_value_for_other__c: othertext
             //,ltc_related_claim_invoice__c: invoiceId
+          }).then( data => {
+            this.returnHome(nav, claim);
           });
         } else {
           this.update({
@@ -202,17 +208,22 @@ export class CheckinService extends DetailService {
             ltc_activities_for_daily_living__c: adlStr,
             ltc_value_for_other__c: othertext
             //,ltc_related_claim_invoice__c: invoiceId
+          }).then( data => {
+            this.returnHome(nav, claim);
           });
-        }
-        localStorage.setItem('checked-in', 'false');
-        if (localStorage.getItem('multiple-customers') === 'true') {
-          nav.setRoot(ContactComponent);
-          nav.push(ContactDetailComponent, claim);
-        } else {
-          nav.setRoot(ContactDetailComponent, claim);
-        }
+        }        
         //nav.setRoot()
       //});
+    }
+  }
+
+  returnHome(nav, claim) {
+    localStorage.setItem('checked-in', 'false');
+    if (localStorage.getItem('multiple-customers') === 'true') {
+      nav.setRoot(ContactComponent);
+      nav.push(ContactDetailComponent, claim);
+    } else {
+      nav.setRoot(ContactDetailComponent, claim);
     }
   }
 

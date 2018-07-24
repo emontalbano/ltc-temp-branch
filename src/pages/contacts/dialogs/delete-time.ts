@@ -18,7 +18,7 @@ export class DeleteTimeDialog {
   }
 
   ngOnInit() {
-      
+    this.form = this.formBuilder.group({});
   }
 
   submit(form) {

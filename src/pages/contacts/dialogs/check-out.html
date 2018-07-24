@@ -88,10 +88,12 @@
           <mat-checkbox formControlName="Supervision">Supervision/Safety</mat-checkbox>
           <mat-checkbox formControlName="Other"><span *ngIf="!form.value.Other">Other</span></mat-checkbox>
           <mat-form-field [floatLabel]="true" *ngIf="form.value.Other" class="otherTb">
-              <mat-label>Other</mat-label>
-              <input matInput formControlName="othertext" >
-            </mat-form-field>
-          
+            <mat-label>Other</mat-label>
+            <input matInput formControlName="othertext" >
+          </mat-form-field>
+          <span class="error" *ngIf="otherTextError && otherTextError.length > 0">
+            {{ otherTextError }}
+          </span>
           <div style="text-align: center; padding-top: 16px; color:rgba(0,0,0,0.54);">
             After checking out this timesheet is added to the current invoice.
           </div>

@@ -178,8 +178,21 @@ export class CheckOutPage {
     return !error;
   }
 
-  validateStep3() {    
-    if (this.form.value.Other && this.form.value.othertext.length === 0) {
+  validateStep3() {
+    const adls = ['Bathing', 'Continence', 'Dressing', 'Eating', 'Toileting', 'Transferring', 'Supervision', 'Other'];
+    let adlSelected = false;
+    const data = this.form.value;
+    for (let adl in adls) {
+      if (data[adls[adl]]) {
+        adlSelected = true;
+        break;
+      }
+    }
+
+    if (!adlSelected) {
+      this.otherTextError = 'Please select activities you performed with the customer.';
+      return false;
+    } else if (this.form.value.Other && this.form.value.othertext.length === 0) {
       this.otherTextError = 'Please enter a value for \'Other\'.';
       return false;
     }
@@ -203,6 +216,7 @@ export class CheckOutPage {
 
       if (data === true) {
         this.sObjects.delete(this.checkin.id);
+        this.sObjects.returnHome(this.navCtrl, this.claim);
       }
     });
   }

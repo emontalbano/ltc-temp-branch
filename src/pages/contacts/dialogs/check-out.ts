@@ -190,7 +190,7 @@ export class CheckOutPage {
     }
 
     if (!adlSelected) {
-      this.otherTextError = 'Please select activities you performed with the customer.';
+      this.otherTextError = 'Please select the activities you performed with the customer.';
       return false;
     } else if (this.form.value.Other && this.form.value.othertext.length === 0) {
       this.otherTextError = 'Please enter a value for \'Other\'.';

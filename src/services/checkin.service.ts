@@ -128,7 +128,7 @@ export class CheckinService extends DetailService {
       
       this.notification.cancel(1);
       clearInterval(this.runner);
-      localStorage.setItem('toast','Timesheet added successfully');
+      localStorage.setItem('toast','Timesheet added to Current Invoice');
       
       //this.invoices.getInitialInvoiceId(checkin).then( id => {
         //const invoiceId = id;

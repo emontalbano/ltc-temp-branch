@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-navbar color="primary">
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>All Invoices</ion-title>
+    </ion-navbar>
+    <jh-nav-pending></jh-nav-pending>
+  </ion-header>
+  <ion-content *ngIf="meta | async as meta$" [ngClass]="(meta$.pending) ? 'loading' :  'standard'">
+    <div class="standardView" *ngIf="!hasInvoices">
+      <h4>No invoices to show</h4>
+    </div>
+    <div class="standardView invoiceHistory" *ngIf="hasInvoices">
+      <div class="customer">
+        <span>Customer</span>
+        <div>{{ contact.associated_policy__r.insured__r.name }}  </div>
+      </div>
+      <mat-card>
+        <mat-card-content>
+          <mat-table #table [dataSource]="invoice_ds">
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+              <mat-cell *matCellDef="let item"> 
+                <span class="{{ item.ltc_invoice_submission__r.ltc_submission_status__c }}">{{ item.ltc_invoice_submission__r.ltc_submission_status__c }}</span>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="date">
+              <mat-header-cell *matHeaderCellDef>Date Range</mat-header-cell>
+              <mat-cell *matCellDef="let item">
+                <div class="flex">
+                  {{ item.ltc_service_dates__c }}
+                </div>                    
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="billing">
+              <mat-header-cell *matHeaderCellDef>Total Charges</mat-header-cell>
+              <mat-cell *matCellDef="let item"> 
+                ${{ item.ltc_total_charges__c }}
+              </mat-cell>
+            </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </ion-content>

@@ -12,6 +12,7 @@ import { CheckOutPage, CheckInPage, SubmitTimeDialog } from './';
 import { Subject } from 'rxjs/Subject';
 import { EditTimeDialog } from './dialogs/edit-time';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { AllInvoicesComponent } from '..';
 
 
 //@Todo: empty state matches wireframe
@@ -182,6 +183,10 @@ export class ContactDetailComponent {
       });      
     }
     this.submittingInvoice = false;
+  }
+
+  viewInvoices() {
+    this.navCtrl.push(AllInvoicesComponent, [this.claim_id, this.contact]);
   }
   
   cancelSubmitInvoice() {

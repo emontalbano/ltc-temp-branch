@@ -275,6 +275,10 @@ export const schema = {
       "ltc_invoice_submission__r.ltc_associated_claim__c":{
         "type":"string",
         "searchable":true
+      },
+      "ltc_invoice_submission__r.ltc_submission_status__c":{
+        "type":"string",
+        "searchable":true
       }
     },
     "permissions":{
@@ -618,4 +622,4 @@ CREATE TABLE ltc_time_log__c (
 
 ;`;
 
-export const version = '5d04d4d3-d673-4066-aa56-cf9d330c3f92';
+export const version = '5d04d4d3-d673-4066-aa56-cf9d330c3f91';

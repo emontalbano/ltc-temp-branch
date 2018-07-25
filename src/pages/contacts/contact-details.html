@@ -89,7 +89,7 @@
           <mat-icon>play_arrow</mat-icon>
         </button>
       </div>
-      <button mat-button class="bottom-button">
+      <button mat-button class="bottom-button" (click)="viewInvoices()" *ngIf="!hasActive">
         <mat-icon>history</mat-icon>
         All Invoices
       </button>

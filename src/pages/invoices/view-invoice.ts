@@ -35,7 +35,8 @@ export class ViewInvoicesComponent {
     this.contact = this.navParams.data[1];
     this.invoice = this.navParams.data[2];
     this.sObjects.setType('ltc_time_log__c');
-    this.sObjects.setParentId(this.claim_id, 'ltc_related_claim__c');
+    this.sObjects.setParentId(this.invoice.id, 'ltc_related_invoice__c');
+    this.sObjects.sort('-ltc_check_in_datetime__c');
     this.sObjects.filter('ltc_check_out_datetime__c','');
     this.sObjects.getAll();    
     this.meta = this.sObjects.meta;

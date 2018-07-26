@@ -9,7 +9,15 @@
   </ion-header>
   <ion-content *ngIf="meta | async as meta$" [ngClass]="(meta$.pending) ? 'loading' :  'standard'">
     <div class="standardView" *ngIf="!hasInvoices">
-      <h4>No invoices to show</h4>
+        <div class="customer">
+            <span>Customer</span>
+            <div>{{ contact.associated_policy__r.insured__r.name }}  </div>
+          </div>
+          <mat-card>
+            <mat-card-content>
+              <h4 style="text-align: center; padding: 7rem 0 9rem; color: rgba(0,0,0,0.54)">No time entries to show</h4>
+            </mat-card-content>
+          </mat-card>
     </div>
     <div class="standardView invoiceHistory" *ngIf="hasInvoices">
       <div class="customer">

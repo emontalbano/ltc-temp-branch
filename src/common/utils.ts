@@ -186,7 +186,7 @@ export class CurrencyPipe implements PipeTransform {
   transform(currency: any): any {
     try {
       currency = parseFloat(currency);
-      if (currency !== currency) {
+      if (currency === currency) {
         return currency.toFixed(2);
       }
     } catch (e) {

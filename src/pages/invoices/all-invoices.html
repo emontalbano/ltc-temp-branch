@@ -9,7 +9,15 @@
   </ion-header>
   <ion-content *ngIf="meta | async as meta$" [ngClass]="(meta$.pending) ? 'loading' :  'standard'">
     <div class="standardView" *ngIf="!hasInvoices">
-      <h4>No invoices to show</h4>
+      <div class="customer">
+          <span>Customer</span>
+          <div>{{ contact.associated_policy__r.insured__r.name }}  </div>
+        </div>
+        <mat-card>
+          <mat-card-content>
+            <h4 style="text-align: center; padding: 7rem 0 9rem; color: rgba(0,0,0,0.54)">No invoices to show</h4>
+          </mat-card-content>
+        </mat-card>
     </div>
     <div class="standardView invoiceHistory" *ngIf="hasInvoices">
       <div class="customer">
@@ -22,13 +30,13 @@
             <ng-container matColumnDef="status">
               <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
               <mat-cell *matCellDef="let item"> 
-                <span class="{{ item.ltc_cast_iron_pull_status__c === 'New' || item.ltc_cast_iron_pull_status__c === null ? 'New' : 'standard' }}">{{ 
+                <span class="{{ item.ltc_cast_iron_pull_status__c }}">{{ 
                   (item.ltc_cast_iron_pull_status__c === 'New') ? 'Not Submitted' : 
                   (item.ltc_cast_iron_pull_status__c === 'Scanned - Ready for Document Processing' 
                    || item.ltc_cast_iron_pull_status__c === 'SmartCorrespond Call Error') ? 'Pending' : 
                    (item.ltc_cast_iron_pull_status__c === 'Ready to be Pulled' 
                    || item.ltc_cast_iron_pull_status__c === 'Pulled') ? 'Submitted' 
-                   : 'Not Submitted' }}</span>
+                   : 'Pending' }}</span>
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="date">

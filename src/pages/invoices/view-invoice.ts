@@ -11,29 +11,31 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
-  selector: 'jh-all-invoices',
-  templateUrl: 'all-invoices.html',
+  selector: 'jh-view-invoice',
+  templateUrl: 'view-invoice.html',
   providers: [ SObjectService, Store, SObjectService  ]
 })
-export class AllInvoicesComponent {
+export class ViewInvoicesComponent {
   public hasInvoices: boolean;
   public meta: Observable<any>;
   public invoice_ds: DataSourceWrapper;
-  public displayedColumns = ['status', 'date', 'billing'];
+  public displayedColumns = ['date', 'billing'];
   public filter = '';
-  public claimId: string;
+  public invoice: any;
   public contact: any;
+  public claim_id: string;
 
   constructor(private invoices: InvoiceService,
               private store: Store<any>, 
               public navParams: NavParams) {
     this.invoices.setType('ltc_claim_invoice__c');
     this.invoices.getAll({ refresh: true });
-    this.claimId = this.navParams.data[0];
+    this.claim_id = this.navParams.data[0];
     this.contact = this.navParams.data[1];
-    console.log(this.claimId);
-    this.invoices.sort('ltc_service_dates__c');
-    this.invoices.filter('ltc_invoice_submission__r.ltc_associated_claim__c', this.claimId);
+    this.invoice = this.navParams.data[2];
+    this.invoices.setType('ltc_claim_invoice__c');
+    this.invoices.setParentId(this.claim_id, 'ltc_invoice_submission__r.ltc_associated_claim__c');
+    this.invoices.getAll();    
     this.meta = this.invoices.meta;
     this.hasInvoices = false;
     this.invoice_ds = new DataSourceWrapper(this.invoices.filteredItems);

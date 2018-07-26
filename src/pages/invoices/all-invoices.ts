@@ -56,6 +56,6 @@ export class AllInvoicesComponent {
   }
 
   public openItem(item) {
-    //this.navCtrl.push(ViewInvoicesComponent, [this.claimId, this.contact, item]);
+    this.navCtrl.push(ViewInvoicesComponent, [this.claimId, this.contact, item]);
   }
 }

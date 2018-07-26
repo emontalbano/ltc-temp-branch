@@ -313,6 +313,40 @@ jh-all-invoices {
   }
 }
 
+jh-view-invoice {
+  mat-row {
+    border-bottom-color: transparent!important;
+  }
+  .totalCharges {
+    text-align:right;
+    div {
+      color:rgba(0,0,0,0.54);
+      font-size: 14px;
+    }
+    font-size: 18px;
+  }
+
+  .right {
+    float:right;
+    text-align:right;
+    padding-right:0;
+  }
+
+  .left {
+    padding-left:0;
+    text-align: left;
+  }
+
+  .right, .left {
+    margin-top:1rem;
+    color: mat-color($jh-palette-blue, 500);
+  }
+  
+  mat-header-row {
+    display:none!important;
+  }
+}
+
 
 @keyframes placeholderAnimate {
   0%{ background-position: -650px 0; }

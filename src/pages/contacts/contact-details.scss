@@ -1,6 +1,6 @@
 @import 'theme/variables';
 
-jh-contact-details {
+jh-contact-details, jh-view-invoice {
 
   .bottom-button { background: white;
     /* padding: 30%; */
@@ -238,7 +238,7 @@ jh-contact-details {
     padding: 8px 0;
   }
   .invoiceHistory mat-cell {
-    height: 32px;
+    height: 56px;
   }
 
   mat-tab-group {

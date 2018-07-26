@@ -17,8 +17,8 @@
         <div>{{ contact.associated_policy__r.insured__r.name }}  </div>
       </div>
       <mat-card>
-        <mat-card-title>
-            <span>Invoice Status</span>
+        <mat-card-title style="margin-top: -16px">
+            <span style="font-size: 14px;">Invoice Status</span>
             <h6>{{ (invoice.ltc_cast_iron_pull_status__c === 'New') ? 'Not Submitted' : 
                 (invoice.ltc_cast_iron_pull_status__c === 'Scanned - Ready for Document Processing' 
                  || invoice.ltc_cast_iron_pull_status__c === 'SmartCorrespond Call Error') ? 'Pending' : 
@@ -65,6 +65,17 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
               </mat-table>
+              <hr />
+              <div class="totalCharges">
+                <div>Total Charges</div>
+                ${{ invoice.ltc_total_charges__c }}
+              </div>
+
+              <div class="actionButtons" *ngIf="invoice.ltc_cast_iron_pull_status__c === 'New'">
+                <button mat-button class="left">Add New Timesheet</button>
+                <button mat-button class="right">Next</button>
+              </div>
+
         </mat-card-content>
       </mat-card>
     </div>

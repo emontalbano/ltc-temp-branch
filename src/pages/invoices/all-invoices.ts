@@ -9,6 +9,7 @@ import { DataSourceWrapper } from '../../common';
 import { Observer } from 'rxjs/Observer';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { ViewInvoicesComponent } from '.';
 
 @Component({
   selector: 'jh-all-invoices',
@@ -26,13 +27,14 @@ export class AllInvoicesComponent {
 
   constructor(private invoices: InvoiceService,
               private store: Store<any>, 
-              public navParams: NavParams) {
+              public navParams: NavParams,
+            public navCtrl: NavController) {
     this.invoices.setType('ltc_claim_invoice__c');
     this.invoices.getAll({ refresh: true });
     this.claimId = this.navParams.data[0];
     this.contact = this.navParams.data[1];
     console.log(this.claimId);
-    this.invoices.sort('ltc_service_dates__c');
+    this.invoices.sort('-ltc_service_dates__c');
     this.invoices.filter('ltc_invoice_submission__r.ltc_associated_claim__c', this.claimId);
     this.meta = this.invoices.meta;
     this.hasInvoices = false;
@@ -51,5 +53,9 @@ export class AllInvoicesComponent {
 
   public refreshInvoice() {
     this.invoices.getAll({ refresh: true });
+  }
+
+  public openItem(item) {
+    //this.navCtrl.push(ViewInvoicesComponent, [this.claimId, this.contact, item]);
   }
 }

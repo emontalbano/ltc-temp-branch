@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';
-import { SObjectService, InvoiceService } from '../../services';
+import { SObjectService, InvoiceService, CheckinService } from '../../services';
 
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { NavController } from 'ionic-angular';
@@ -23,35 +23,42 @@ export class ViewInvoicesComponent {
   public filter = '';
   public invoice: any;
   public contact: any;
-  public claim_id: string;
+  public claim_id: string;  
+  public endTime: Subject<Date>;
+  private timerInterval: any;
 
-  constructor(private invoices: InvoiceService,
+  constructor(private sObjects: CheckinService,
               private store: Store<any>, 
               public navParams: NavParams) {
-    this.invoices.setType('ltc_claim_invoice__c');
-    this.invoices.getAll({ refresh: true });
+                
     this.claim_id = this.navParams.data[0];
     this.contact = this.navParams.data[1];
     this.invoice = this.navParams.data[2];
-    this.invoices.setType('ltc_claim_invoice__c');
-    this.invoices.setParentId(this.claim_id, 'ltc_invoice_submission__r.ltc_associated_claim__c');
-    this.invoices.getAll();    
-    this.meta = this.invoices.meta;
+    this.sObjects.setType('ltc_time_log__c');
+    this.sObjects.setParentId(this.claim_id, 'ltc_related_claim__c');
+    this.sObjects.filter('ltc_check_out_datetime__c','');
+    this.sObjects.getAll();    
+    this.meta = this.sObjects.meta;
     this.hasInvoices = false;
-    this.invoice_ds = new DataSourceWrapper(this.invoices.filteredItems);
+    this.invoice_ds = new DataSourceWrapper(this.sObjects.filteredItems);
 
-    this.invoices.filteredItems.subscribe( data => {
+    this.sObjects.filteredItems.subscribe( data => {
       console.log(data);
       this.hasInvoices = (data.length > 0);
     });
-  }
 
-  public filterPatient(contact_id: string, contact_name: string) {
-    this.invoices.filter('contact__c', contact_id);
-    this.filter = contact_name;
+    this.endTime = new Subject<Date>();
+    this.endTime.next(new Date());
+    this.endTime.next(new Date());
+    this.timerInterval = setInterval( () => {
+      this.endTime.next(new Date());
+    }, 1000);
   }
 
   public refreshInvoice() {
-    this.invoices.getAll({ refresh: true });
+    this.sObjects.getAll({ refresh: true });
+  }
+  ngOnDestroy() {
+    clearInterval(this.timerInterval);
   }
 }

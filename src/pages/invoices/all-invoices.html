@@ -29,7 +29,7 @@
           <mat-table #table [dataSource]="invoice_ds">
             <ng-container matColumnDef="status">
               <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-              <mat-cell *matCellDef="let item"> 
+              <mat-cell *matCellDef="let item" (click)="openItem(item)"> 
                 <span class="{{ item.ltc_cast_iron_pull_status__c }}">{{ 
                   (item.ltc_cast_iron_pull_status__c === 'New') ? 'Not Submitted' : 
                   (item.ltc_cast_iron_pull_status__c === 'Scanned - Ready for Document Processing' 
@@ -41,7 +41,7 @@
             </ng-container>
             <ng-container matColumnDef="date">
               <mat-header-cell *matHeaderCellDef>Date Range</mat-header-cell>
-              <mat-cell *matCellDef="let item">
+              <mat-cell *matCellDef="let item" (click)="openItem(item)">
                 <div class="flex">
                   <a>{{ item.ltc_service_dates__c }}</a>
                 </div>                    
@@ -49,7 +49,7 @@
             </ng-container>
             <ng-container matColumnDef="billing">
               <mat-header-cell *matHeaderCellDef>Total Charges</mat-header-cell>
-              <mat-cell *matCellDef="let item"> 
+              <mat-cell *matCellDef="let item" (click)="openItem(item)"> 
                 ${{ item.ltc_total_charges__c }}
               </mat-cell>
             </ng-container>

@@ -276,7 +276,7 @@ export const schema = {
         "type":"string",
         "searchable":true
       },
-      "ltc_invoice_submission__r.ltc_submission_status__c":{
+      "ltc_cast_iron_pull_status__c":{
         "type":"string",
         "searchable":true
       }

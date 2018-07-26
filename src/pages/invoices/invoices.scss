@@ -296,13 +296,19 @@ jh-invoices, jh-all-invoices {
 jh-all-invoices {
   mat-row mat-cell:nth-child(3), mat-header-row mat-header-cell:nth-child(3) {
     text-align: right;
+    flex: none!important;
+    width: 60px;
+  }
+  mat-row mat-cell:nth-child(2), mat-header-row mat-header-cell:nth-child(2) {
+    flex: none!important;
+    width: 230px;
   }
   mat-card {
     padding:0!important;
   }
-  
 
-  .Not.Submitted {
+
+  .New {
     color: #C6401D;
   }
 }

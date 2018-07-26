@@ -22,14 +22,20 @@
             <ng-container matColumnDef="status">
               <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
               <mat-cell *matCellDef="let item"> 
-                <span class="{{ item.ltc_invoice_submission__r.ltc_submission_status__c }}">{{ item.ltc_invoice_submission__r.ltc_submission_status__c }}</span>
+                <span class="{{ item.ltc_cast_iron_pull_status__c === 'New' || item.ltc_cast_iron_pull_status__c === null ? 'New' : 'standard' }}">{{ 
+                  (item.ltc_cast_iron_pull_status__c === 'New') ? 'Not Submitted' : 
+                  (item.ltc_cast_iron_pull_status__c === 'Scanned - Ready for Document Processing' 
+                   || item.ltc_cast_iron_pull_status__c === 'SmartCorrespond Call Error') ? 'Pending' : 
+                   (item.ltc_cast_iron_pull_status__c === 'Ready to be Pulled' 
+                   || item.ltc_cast_iron_pull_status__c === 'Pulled') ? 'Submitted' 
+                   : 'Not Submitted' }}</span>
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="date">
               <mat-header-cell *matHeaderCellDef>Date Range</mat-header-cell>
               <mat-cell *matCellDef="let item">
                 <div class="flex">
-                  {{ item.ltc_service_dates__c }}
+                  <a>{{ item.ltc_service_dates__c }}</a>
                 </div>                    
               </mat-cell>
             </ng-container>

@@ -179,6 +179,23 @@ export class TimeEstimatePipe implements PipeTransform {
   }
 }
 
+@Pipe({
+  name: 'currencyFilter'
+})
+export class CurrencyPipe implements PipeTransform {
+  transform(currency: any): any {
+    try {
+      currency = parseFloat(currency);
+      if (currency !== currency) {
+        return currency.toFixed(2);
+      }
+    } catch (e) {
+    }
+    return 'INVALID HOURLY RATE';
+  }
+}
+
+
 /**
  * Returns the difference between two times as a time string in hours:minutes 
  */

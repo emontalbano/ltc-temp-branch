@@ -48,7 +48,7 @@ import { MatAutocompleteModule,
 import {CdkTableModule} from '@angular/cdk/table';
 import { BaseService, SalesforceService, DetailService, CacheService, SObjectService, CheckinService, InvoiceService, ClaimService } from '../services';
 import { CommonModule } from '@angular/common';
-import { SearchComponent, RateFormatPipe, TimeEstimatePipe, PendingComponent, StaticMapComponent, DateTimePickerComponent, SJCLWrapper, FingerprintWrapper, Toast, createDateObject } from '../common';
+import { SearchComponent, CurrencyPipe, RateFormatPipe, TimeEstimatePipe, PendingComponent, StaticMapComponent, DateTimePickerComponent, SJCLWrapper, FingerprintWrapper, Toast, createDateObject } from '../common';
 import { HttpClientModule } from '@angular/common/http';
 import { BillingDialog, FingerprintSignInDialog } from '../pages/settings/dialogs';
 import { FingerprintSetupComponent } from '../pages/login/fingerprint-setup';
@@ -71,6 +71,7 @@ import { TermsPage } from '../pages/login/terms';
     SearchComponent,
     RateFormatPipe,
     TimeEstimatePipe,
+    CurrencyPipe,
     PendingComponent,
     StaticMapComponent,
     SettingsComponent,

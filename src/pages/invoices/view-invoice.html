@@ -61,7 +61,7 @@
                       <span *ngIf="item.ltc_check_out_datetime__c !== null">
 
                         ${{ item.ltc_check_in_datetime__c | rateFormat:item.ltc_check_out_datetime__c:item.ltc_hourly_rate__c }}
-                        <span class="subtext">{{ item.ltc_check_in_datetime__c | timeEst:item.checkout:true }}h &times; ${{ item.ltc_hourly_rate__c }}/h</span>
+                        <span class="subtext">{{ item.ltc_check_in_datetime__c | timeEst:item.checkout:true }}h &times; ${{ item.ltc_hourly_rate__c | currencyFilter }}/h</span>
                       </span>
                       <div *ngIf="item.ltc_check_out_datetime__c === null" class="flex right">
                         <div *ngIf="endTime | async as $endTime">

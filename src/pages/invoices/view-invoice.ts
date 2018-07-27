@@ -9,6 +9,8 @@ import { DataSourceWrapper } from '../../common';
 import { Observer } from 'rxjs/Observer';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { SubmitInvoiceComponent } from '.';
+import { CheckOutPage } from '..';
 
 @Component({
   selector: 'jh-view-invoice',
@@ -29,7 +31,8 @@ export class ViewInvoicesComponent {
 
   constructor(private sObjects: CheckinService,
               private store: Store<any>, 
-              public navParams: NavParams) {
+              public navParams: NavParams,
+              public navCtrl: NavController) {
                 
     this.claim_id = this.navParams.data[0];
     this.contact = this.navParams.data[1];
@@ -59,6 +62,45 @@ export class ViewInvoicesComponent {
   public refreshInvoice() {
     this.sObjects.getAll({ refresh: true });
   }
+
+  public submitInvoice() {
+    this.navCtrl.push(SubmitInvoiceComponent, [this.claim_id, this.contact, this.invoice]);
+  }
+
+  public editTimeEntry(entry) {
+
+    if (this.invoice.ltc_cast_iron_pull_status__c === 'New') {
+      if (entry.ltc_activities_for_daily_living__c === null) {
+        entry.ltc_activities_for_daily_living__c = '';
+      }
+      this.navCtrl.push(CheckOutPage, [
+        {id: this.claim_id,
+          associated_policy__r: { insured__r: { name: this.contact.associated_policy__r.insured__r.name } }
+        },
+        entry,
+        {
+          id: entry.id,
+          checkin__c: entry.ltc_check_in_datetime__c,
+          checkout__c: entry.ltc_check_out_datetime__c,
+          rate__c: entry.ltc_hourly_rate__c,
+          caring: false,
+          manual: false,
+          Bathing: entry.ltc_activities_for_daily_living__c.indexOf('Bathing') !== -1,
+          Continence:entry.ltc_activities_for_daily_living__c.indexOf('Continence') !== -1,
+          Dressing: entry.ltc_activities_for_daily_living__c.indexOf('Dressing') !== -1,
+          Eating:entry.ltc_activities_for_daily_living__c.indexOf('Eating') !== -1,
+          Toileting:entry.ltc_activities_for_daily_living__c.indexOf('Toileting') !== -1,
+          Transferring:entry.ltc_activities_for_daily_living__c.indexOf('Transferring') !== -1,
+          Supervision:entry.ltc_activities_for_daily_living__c.indexOf('Supervision') !== -1,
+          Other:entry.ltc_activities_for_daily_living__c.indexOf('Other') !== -1,
+          othertext: entry.ltc_value_for_other__c
+        },
+        1,
+        true
+      ]);
+    }
+  }
+
   ngOnDestroy() {
     clearInterval(this.timerInterval);
   }

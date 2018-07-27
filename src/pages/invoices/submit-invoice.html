@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>All Invoices</ion-title>
+  </ion-navbar>
+  <jh-nav-pending></jh-nav-pending>
+</ion-header>
+<ion-content *ngIf="meta | async as meta$" [ngClass]="(meta$.pending) ? 'loading' :  'standard'">
+  <div class="customer">
+    <span>Customer</span>
+    <div>{{ contact.associated_policy__r.insured__r.name }}  </div>
+  </div>
+  <mat-card>
+    <form [formGroup]="form" (ngSubmit)="submit(form)">
+      <mat-card-content>
+        <h6 style="font-size: 15px;">Invoice Details</h6>
+        <div class="mat-form-field readonly">
+          <span class="prefix">
+            <mat-icon>date_range</mat-icon>
+          </span>
+          <mat-label>Date Range</mat-label>
+          <div>{{ invoice.ltc_service_dates__c }}</div>
+        </div>
+
+        <div class="mat-form-field readonly">
+          <span class="prefix">
+            <mat-icon>attach_money</mat-icon>
+          </span>
+          <mat-label>Total Charges</mat-label>
+          <div>${{ invoice.ltc_total_charges__c }}</div>
+        </div>
+
+        <mat-form-field [floatLabel]="true" class="example-full-width">
+          <textarea matInput placeholder="Additional Information" formControlName="additionalInfo"></textarea>
+        </mat-form-field>
+
+        <div><mat-checkbox formControlName="attest">By checking this box, you agree that the information being submitted is accurate to the best of your knowledge</mat-checkbox></div>
+
+        <button mat-button>Submit Invoice</button>
+      </mat-card-content>
+    </form>
+  </mat-card>
+</ion-content>

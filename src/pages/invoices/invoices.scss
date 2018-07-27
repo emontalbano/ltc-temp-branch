@@ -347,6 +347,19 @@ jh-view-invoice {
   }
 }
 
+jh-submit-invoice {
+  .mat-checkbox-label {
+    word-wrap: normal;
+    width: 100%;
+    white-space: normal;
+  }
+  button[mat-button] {
+    width: 100%;
+    text-align: right;
+    margin-top: 2rem;
+    color: mat-color($jh-palette-blue, 500);
+  }
+}
 
 @keyframes placeholderAnimate {
   0%{ background-position: -650px 0; }

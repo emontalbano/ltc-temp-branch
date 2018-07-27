@@ -42,6 +42,7 @@ export class CheckOutPage {
   public endError: string;
   public otherTextError: string;
   public defaultRate: string = localStorage.getItem('billing_rate');
+  public isUpdate: boolean = false;
 
   public formData = {
     id: '',
@@ -65,14 +66,17 @@ export class CheckOutPage {
   @ViewChild(StaticMapComponent) mapCmp : StaticMapComponent;
   constructor(private formBuilder: FormBuilder,private sObjects: CheckinService, private navCtrl: NavController, private navParams: NavParams,
       private dialog: MatDialog) {
-    if (typeof navParams.data === 'undefined' || (navParams.data.length !== 2 && navParams.data.length !== 4)) {
+    if (typeof navParams.data === 'undefined' || (navParams.data.length !== 2 && navParams.data.length !== 4 && navParams.data.length !== 5)) {
       this.errorMessage = 'Error: No checkin data provided';
     }
     this.claim = navParams.data[0];
     this.checkin = navParams.data[1];
-    if (navParams.data.length === 4) {
+    if (navParams.data.length > 2) {
       this.formData = navParams.data[2];
       this.step = navParams.data[3];
+    }
+    if (navParams.data.length === 5) {
+      this.isUpdate = navParams.data[4];
     }
     this.sObjects.setType('ltc_time_log__c');
   }
@@ -122,30 +126,36 @@ export class CheckOutPage {
   next() {
     console.log('here');
     if (this.step === 1 && this.validateStep1()) {
-      if (createDateObject(this.form.value.checkin__c).toDateString() !== createDateObject(this.form.value.checkout__c).toDateString()) {
+      if (createDateObject(this.form.value.checkin__c).toDateString() !== this.minusOne(createDateObject(this.form.value.checkout__c)).toDateString()) {
+        if (this.isUpdate) {
+          this.endError = 'Date and time cannot span multiple days when editing.';
+          return false;
+        }
         this.navCtrl.push(CheckOutPage, [
           this.claim,
           this.checkin,
           this.form.value,
-          2
+          2, 
+          this.isUpdate
         ]);
       } else {
         this.navCtrl.push(CheckOutPage, [
           this.claim,
           this.checkin,
           this.form.value,
-          3
+          3,
+          this.isUpdate
         ]);
       }      
     } else if (this.step === 2) {
       this.navCtrl.push(CheckOutPage, [
         this.claim, this.checkin, this.form.value,
-        3
+        3, this.isUpdate
       ]);
     } else if (this.step === 3 && this.validateStep3()) {
       this.submitting = true;
       this.form.value.id = this.checkin.id;
-      this.sObjects.checkout( this.form.value, this.claim, this.navCtrl );
+      this.sObjects.checkout( this.form.value, this.claim, this.navCtrl, this.isUpdate );
     }
   }
 
@@ -197,6 +207,10 @@ export class CheckOutPage {
       return false;
     }
     return true;
+  }
+
+  minusOne(dateObj) {
+    return new Date(dateObj.getTime() - 1000);
   }
 
   submit(form) {

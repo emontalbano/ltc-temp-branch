@@ -91,7 +91,7 @@ export class CheckinService extends DetailService {
   /**
    * Checks the user out from their previous check in
    */
-  checkout(data: any, claim: any, nav) {
+  checkout(data: any, claim: any, nav, update?: boolean) {
     const claim_id = claim['id'];
     if (typeof data !== 'undefined' && data !== '' && data.checkout__c !== '') {
       const adls = ['Bathing', 'Continence', 'Dressing', 'Eating', 'Toileting', 'Transferring', 'Supervision', 'Other'];
@@ -105,9 +105,11 @@ export class CheckinService extends DetailService {
         }
       }
       console.log(adlStr);
-      this.setMetadata({'checkedin': ''});
-      this.setMetadata({ 'checkedin_id': ''});
-      this.setMetadata({'checkedindt': ''});
+      if (!update) {
+        this.setMetadata({'checkedin': ''});
+        this.setMetadata({ 'checkedin_id': ''});
+        this.setMetadata({'checkedindt': ''});
+      }
       let checkout = data.checkout__c;
       if (typeof checkout.getHours !== 'function') {
         checkout = createDateObject(checkout);
@@ -132,7 +134,7 @@ export class CheckinService extends DetailService {
       
       //this.invoices.getInitialInvoiceId(checkin).then( id => {
         //const invoiceId = id;
-        if (createDateObject(data.checkin__c).toDateString() !== createDateObject(data.checkout__c).toDateString()) {          
+        if (createDateObject(data.checkin__c).toDateString() !== this.minusOne(createDateObject(data.checkout__c)).toDateString()) {          
           const endDate = createDateObject(data.checkout__c);
           let first = true;
           for (let i = createDateObject(data.checkin__c); 
@@ -215,6 +217,10 @@ export class CheckinService extends DetailService {
         //nav.setRoot()
       //});
     }
+  }
+
+  minusOne(dateObj) {
+    return new Date(dateObj.getTime() - 1000);
   }
 
   returnHome(nav, claim) {

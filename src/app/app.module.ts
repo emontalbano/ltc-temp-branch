@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import {StoreModule} from '@ngrx/store';
 
-import { LoginComponent, ContactComponent, ContactDetailComponent, CheckInPage, CheckOutPage, EditTimeDialog, SettingsComponent, AllInvoicesComponent, SubmitTimeDialog, DeleteTimeDialog, InvoicesComponent, ViewInvoicesComponent } from '../pages';
+import { LoginComponent, ContactComponent, ContactDetailComponent, CheckInPage, CheckOutPage, EditTimeDialog, SettingsComponent, AllInvoicesComponent, SubmitTimeDialog, DeleteTimeDialog, InvoicesComponent, ViewInvoicesComponent, SubmitInvoiceComponent } from '../pages';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { reducers, BaseReducer } from '../reducers';
 
@@ -77,6 +77,7 @@ import { TermsPage } from '../pages/login/terms';
     SettingsComponent,
     AllInvoicesComponent,
     ViewInvoicesComponent,
+    SubmitInvoiceComponent,
     BillingDialog,
     FingerprintSignInDialog,
     FingerprintSetupComponent,
@@ -148,6 +149,7 @@ import { TermsPage } from '../pages/login/terms';
     SettingsComponent,
     AllInvoicesComponent,
     ViewInvoicesComponent,
+    SubmitInvoiceComponent,
     BillingDialog,
     FingerprintSignInDialog,
     FingerprintSetupComponent,

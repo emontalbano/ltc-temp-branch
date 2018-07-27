@@ -39,14 +39,14 @@
                 <ng-container matColumnDef="date">
                   <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
                   <mat-cell *matCellDef="let item">
-                    <div *ngIf="item.ltc_check_out_datetime__c !== null" class="flex">
+                    <div *ngIf="item.ltc_check_out_datetime__c !== null" class="flex" (click)="editTimeEntry(item)">
                       <mat-icon>{{ item.ltc_check_out_type__c === 'Location On' ? 'location_on' : item.ltc_check_out_type__c === 'Location Off' ? 'location_off' : 'edit' }}</mat-icon>
                       <div>
                         {{ item.ltc_check_in_datetime__c | date: 'shortDate'}}
                         <span class="subtext">{{ item.ltc_check_in_datetime__c | date: 'shortTime' }} &ndash; {{ item.checkout  | date: 'shortTime' }}</span>
                       </div>
                     </div>
-                    <div *ngIf="item.ltc_check_out_datetime__c === null" class="flex">
+                    <div *ngIf="item.ltc_check_out_datetime__c === null" class="flex" (click)="editTimeEntry(item)">
                         <mat-icon>location_ff</mat-icon>
                         <div>
                           {{ item.ltc_check_in_datetime__c | date: 'shortTime' }}
@@ -58,12 +58,12 @@
                 <ng-container matColumnDef="billing">
                   <mat-header-cell *matHeaderCellDef>Billed</mat-header-cell>
                   <mat-cell *matCellDef="let item"> 
-                      <span *ngIf="item.ltc_check_out_datetime__c !== null">
+                      <span *ngIf="item.ltc_check_out_datetime__c !== null" (click)="editTimeEntry(item)">
 
                         ${{ item.ltc_check_in_datetime__c | rateFormat:item.ltc_check_out_datetime__c:item.ltc_hourly_rate__c }}
-                        <span class="subtext">{{ item.ltc_check_in_datetime__c | timeEst:item.checkout:true }}h &times; ${{ item.ltc_hourly_rate__c | currencyFilter }}/h</span>
+                        <span class="subtext">{{ item.ltc_check_in_datetime__c | timeEst:item.checkout:true }}h &times; ${{ item.ltc_hourly_rate__c | currencyFilter }}</span>
                       </span>
-                      <div *ngIf="item.ltc_check_out_datetime__c === null" class="flex right">
+                      <div *ngIf="item.ltc_check_out_datetime__c === null" class="flex right" (click)="editTimeEntry(item)">
                         <div *ngIf="endTime | async as $endTime">
                             {{ item.ltc_check_in_datetime__c | timeEst:$endTime }}
                         </div>
@@ -81,7 +81,7 @@
 
               <div class="actionButtons" *ngIf="invoice.ltc_cast_iron_pull_status__c === 'New'">
                 <button mat-button class="left">Add New Timesheet</button>
-                <button mat-button class="right">Next</button>
+                <button mat-button class="right" (click)="submitInvoice()">Next</button>
               </div>
 
         </mat-card-content>

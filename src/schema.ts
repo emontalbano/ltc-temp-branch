@@ -279,6 +279,10 @@ export const schema = {
       "ltc_cast_iron_pull_status__c":{
         "type":"string",
         "searchable":true
+      },
+      "ltc_app_invoice_status__c":{
+        "type":"string",
+        "searchable":true
       }
     },
     "permissions":{
@@ -622,4 +626,4 @@ CREATE TABLE ltc_time_log__c (
 
 ;`;
 
-export const version = '5d04d4d3-d673-4066-aa56-cf9d330c3f91';
+export const version = '5d04d4d3-d673-4066-aa56-cf9d330c3f97';

@@ -16,6 +16,10 @@
           <mat-card>
             <mat-card-content>
               <h4 style="text-align: center; padding: 7rem 0 9rem; color: rgba(0,0,0,0.54)">No time entries to show</h4>
+              <div class="actionButtons" *ngIf="invoice.ltc_app_invoice_status__c === 'Not Submitted'">
+                <button mat-button class="left">Add New Timesheet</button>
+                <button mat-button class="right" (click)="submitInvoice()">Next</button>
+              </div>
             </mat-card-content>
           </mat-card>
     </div>
@@ -27,12 +31,7 @@
       <mat-card>
         <mat-card-title style="margin-top: -16px">
             <span style="font-size: 14px;">Invoice Status</span>
-            <h6>{{ (invoice.ltc_cast_iron_pull_status__c === 'New') ? 'Not Submitted' : 
-                (invoice.ltc_cast_iron_pull_status__c === 'Scanned - Ready for Document Processing' 
-                 || invoice.ltc_cast_iron_pull_status__c === 'SmartCorrespond Call Error') ? 'Pending' : 
-                 (invoice.ltc_cast_iron_pull_status__c === 'Ready to be Pulled' 
-                 || invoice.ltc_cast_iron_pull_status__c === 'Pulled') ? 'Submitted' 
-                 : 'Pending' }}</h6>
+            <h6>{{ invoice.ltc_app_invoice_status__c }}</h6>
           </mat-card-title>
         <mat-card-content>
             <mat-table #table [dataSource]="invoice_ds">
@@ -79,7 +78,7 @@
                 ${{ invoice.ltc_total_charges__c }}
               </div>
 
-              <div class="actionButtons" *ngIf="invoice.ltc_cast_iron_pull_status__c === 'New'">
+              <div class="actionButtons" *ngIf="invoice.ltc_app_invoice_status__c === 'Not Submitted'">
                 <button mat-button class="left">Add New Timesheet</button>
                 <button mat-button class="right" (click)="submitInvoice()">Next</button>
               </div>

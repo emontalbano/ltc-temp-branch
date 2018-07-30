@@ -30,13 +30,7 @@
             <ng-container matColumnDef="status">
               <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
               <mat-cell *matCellDef="let item" (click)="openItem(item)"> 
-                <span class="{{ item.ltc_cast_iron_pull_status__c }}">{{ 
-                  (item.ltc_cast_iron_pull_status__c === 'New') ? 'Not Submitted' : 
-                  (item.ltc_cast_iron_pull_status__c === 'Scanned - Ready for Document Processing' 
-                   || item.ltc_cast_iron_pull_status__c === 'SmartCorrespond Call Error') ? 'Pending' : 
-                   (item.ltc_cast_iron_pull_status__c === 'Ready to be Pulled' 
-                   || item.ltc_cast_iron_pull_status__c === 'Pulled') ? 'Submitted' 
-                   : 'Pending' }}</span>
+                <span class="{{ item.ltc_app_invoice_status__c }}">{{item.ltc_app_invoice_status__c }}</span>
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="date">

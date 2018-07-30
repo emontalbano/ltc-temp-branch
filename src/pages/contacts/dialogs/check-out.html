@@ -17,7 +17,7 @@
 
             <h5>Check Out</h5>
             <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-            <datetime-picker label="Start Time" icon="schedule" disabled="disabled" [value]="form.value.checkin__c" (formValue)="setCheckin_dt($event)"></datetime-picker>
+            <datetime-picker label="Start Time" icon="schedule" disabled="{{ isUpdate ? '' : 'disabled' }}" [value]="form.value.checkin__c" (formValue)="setCheckin_dt($event)"></datetime-picker>
             
             <datetime-picker label="End Time" icon="check" [value]="form.value.checkout__c" (formValue)="setCheckout_dt($event)"></datetime-picker>
             <span class="error" *ngIf="endError && endError.length > 0">

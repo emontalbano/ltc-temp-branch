@@ -180,7 +180,7 @@ export class CheckOutPage {
       this.endError = 'Date and Time must be in the past.';
       error = true;
     }
-    if (''+parseFloat(this.form.value.rate__c) != this.form.value.rate__c || this.form.value.rate__c === 'NaN' || parseFloat(this.form.value.rate__c) <= 0) {
+    if (!/^\d+(?:\.\d{0,2})?$/.test(this.form.value.rate__c)) {
       this.rateError = 'Invalid hourly rate.';
       error = true;
     }

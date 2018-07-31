@@ -331,9 +331,9 @@ export class BaseReducer {
               a = a[path[i]];
               b = b[path[i]];              
             }
-            return a.toLowerCase() < b.toLowerCase();
+            return (''+a).toLowerCase() < (''+b).toLowerCase();
           } else {
-            return a[field].toLowerCase() < b[field].toLowerCase();
+            return (''+a[field]).toLowerCase() < (''+b[field]).toLowerCase();
           }
         };
       } else {
@@ -345,9 +345,9 @@ export class BaseReducer {
               a = a[path[i]];
               b = b[path[i]];              
             }
-            return a.toLowerCase() > b.toLowerCase();
+            return (''+a).toLowerCase() > (''+b).toLowerCase();
           } else {
-            return a[field].toLowerCase() > b[field].toLowerCase();
+            return (''+a[field]).toLowerCase() > (''+b[field]).toLowerCase();
           }
         };
       }

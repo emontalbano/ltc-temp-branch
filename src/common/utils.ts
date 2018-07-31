@@ -167,6 +167,18 @@ export class TimeEstimatePipe implements PipeTransform {
   transform(start: any, end?: any, asNumber?: boolean): any {
 
     try {
+      if (end === 2) {
+        if (start === null || start === '') {
+          return '0h 0m';
+        }
+        var min = 1 / 60;
+        var intpart = Math.floor(start);
+        var decpart = start - intpart;
+        decpart = min * Math.round(decpart / min);
+        var minutes = Math.floor(decpart * 60);
+      
+        return intpart + 'h' + minutes + 'm';
+      }
       end = (end) ? createDateObject(end) : new Date();
       start = createDateObject(start);
       if (asNumber) {

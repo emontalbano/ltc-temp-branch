@@ -60,7 +60,7 @@
                       <span *ngIf="item.ltc_check_out_datetime__c !== null" (click)="editTimeEntry(item)">
 
                         ${{ item.ltc_check_in_datetime__c | rateFormat:item.ltc_check_out_datetime__c:item.ltc_hourly_rate__c }}
-                        <span class="subtext">{{item.ltc_number_of_hours__c}}h &times; ${{ item.ltc_hourly_rate__c | currencyFilter }}</span>
+                        <span class="subtext">{{ item.ltc_number_of_hours__c | timeEst:2 }} &times; ${{ item.ltc_hourly_rate__c | currencyFilter }}</span>
                       </span>
                       <div *ngIf="item.ltc_check_out_datetime__c === null" class="flex right" (click)="editTimeEntry(item)">
                         <div *ngIf="endTime | async as $endTime">

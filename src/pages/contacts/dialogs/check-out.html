@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar color="primary">
-      <ion-title>Check Out Details</ion-title>
+      <ion-title>{{ isUpdate ? 'Edit Timesheet' : 'Check Out Details' }}</ion-title>
     </ion-navbar>
     <jh-nav-pending></jh-nav-pending>
   </ion-header>
@@ -15,7 +15,7 @@
 
         <div class="floating-card" *ngIf="step === 1"> <!-- [ngClass]="locationComplete ? '' : 'hidden'" -->
 
-            <h5>Check Out</h5>
+            <h5>{{ isUpdate ? 'Edit Timesheet' : 'Check Out' }}</h5>
             <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
             <datetime-picker label="Start Time" icon="schedule" disabled="{{ isUpdate ? '' : 'disabled' }}" [value]="form.value.checkin__c" (formValue)="setCheckin_dt($event)"></datetime-picker>
             
@@ -95,12 +95,12 @@
             {{ otherTextError }}
           </span>
           <div style="text-align: center; padding-top: 16px; color:rgba(0,0,0,0.54);">
-            After checking out this timesheet is added to the current invoice.
+            {{ isUpdate ? '' : 'After checking out this timesheet is added to the current invoice.' }} 
           </div>
 
           
           <div class="right-actions">
-            <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">Check Out</button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
+            <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">{{ isUpdate ? 'Update Timesheet' : 'Check Out' }} </button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
           </div>
       </div>
         

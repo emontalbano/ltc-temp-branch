@@ -59,7 +59,7 @@
                   <mat-cell *matCellDef="let item"> 
                       <span *ngIf="item.ltc_check_out_datetime__c !== null" (click)="editTimeEntry(item)">
 
-                        ${{ item.ltc_check_in_datetime__c | rateFormat:item.ltc_check_out_datetime__c:item.ltc_hourly_rate__c }}
+                        ${{ item.ltc_amount__c }}
                         <span class="subtext">{{ item.ltc_number_of_hours__c | timeEst:2 }} &times; ${{ item.ltc_hourly_rate__c | currencyFilter }}</span>
                       </span>
                       <div *ngIf="item.ltc_check_out_datetime__c === null" class="flex right" (click)="editTimeEntry(item)">

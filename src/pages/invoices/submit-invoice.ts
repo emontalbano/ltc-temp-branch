@@ -40,7 +40,7 @@ export class SubmitInvoiceComponent {
     this.sObjects.setType('ltc_time_log__c');
     this.meta = this.sObjects.meta;
     this.invoice_ds = new DataSourceWrapper(this.sObjects.filteredItems);
-    
+    // 255 character max
   }
 
 

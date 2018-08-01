@@ -471,6 +471,10 @@ export const schema = {
       },
       "ltc_activities_for_daily_living__c": {
         "type":"string"
+      },
+      "ltc_amount__c": {
+        "type": "string",
+        "read-only": true
       }
     },
     "permissions":{

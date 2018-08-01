@@ -33,12 +33,12 @@
         </div>
 
         <mat-form-field [floatLabel]="true" class="example-full-width">
-          <textarea matInput placeholder="Additional Information" formControlName="additionalInfo"></textarea>
+          <textarea matInput placeholder="Additional Information" formControlName="additionalInfo" maxlength="255"></textarea>
         </mat-form-field>
 
         <div><mat-checkbox formControlName="attest">By checking this box, you agree that the information being submitted is accurate to the best of your knowledge.</mat-checkbox></div>
 
-        <button mat-button>Submit Invoice</button>
+        <button mat-button [disabled]="!form.value.attest">Submit Invoice</button>
       </mat-card-content>
     </form>
   </mat-card>

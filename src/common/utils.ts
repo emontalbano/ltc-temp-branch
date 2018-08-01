@@ -177,7 +177,7 @@ export class TimeEstimatePipe implements PipeTransform {
         decpart = min * Math.round(decpart / min);
         var minutes = Math.floor(decpart * 60);
       
-        return intpart + 'h' + minutes + 'm';
+        return intpart + 'h ' + minutes + 'm';
       }
       end = (end) ? createDateObject(end) : new Date();
       start = createDateObject(start);

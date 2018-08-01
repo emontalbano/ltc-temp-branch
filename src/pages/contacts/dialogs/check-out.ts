@@ -128,7 +128,7 @@ export class CheckOutPage {
     if (this.step === 1 && this.validateStep1()) {
       if (createDateObject(this.form.value.checkin__c).toDateString() !== this.minusOne(createDateObject(this.form.value.checkout__c)).toDateString()) {
         if (this.isUpdate) {
-          this.endError = 'Date and time cannot span multiple days when editing.';
+          this.endError = 'Start Time and End Time must be on the same day.';
           return false;
         }
         this.navCtrl.push(CheckOutPage, [
@@ -180,7 +180,7 @@ export class CheckOutPage {
       this.endError = 'Date and Time must be in the past.';
       error = true;
     }
-    if (!/^\d+(?:\.\d{0,2})?$/.test(this.form.value.rate__c) && parseFloat(this.form.value.rate__c) > 0) {
+    if (!/^\d+(?:\.\d{0,2})?$/.test(this.form.value.rate__c) && this.form.value.rate__c[0] !== '0') {
       this.rateError = 'Invalid hourly rate.';
       error = true;
     }

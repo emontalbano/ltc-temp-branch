@@ -171,7 +171,7 @@ export class SObjectService extends BaseService {
       console.log('update result', payload);
       if (payload !== false) {
         newObj['pending'] = false;
-        this.handlePayloadData('update_pending', newObj);
+        this.handlePayloadData('update_existing', newObj);
         try {
           // this.cacher.update({ 'pending_update':false }, this.type, newObj['id'], 'id');
         } catch (e) {}

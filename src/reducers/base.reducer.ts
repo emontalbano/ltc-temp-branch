@@ -26,6 +26,7 @@ export class BaseReducer {
     'set': this.doSet,
     'delete': this.doDelete,
     'update_pending': this.doUpdatePending,
+    'update_existing': this.doUpdateExisting,
     'clear': this.doClear
   };
 
@@ -116,6 +117,10 @@ export class BaseReducer {
 
   doUpdatePending(state, action) {
     return upsert(state, [action.payload.data], 'tempId');
+  }
+
+  doUpdateExisting(state, action) {
+    return upsert(state, [action.payload.data], 'id');
   }
   
   doReset(state, action) {

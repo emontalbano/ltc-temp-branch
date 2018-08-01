@@ -89,7 +89,7 @@
           <mat-checkbox formControlName="Other"><span *ngIf="!form.value.Other">Other</span></mat-checkbox>
           <mat-form-field [floatLabel]="true" *ngIf="form.value.Other" class="otherTb">
             <mat-label>Other</mat-label>
-            <input matInput formControlName="othertext" >
+            <input matInput formControlName="othertext" maxlength="255" >
           </mat-form-field>
           <span class="error" *ngIf="otherTextError && otherTextError.length > 0" style="padding-bottom:8px">
             {{ otherTextError }}

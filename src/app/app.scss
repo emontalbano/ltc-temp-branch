@@ -42,7 +42,10 @@ mat-icon {
 ion-content.content-md {
   background: #fafafa;
 }
-
+.mat-dialog-content {
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+}
 ion-menu ion-content.content-md {
   background: mat-color($jh-palette-blue, 500);
   background: -moz-linear-gradient(-45deg, mat-color($jh-palette-blue, 300) 0%, mat-color($jh-palette-blue, 400) 50%, mat-color($jh-palette-blue, 600) 100%);

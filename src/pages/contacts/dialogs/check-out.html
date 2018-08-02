@@ -34,7 +34,7 @@
               <input matInput formControlName="rate__c" >
             </mat-form-field>
             <span class="error" *ngIf="form.value.rate__c !== defaultRate" style="color: rgba(0,0,0,0.87)!important">
-              * ${{ form.value.rate__c}} is not the standard hourly rate.
+              * ${{ form.value.rate__c}} is not the standard hourly rate. ({{ defaultRate }})
             </span><br />
             <span class="error" *ngIf="rateError && rateError.length > 0">
               {{ rateError }}

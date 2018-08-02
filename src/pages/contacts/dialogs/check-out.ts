@@ -8,6 +8,7 @@ import { CheckinService } from '../../../services';
 import { Subject } from 'rxjs/Subject';
 import { DeleteTimeDialog } from '.';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { ContactComponent } from '..';
 
 
 @Component({
@@ -41,8 +42,9 @@ export class CheckOutPage {
   public startError: string;
   public endError: string;
   public otherTextError: string;
-  public defaultRate: string = localStorage.getItem('billing_rate');
+  public defaultRate: string = '';
   public isUpdate: boolean = false;
+  public delayReady: boolean = false;
 
   public formData = {
     id: '',
@@ -90,6 +92,7 @@ export class CheckOutPage {
     } 
     
     this.form = this.formBuilder.group(this.formData);
+    this.defaultRate = localStorage.getItem('billing_rate');
     
     if (this.step === 2) {
       const endDate = createDateObject(this.form.value.checkout__c);
@@ -120,6 +123,10 @@ export class CheckOutPage {
       });
       this.dayData = dateArray;
     }
+
+    setTimeout( () => {
+      this.delayReady = true;
+    }, 1000);
     // this.getGeoCoordinates();
   }
 
@@ -230,7 +237,12 @@ export class CheckOutPage {
 
       if (data === true) {
         this.sObjects.delete(this.checkin.id);
-        this.sObjects.returnHome(this.navCtrl, this.claim);
+
+        if (this.isUpdate) {
+          this.navCtrl.pop();
+        } else {
+          this.sObjects.returnHome(this.navCtrl, this.claim);
+        }
       }
     });
   }

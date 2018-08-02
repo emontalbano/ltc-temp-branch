@@ -185,7 +185,7 @@ export class CheckOutPage {
       this.startError = 'Invalid check in date.';
       error = true;
     } else if ( start >= end ) {
-      this.startError = 'Date and time must be after the Start Time.';
+      this.startError = 'Date and Time must be after the Start Time.';
       error = true;
     }
     if ( end > new Date() ) {

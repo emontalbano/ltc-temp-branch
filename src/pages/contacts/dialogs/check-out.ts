@@ -93,6 +93,15 @@ export class CheckOutPage {
     
     this.form = this.formBuilder.group(this.formData);
     this.defaultRate = localStorage.getItem('billing_rate');
+
+    this.form.valueChanges.subscribe( val => {
+      console.log('change');
+      this.delayReady = true;
+    });
+
+    if (''+this.formData.rate__c !==  ''+this.defaultRate) {
+      this.delayReady = true;
+    }
     
     if (this.step === 2) {
       const endDate = createDateObject(this.form.value.checkout__c);
@@ -123,10 +132,6 @@ export class CheckOutPage {
       });
       this.dayData = dateArray;
     }
-
-    setTimeout( () => {
-      this.delayReady = true;
-    }, 1000);
     // this.getGeoCoordinates();
   }
 
@@ -187,7 +192,7 @@ export class CheckOutPage {
       this.endError = 'Date and Time must be in the past.';
       error = true;
     }
-    if (!/^\d+(?:\.\d{0,2})?$/.test(this.form.value.rate__c) && this.form.value.rate__c[0] !== '0') {
+    if (!/^\d+(?:\.\d{0,2})?$/.test(this.form.value.rate__c) || this.form.value.rate__c[0] === '0') {
       this.rateError = 'Invalid hourly rate.';
       error = true;
     }

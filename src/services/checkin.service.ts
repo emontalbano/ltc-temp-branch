@@ -164,7 +164,7 @@ export class CheckinService extends DetailService {
                 ltc_value_for_other__c: othertext
                 //,ltc_related_claim_invoice__c: invoiceId
               }).then( data => {
-                this.returnHome(nav, claim);
+                this.returnHome(nav, claim, update);
               });
             } else {
               let startInst = new Date(i);
@@ -186,7 +186,7 @@ export class CheckinService extends DetailService {
                 ltc_value_for_other__c: othertext
                 //,ltc_related_claim_invoice__c: invoiceId
               }).then( data => {
-                this.returnHome(nav, claim);
+                this.returnHome(nav, claim, update);
               });
             }
           }
@@ -204,7 +204,7 @@ export class CheckinService extends DetailService {
             ltc_value_for_other__c: othertext
             //,ltc_related_claim_invoice__c: invoiceId
           }).then( data => {
-            this.returnHome(nav, claim);
+            this.returnHome(nav, claim, update);
           });
         } else {
           this.update({
@@ -215,7 +215,7 @@ export class CheckinService extends DetailService {
             ltc_value_for_other__c: othertext
             //,ltc_related_claim_invoice__c: invoiceId
           }).then( data => {
-            this.returnHome(nav, claim);
+            this.returnHome(nav, claim, update);
           });
         }        
         //nav.setRoot()
@@ -227,13 +227,18 @@ export class CheckinService extends DetailService {
     return new Date(dateObj.getTime() - 1000);
   }
 
-  returnHome(nav, claim) {
-    localStorage.setItem('checked-in', 'false');
-    if (localStorage.getItem('multiple-customers') === 'true') {
-      nav.setRoot(ContactComponent);
-      nav.push(ContactDetailComponent, claim);
+  returnHome(nav, claim, isUpdate?: boolean) {
+    if (isUpdate) {
+      nav.pop();
+      nav.pop();
     } else {
-      nav.setRoot(ContactDetailComponent, claim);
+      localStorage.setItem('checked-in', 'false');
+      if (localStorage.getItem('multiple-customers') === 'true') {
+        nav.setRoot(ContactComponent);
+        nav.push(ContactDetailComponent, claim);
+      } else {
+        nav.setRoot(ContactDetailComponent, claim);
+      }
     }
   }
 

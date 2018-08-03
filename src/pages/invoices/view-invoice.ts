@@ -67,6 +67,30 @@ export class ViewInvoicesComponent {
     this.navCtrl.push(SubmitInvoiceComponent, [this.claim_id, this.contact, this.invoice]);
   }
 
+  public addTimesheet() {
+    this.navCtrl.push( CheckOutPage, [{
+        id: this.claim_id,
+        associated_policy__r: { insured__r: { name: this.contact.associated_policy__r.insured__r.name } }
+      },
+      {}, {
+        id: '',
+        checkin__c: '',
+        checkout__c: '',
+        rate__c: (localStorage.getItem('billing_rate') === null) ? '' : localStorage.getItem('billing_rate'),
+        caring: false,
+        manual: false,
+        Bathing: false,
+        Continence: false,
+        Dressing: false,
+        Eating: false,
+        Toileting: false,
+        Transferring: false,
+        Supervision: false,
+        Other: false,
+        othertext: ''
+      },  1, false, true]);
+  }
+
   public editTimeEntry(entry) {
 
     if (this.invoice.ltc_cast_iron_pull_status__c === 'New') {

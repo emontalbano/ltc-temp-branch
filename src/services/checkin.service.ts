@@ -91,7 +91,7 @@ export class CheckinService extends DetailService {
   /**
    * Checks the user out from their previous check in
    */
-  checkout(data: any, claim: any, nav, update?: boolean) {
+  checkout(data: any, claim: any, nav, update?: boolean, manual? :boolean) {
     const claim_id = claim['id'];
     if (typeof data !== 'undefined' && data !== '' && data.checkout__c !== '') {
       const adls = ['Bathing', 'Continence', 'Dressing', 'Eating', 'Toileting', 'Transferring', 'Supervision', 'Other'];
@@ -105,7 +105,7 @@ export class CheckinService extends DetailService {
         }
       }
       console.log(adlStr);
-      if (!update) {
+      if (!update && !manual) {
         this.setMetadata({'checkedin': ''});
         this.setMetadata({ 'checkedin_id': ''});
         this.setMetadata({'checkedindt': ''});
@@ -205,6 +205,26 @@ export class CheckinService extends DetailService {
             //,ltc_related_claim_invoice__c: invoiceId
           }).then( data => {
             this.returnHome(nav, claim, update);
+          });
+        } else if (manual) {
+          let checkin = {
+            ltc_hourly_rate__c: data.rate__c,
+            ltc_related_claim__c: claim_id,
+            ltc_check_in_datetime__c: data.chcekin__c,
+            ltc_check_out_datetime__c: checkout,
+            ltc_related_invoice__c: null,
+            RecordTypeId: null
+          };
+  
+          this.invoices.getRecordType().then(recordTypes => {
+            const recordType = recordTypes[1];
+            checkin.RecordTypeId = recordType;
+  
+            this.create(checkin).then( (payload: any) => {
+              this.setMetadata({ 'checkedin_id': payload.id });              
+              checkin['id'] = payload.id;
+              this.returnHome(nav, claim, true);
+            });
           });
         } else {
           this.update({

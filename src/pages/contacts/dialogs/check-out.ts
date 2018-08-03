@@ -44,6 +44,7 @@ export class CheckOutPage {
   public otherTextError: string;
   public defaultRate: string = '';
   public isUpdate: boolean = false;
+  public isManualEntry: boolean = false;
   public delayReady: boolean = false;
 
   public formData = {
@@ -68,7 +69,7 @@ export class CheckOutPage {
   @ViewChild(StaticMapComponent) mapCmp : StaticMapComponent;
   constructor(private formBuilder: FormBuilder,private sObjects: CheckinService, private navCtrl: NavController, private navParams: NavParams,
       private dialog: MatDialog) {
-    if (typeof navParams.data === 'undefined' || (navParams.data.length !== 2 && navParams.data.length !== 4 && navParams.data.length !== 5)) {
+    if (typeof navParams.data === 'undefined' || (navParams.data.length !== 2 && navParams.data.length !== 4 && navParams.data.length !== 5 && navParams.data.length !== 6)) {
       this.errorMessage = 'Error: No checkin data provided';
     }
     this.claim = navParams.data[0];
@@ -77,15 +78,18 @@ export class CheckOutPage {
       this.formData = navParams.data[2];
       this.step = navParams.data[3];
     }
-    if (navParams.data.length === 5) {
-      this.isUpdate = navParams.data[4];
+    if (navParams.data.length === 5 || navParams.data.length === 6) {
+      if (navParams.data.length === 6) {
+        this.isManualEntry = navParams.data[5];
+      }
+      this.isUpdate = navParams.data[4];      
     }
     this.sObjects.setType('ltc_time_log__c');
   }
 
 
   ngOnInit() {
-    if (this.step === 1 && this.formData.checkin__c === '') {
+    if (this.step === 1 && this.formData.checkin__c === '' && !this.isManualEntry) {
       console.log(this.checkin);
       this.formData.checkin__c = this.checkin.ltc_check_in_datetime__c;
       this.formData.checkout__c = new Date();
@@ -139,7 +143,7 @@ export class CheckOutPage {
     console.log('here');
     if (this.step === 1 && this.validateStep1()) {
       if (createDateObject(this.form.value.checkin__c).toDateString() !== this.minusOne(createDateObject(this.form.value.checkout__c)).toDateString()) {
-        if (this.isUpdate) {
+        if (this.isUpdate || this.isManualEntry) {
           this.endError = 'Start Time and End Time must be on the same day.';
           return false;
         }
@@ -148,7 +152,8 @@ export class CheckOutPage {
           this.checkin,
           this.form.value,
           2, 
-          this.isUpdate
+          this.isUpdate,
+          this.isManualEntry
         ]);
       } else {
         this.navCtrl.push(CheckOutPage, [
@@ -156,36 +161,47 @@ export class CheckOutPage {
           this.checkin,
           this.form.value,
           3,
-          this.isUpdate
+          this.isUpdate,
+          this.isManualEntry
         ]);
       }      
     } else if (this.step === 2) {
       this.navCtrl.push(CheckOutPage, [
         this.claim, this.checkin, this.form.value,
-        3, this.isUpdate
+        3, this.isUpdate, this.isManualEntry
       ]);
     } else if (this.step === 3 && this.validateStep3()) {
       this.submitting = true;
       this.form.value.id = this.checkin.id;
-      this.sObjects.checkout( this.form.value, this.claim, this.navCtrl, this.isUpdate );
+      this.sObjects.checkout( this.form.value, this.claim, this.navCtrl, this.isUpdate, this.isManualEntry );
     }
   }
 
   validateStep1() {
-    let error = false;
-    this.form.controls.checkin__c.setValue(this.checkin_dt);
-    this.form.controls.checkout__c.setValue(this.checkout_dt);
-    const start = createDateObject(this.form.value.checkin__c);
-    const end = createDateObject(this.form.value.checkout__c);
     this.startError = '';
     this.endError = '';
     this.rateError = '';
+    let error = false;
+    this.form.controls.checkin__c.setValue(this.checkin_dt);
+    this.form.controls.checkout__c.setValue(this.checkout_dt);
 
+    if (this.form.value.checkin__c === '' || this.form.value.checkin__c === null) {
+      this.startError = 'This field is required. Please enter a value.';
+      return false;
+    } else if (this.form.value.checkout__c === '' || this.form.value.checkout__c === null) {
+      this.endError = 'This field is required. Please enter a value.';
+      return false;
+    }
+
+    const start = createDateObject(this.form.value.checkin__c);
+    const end = createDateObject(this.form.value.checkout__c);
+
+    
     if (start.getFullYear() < 2017) {
       this.startError = 'Invalid check in date.';
       error = true;
     } else if ( start >= end ) {
-      this.startError = 'Date and Time must be after the Start Time.';
+      this.endError = 'Date and Time must be after the Start Time.';
       error = true;
     }
     if ( end > new Date() ) {
@@ -212,7 +228,7 @@ export class CheckOutPage {
     }
 
     if (!adlSelected) {
-      this.otherTextError = 'Please select the activities you performed with the customer.';
+      this.otherTextError = 'Please select the activities performed with the customer.';
       return false;
     } else if (this.form.value.Other && this.form.value.othertext.length === 0) {
       this.otherTextError = 'Please enter a value for \'Other\'.';

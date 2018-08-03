@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar color="primary">
-      <ion-title>{{ isUpdate ? 'Edit Timesheet' : 'Check Out Details' }}</ion-title>
+      <ion-title>{{ isUpdate ? 'Edit Timesheet' : isManualEntry ? 'New Timesheet Details' : 'Check Out Details' }}</ion-title>
     </ion-navbar>
     <jh-nav-pending></jh-nav-pending>
   </ion-header>
@@ -16,15 +16,18 @@
         <div class="floating-card" *ngIf="step === 1"> <!-- [ngClass]="locationComplete ? '' : 'hidden'" -->
 
             <h5>{{ isUpdate ? 'Timesheet Details' : 'Check Out' }}</h5>
+
+            <datetime-picker style="display:none;" disabled="disabled"></datetime-picker>
+
             <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-            <datetime-picker label="Start Time" icon="schedule" disabled="{{ isUpdate ? '' : 'disabled' }}" [value]="form.value.checkin__c" (formValue)="setCheckin_dt($event)"></datetime-picker>
+            <datetime-picker label="Start Time" icon="schedule" disabled="{{ (isUpdate || isManualEntry) ? '' : 'disabled' }}" [value]="form.value.checkin__c" (formValue)="setCheckin_dt($event)"></datetime-picker>
+            <span class="error" *ngIf="startError && startError.length > 0">
+              {{ startError }}
+            </span>
             
             <datetime-picker label="End Time" icon="check" [value]="form.value.checkout__c" (formValue)="setCheckout_dt($event)"></datetime-picker>
             <span class="error" *ngIf="endError && endError.length > 0">
                 {{ endError }}
-              </span>
-              <span class="error" *ngIf="startError && startError.length > 0">
-                {{ startError }}
               </span>
             <mat-form-field [floatLabel]="true">
               <mat-label>Hourly Rate</mat-label>
@@ -100,7 +103,7 @@
 
           
           <div class="right-actions">
-            <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">{{ isUpdate ? 'Update Timesheet' : 'Check Out' }} </button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
+            <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">{{ isUpdate ? 'Update Timesheet' : isManualEntry ? 'Add Timesheet to Current Invoice' : 'Check Out' }} </button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
           </div>
       </div>
         

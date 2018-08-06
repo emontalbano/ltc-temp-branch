@@ -184,30 +184,36 @@ export class CheckOutPage {
     let error = false;
     this.form.controls.checkin__c.setValue(this.checkin_dt);
     this.form.controls.checkout__c.setValue(this.checkout_dt);
+    let start;
+    let end;
 
     if (this.form.value.checkin__c === '' || this.form.value.checkin__c === null) {
       this.startError = 'This field is required. Please enter a value.';
-      return false;
-    } else if (this.form.value.checkout__c === '' || this.form.value.checkout__c === null) {
-      this.endError = 'This field is required. Please enter a value.';
-      return false;
+      error = true;
+    } else {
+      start = createDateObject(this.form.value.checkin__c);
+      if (start.getFullYear() < 2017) {
+        this.startError = 'Invalid check in date.';
+        error = true;
+      }
     }
-
-    const start = createDateObject(this.form.value.checkin__c);
-    const end = createDateObject(this.form.value.checkout__c);
-
     
-    if (start.getFullYear() < 2017) {
-      this.startError = 'Invalid check in date.';
+    if (this.form.value.checkout__c === '' || this.form.value.checkout__c === null) {
+      this.endError = 'This field is required. Please enter a value.';
       error = true;
-    } else if ( start >= end ) {
-      this.endError = 'Date and Time must be after the Start Time.';
-      error = true;
+    } else if (!error) {
+      end = createDateObject(this.form.value.checkout__c);
+
+      if ( start >= end ) {
+        this.endError = 'Date and Time must be after the Start Time.';
+        error = true;
+      }
+      if ( end > new Date() ) {
+        this.endError = 'Date and Time must be in the past.';
+        error = true;
+      }
     }
-    if ( end > new Date() ) {
-      this.endError = 'Date and Time must be in the past.';
-      error = true;
-    }
+
     if (!/^\d+(?:\.\d{0,2})?$/.test(this.form.value.rate__c) || this.form.value.rate__c[0] === '0') {
       this.rateError = 'Invalid hourly rate.';
       error = true;

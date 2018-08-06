@@ -247,8 +247,9 @@ export class CheckOutPage {
     return new Date(dateObj.getTime() - 1000);
   }
 
-  submit(form) {
+  submit(form, event) {
     console.log(form);
+    event.preventDefault();
     return false;
     //this.submitting = true;
     //form.value.id = this.checkin.id;

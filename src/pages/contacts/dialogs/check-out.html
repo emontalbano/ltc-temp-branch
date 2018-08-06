@@ -5,7 +5,7 @@
     <jh-nav-pending></jh-nav-pending>
   </ion-header>
   <ion-content padding>
-    <form [formGroup]="form" (ngSubmit)="submit(form)">
+    
         <div class="customer">
           <span>Customer</span>
           <div>{{ claim.associated_policy__r.insured__r.name }}</div>
@@ -17,8 +17,6 @@
 
             <h5>{{ isUpdate ? 'Timesheet Details' : 'Check Out' }}</h5>
 
-            <datetime-picker style="display:none;" disabled="disabled"></datetime-picker>
-
             <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
             <datetime-picker label="Start Time" icon="schedule" disabled="{{ (isUpdate || isManualEntry) ? '' : 'disabled' }}" [value]="form.value.checkin__c" (formValue)="setCheckin_dt($event)"></datetime-picker>
             <span class="error" *ngIf="startError && startError.length > 0">
@@ -29,23 +27,26 @@
             <span class="error" *ngIf="endError && endError.length > 0">
                 {{ endError }}
               </span>
-            <mat-form-field [floatLabel]="true">
-              <mat-label>Hourly Rate</mat-label>
-              <span class="prefix">
-                <mat-icon>attach_money</mat-icon>
+
+            <form [formGroup]="form" (ngSubmit)="submit(form)">
+              <mat-form-field [floatLabel]="true">
+                <mat-label>Hourly Rate</mat-label>
+                <span class="prefix">
+                  <mat-icon>attach_money</mat-icon>
+                </span>
+                <input matInput formControlName="rate__c" >
+              </mat-form-field>
+              <span class="error" *ngIf="form.value.rate__c !== defaultRate && delayReady && form.value.rate__c !== ''" style="color: rgba(0,0,0,0.87)!important">
+                * ${{ form.value.rate__c}} is not the standard hourly rate.
+              </span><br />
+              <span class="error" *ngIf="rateError && rateError.length > 0">
+                {{ rateError }}
               </span>
-              <input matInput formControlName="rate__c" >
-            </mat-form-field>
-            <span class="error" *ngIf="form.value.rate__c !== defaultRate && delayReady && form.value.rate__c !== ''" style="color: rgba(0,0,0,0.87)!important">
-              * ${{ form.value.rate__c}} is not the standard hourly rate.
-            </span><br />
-            <span class="error" *ngIf="rateError && rateError.length > 0">
-              {{ rateError }}
-            </span>
-            <div class="right-actions">
-              <button mat-button color="primary" [disabled]="submitting" class='left red' (click)="delete()" type="button">Delete Entry</button>
-              <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">Next</button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
-            </div>
+              <div class="right-actions">
+                <button mat-button color="primary" [disabled]="submitting" class='left red' (click)="delete()" type="button">Delete Entry</button>
+                <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">Next</button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
+              </div>
+            </form>
         </div>
 
         <div class="floating-card" *ngIf="step === 2"> <!-- [ngClass]="locationComplete ? '' : 'hidden'" -->
@@ -76,36 +77,35 @@
             <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">Next</button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
           </div>
       </div>
+        <form [formGroup]="form" (ngSubmit)="submit(form, $event)">
+          <div class="floating-card" *ngIf="step === 3"> <!-- [ngClass]="locationComplete ? '' : 'hidden'" -->
 
-        <div class="floating-card" *ngIf="step === 3"> <!-- [ngClass]="locationComplete ? '' : 'hidden'" -->
-
-          <h5>Activities for Daily Living</h5>
-          <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-          
-          <mat-checkbox formControlName="Bathing">Bathing</mat-checkbox>
-          <mat-checkbox formControlName="Continence">Continence</mat-checkbox>
-          <mat-checkbox formControlName="Dressing">Dressing</mat-checkbox>
-          <mat-checkbox formControlName="Eating">Eating</mat-checkbox>
-          <mat-checkbox formControlName="Toileting">Toileting</mat-checkbox>
-          <mat-checkbox formControlName="Transferring">Transferring/Mobility</mat-checkbox>
-          <mat-checkbox formControlName="Supervision">Supervision/Safety</mat-checkbox>
-          <mat-checkbox formControlName="Other"><span *ngIf="!form.value.Other">Other</span></mat-checkbox>
-          <mat-form-field [floatLabel]="true" *ngIf="form.value.Other" class="otherTb">
-            <mat-label>Other</mat-label>
-            <input matInput formControlName="othertext" maxlength="255" >
-          </mat-form-field>
-          <span class="error" *ngIf="otherTextError && otherTextError.length > 0" style="margin-top:8px; padding-bottom:8px">
-            {{ otherTextError }}
-          </span>
-          <div style="text-align: center; padding-top: 16px; color:rgba(0,0,0,0.54);">
-            {{ isUpdate ? '' : 'After checking out this timesheet is added to the current invoice.' }} 
-          </div>
+            <h5>Activities for Daily Living</h5>
+            <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+            
+            <mat-checkbox formControlName="Bathing">Bathing</mat-checkbox>
+            <mat-checkbox formControlName="Continence">Continence</mat-checkbox>
+            <mat-checkbox formControlName="Dressing">Dressing</mat-checkbox>
+            <mat-checkbox formControlName="Eating">Eating</mat-checkbox>
+            <mat-checkbox formControlName="Toileting">Toileting</mat-checkbox>
+            <mat-checkbox formControlName="Transferring">Transferring/Mobility</mat-checkbox>
+            <mat-checkbox formControlName="Supervision">Supervision/Safety</mat-checkbox>
+            <mat-checkbox formControlName="Other"><span *ngIf="!form.value.Other">Other</span></mat-checkbox>
+            <mat-form-field [floatLabel]="true" *ngIf="form.value.Other" class="otherTb">
+              <mat-label>Other</mat-label>
+              <input matInput formControlName="othertext" maxlength="255" >
+            </mat-form-field>
+            <span class="error" *ngIf="otherTextError && otherTextError.length > 0" style="margin-top:8px; padding-bottom:8px">
+              {{ otherTextError }}
+            </span>
+            <div style="text-align: center; padding-top: 16px; color:rgba(0,0,0,0.54);">
+              {{ isUpdate ? '' : 'After checking out this timesheet is added to the current invoice.' }} 
+            </div>
 
           
           <div class="right-actions">
             <button mat-button color="primary" [disabled]="submitting" (click)="next()" type="button">{{ isUpdate ? 'Update Timesheet' : isManualEntry ? 'Add Timesheet to Current Invoice' : 'Check Out' }} </button> <!-- [disabled]="!form.value.caring || !locationComplete" -->
           </div>
       </div>
-        
     </form>
   </ion-content>

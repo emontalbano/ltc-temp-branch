@@ -212,6 +212,10 @@ export class CheckOutPage {
         this.endError = 'Date and Time must be in the past.';
         error = true;
       }
+      if ( start > new Date() ) {
+        this.startError = 'Date and Time must be in the past.';
+        error = true;
+      }
     }
 
     if (!/^\d+(?:\.\d{0,2})?$/.test(this.form.value.rate__c) || this.form.value.rate__c[0] === '0') {

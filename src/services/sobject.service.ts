@@ -147,17 +147,18 @@ export class SObjectService extends BaseService {
       payload: {
         id: id
       }
-    })
+    });
+    return promise;
   }
 
   beforeUpdate() {}
-  async update(newObj: any, callback?: any) {
+  async update(newObj: any, callback?: any): Promise<any> {
     if (this.hasProperty('pending_update')) {
       try {
         // await this.cacher.update(newObj, this.type, newObj.id, 'id');
       } catch (e) {}
     }
-    this.doUpdate(newObj);
+    return await this.doUpdate(newObj);
   }
   
   async doUpdate(newObj) {
@@ -180,6 +181,7 @@ export class SObjectService extends BaseService {
     }).catch(err => {
       console.log('update error: ', err);
     });    
+    return promise;
   }
 
 

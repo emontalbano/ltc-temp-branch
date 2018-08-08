@@ -205,7 +205,7 @@ export class CheckOutPage {
       end = createDateObject(this.form.value.checkout__c);
 
       if ( start >= end ) {
-        this.endError = 'Date and Time must be after the Start Time.';
+        this.endError = 'End Time must be after the Start Time.';
         error = true;
       }
       if ( end > new Date() ) {
@@ -268,13 +268,19 @@ export class CheckOutPage {
       console.log(data);
 
       if (data === true) {
-        this.sObjects.delete(this.checkin.id);
-
-        if (this.isUpdate) {
-          this.navCtrl.pop();
-        } else {
-          this.sObjects.returnHome(this.navCtrl, this.claim);
-        }
+        this.sObjects.delete(this.checkin.id).then( data => {
+          this.sObjects.setMetadata({'checkedin': ''});
+          this.sObjects.setMetadata({ 'checkedin_id': ''});
+          this.sObjects.setMetadata({'checkedindt': ''});
+          localStorage.setItem('checked-in', 'false');
+  
+          if (this.isUpdate) {
+            this.navCtrl.pop();
+          } else {
+            this.sObjects.returnHome(this.navCtrl, this.claim);
+          }
+        });
+        
       }
     });
   }

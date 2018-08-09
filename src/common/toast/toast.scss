@@ -1,8 +1,11 @@
 jh-toast {
   div {
+    transform: translate3d(0,0,0);
     &.open {
       bottom: 64px!important;
+      display: block;
     }
+    display: none;
     background-color: rgba(0,0,0,0.70);
     color: white;
     position: fixed;

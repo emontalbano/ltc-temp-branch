@@ -210,7 +210,7 @@ export class CheckinService extends DetailService {
           let checkin = {
             ltc_hourly_rate__c: data.rate__c,
             ltc_related_claim__c: claim_id,
-            ltc_check_in_datetime__c: data.chcekin__c,
+            ltc_check_in_datetime__c: data.checkin__c,
             ltc_check_out_datetime__c: checkout,
             ltc_related_invoice__c: null,
             RecordTypeId: null
@@ -229,6 +229,7 @@ export class CheckinService extends DetailService {
         } else {
           this.update({
             id: data.id,
+            ltc_check_in_datetime__c: data.checkin__c,
             ltc_check_out_datetime__c: checkout,
             ltc_hourly_rate__c: data.rate__c,
             ltc_activities_for_daily_living__c: adlStr,

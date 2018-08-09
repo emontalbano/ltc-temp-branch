@@ -191,7 +191,7 @@ export class CheckOutPage {
     let start;
     let end;
 
-    if (this.form.value.checkin__c === '' || this.form.value.checkin__c === null) {
+    if (this.form.value.checkin__c === '' || this.form.value.checkin__c === null || typeof this.form.value.checkin__c === 'undefined') {
       this.startError = 'This field is required. Please enter a value.';
       error = true;
     } else {
@@ -202,7 +202,7 @@ export class CheckOutPage {
       }
     }
     
-    if (this.form.value.checkout__c === '' || this.form.value.checkout__c === null) {
+    if (this.form.value.checkout__c === '' || this.form.value.checkout__c === null || typeof this.form.value.checkout__c === 'undefined') {
       this.endError = 'This field is required. Please enter a value.';
       error = true;
     } else if (!error) {
@@ -219,6 +219,13 @@ export class CheckOutPage {
       if ( start > new Date() ) {
         this.startError = 'Date and Time must be in the past.';
         error = true;
+      }
+
+      if (createDateObject(this.form.value.checkin__c).toDateString() !== this.minusOne(createDateObject(this.form.value.checkout__c)).toDateString()) {
+        if (this.isUpdate || this.isManualEntry) {
+          this.endError = 'Start Time and End Time must be on the same day.';
+          error = true;
+        }
       }
     }
 

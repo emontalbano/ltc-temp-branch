@@ -123,6 +123,9 @@ export class DataSourceWrapper {
 }
 
 export function createDateObject(str) {
+  if (typeof str === 'undefined') {
+    str = '';
+  }
   let d = new Date(str);
   if (d.getTime() === d.getTime()) {
     return d;

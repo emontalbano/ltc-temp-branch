@@ -251,7 +251,7 @@ export class CheckOutPage {
     if (!adlSelected) {
       this.otherTextError = 'Please select the activities performed with the customer.';
       return false;
-    } else if (this.form.value.Other && this.form.value.othertext.length === 0) {
+    } else if (this.form.value.Other && (typeof this.form.value.othertext === 'undefined' || this.form.value.othertext === null || this.form.value.othertext.length === 0)) {
       this.otherTextError = 'Please enter a value for \'Other\'.';
       return false;
     }

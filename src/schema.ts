@@ -475,6 +475,9 @@ export const schema = {
       "ltc_amount__c": {
         "type": "string",
         "read-only": true
+      },
+      "ltc_value_for_other__c": {
+        "type": "string"
       }
     },
     "permissions":{

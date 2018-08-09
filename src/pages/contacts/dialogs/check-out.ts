@@ -177,6 +177,10 @@ export class CheckOutPage {
     }
   }
 
+  toCurrency(val) {
+    return parseFloat(val).toFixed(2);
+  }
+
   validateStep1() {
     this.startError = '';
     this.endError = '';
@@ -205,7 +209,7 @@ export class CheckOutPage {
       end = createDateObject(this.form.value.checkout__c);
 
       if ( start >= end ) {
-        this.endError = 'End Time must be after the Start Time.';
+        this.endError = 'End Time must be after Start Time.';
         error = true;
       }
       if ( end > new Date() ) {

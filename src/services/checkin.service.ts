@@ -91,7 +91,7 @@ export class CheckinService extends DetailService {
   /**
    * Checks the user out from their previous check in
    */
-  checkout(data: any, claim: any, nav, update?: boolean, manual? :boolean) {
+  checkout(data: any, claim: any, nav, update?: boolean, manual? :string) {
     const claim_id = claim['id'];
     if (typeof data !== 'undefined' && data !== '' && data.checkout__c !== '') {
       const adls = ['Bathing', 'Continence', 'Dressing', 'Eating', 'Toileting', 'Transferring', 'Supervision', 'Other'];
@@ -100,6 +100,11 @@ export class CheckinService extends DetailService {
         if (data[adls[adl]]) {
           if (adlStr.length !== 0) {
             adlStr += ';';
+          }
+          if (adls[adl] === 'Supervision') {
+            adlStr += 'Supervision/Safety';
+          } else if (adls['adl'] === 'Transferring') {
+            adlStr += 'Transferring/Mobility';
           }
           adlStr += adls[adl];
         }
@@ -126,7 +131,7 @@ export class CheckinService extends DetailService {
       const hours = checkout.getHours() < 9 ? '0' + checkout.getHours() : checkout.getHours();
       const minutes = checkout.getMinutes() < 9 ? '0' + checkout.getMinutes() : checkout.getMinutes();
       let timeStr = hours + ':' + minutes + ':00';
-      const othertext = (data.othertext) ? data.othertext : '';
+      const othertext = (data.othertext && data['Other']) ? data.othertext : '';
       
       this.notification.cancel(1);
       clearInterval(this.runner);
@@ -212,7 +217,7 @@ export class CheckinService extends DetailService {
             ltc_related_claim__c: claim_id,
             ltc_check_in_datetime__c: data.checkin__c,
             ltc_check_out_datetime__c: checkout,
-            ltc_related_invoice__c: null,
+            ltc_related_invoice__c: manual,
             RecordTypeId: null
           };
   

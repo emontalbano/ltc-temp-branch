@@ -44,7 +44,7 @@ export class CheckOutPage {
   public otherTextError: string;
   public defaultRate: string = '';
   public isUpdate: boolean = false;
-  public isManualEntry: boolean = false;
+  public isManualEntry: string;
   public delayReady: boolean = false;
 
   public formData = {

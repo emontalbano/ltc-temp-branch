@@ -100,7 +100,7 @@ export class ViewInvoicesComponent {
         Supervision: false,
         Other: false,
         othertext: ''
-      },  1, false, true]);
+      },  1, false, this.invoice['id']]);
   }
 
   public editTimeEntry(entry) {

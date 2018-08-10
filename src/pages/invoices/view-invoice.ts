@@ -32,7 +32,8 @@ export class ViewInvoicesComponent {
   constructor(private sObjects: CheckinService,
               private store: Store<any>, 
               public navParams: NavParams,
-              public navCtrl: NavController) {
+              public navCtrl: NavController,
+              private invoices: InvoiceService) {
                 
     this.claim_id = this.navParams.data[0];
     this.contact = this.navParams.data[1];
@@ -41,14 +42,25 @@ export class ViewInvoicesComponent {
     this.sObjects.setParentId(this.invoice.id, 'ltc_related_invoice__c');
     this.sObjects.sort('-ltc_check_in_datetime__c');
     this.sObjects.filter('ltc_check_out_datetime__c','');
-    this.sObjects.getAll();    
+    this.sObjects.getAll();
+    this.invoices.setType('ltc_claim_invoice__c');
+    this.invoices.getAll({ refresh: true });
+
+    this.invoices.filteredItems.subscribe( data => {
+      data.map( a => { 
+        if (a['id'] === this.navParams.data[2]['id']) {
+          this.invoice = a;
+        }
+      }); 
+    });
+
     this.meta = this.sObjects.meta;
     this.hasInvoices = false;
     this.invoice_ds = new DataSourceWrapper(this.sObjects.filteredItems);
 
     this.sObjects.filteredItems.subscribe( data => {
-      console.log(data);
       this.hasInvoices = (data.length > 0);
+      this.invoices.getAll({ refresh: true });
     });
 
     this.endTime = new Subject<Date>();

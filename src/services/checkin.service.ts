@@ -105,8 +105,9 @@ export class CheckinService extends DetailService {
             adlStr += 'Supervision/Safety';
           } else if (adls['adl'] === 'Transferring') {
             adlStr += 'Transferring/Mobility';
+          } else {
+            adlStr += adls[adl];
           }
-          adlStr += adls[adl];
         }
       }
       console.log(adlStr);

@@ -174,6 +174,8 @@ export class CheckOutPage {
       this.submitting = true;
       this.form.value.id = this.checkin.id;
       this.sObjects.checkout( this.form.value, this.claim, this.navCtrl, this.isUpdate, this.isManualEntry );
+      this.sObjects.setType('ltc_time_log__c');
+      this.sObjects.getAll({ refresh: true });
     }
   }
 

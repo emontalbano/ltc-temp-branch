@@ -23,7 +23,4 @@ npm run build
 echo -n "----> Processing: Adding iOS Platform..."
 ionic platform add ios
 
-echo -n "----> Processing: Adding Android Platform (6.x)..."
-ionic platform add android
-
 ionic build

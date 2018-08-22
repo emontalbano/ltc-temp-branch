@@ -3,7 +3,7 @@
       <button ion-button icon-only menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
-      <ion-title>View Invoice</ion-title>
+      <ion-title>{{ invoice.ltc_app_invoice_status__c === 'Not Submitted' ? 'View Invoice' : 'View Timesheet' }}</ion-title>
     </ion-navbar>
     <jh-nav-pending></jh-nav-pending>
   </ion-header>

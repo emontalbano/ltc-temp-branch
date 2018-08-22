@@ -117,8 +117,13 @@ export class CheckinService extends DetailService {
         this.setMetadata({'checkedindt': ''});
       }
       let checkout = data.checkout__c;
+      let checkin = data.checkin__c;
       if (typeof checkout.getHours !== 'function') {
         checkout = createDateObject(checkout);
+      }
+
+      if (typeof checkin.getHours !== 'function') {
+        checkin = createDateObject(checkin);
       }
       /*let checkin = {
         ltc_hourly_rate__c: data.rate__c,
@@ -129,17 +134,24 @@ export class CheckinService extends DetailService {
         RecordTypeId: null
       };*/
 
-      const hours = checkout.getHours() < 9 ? '0' + checkout.getHours() : checkout.getHours();
+      const hours = checkout.getHours() < 13 ? checkout.getHours() : checkout.getHours() - 12;
       const minutes = checkout.getMinutes() < 9 ? '0' + checkout.getMinutes() : checkout.getMinutes();
-      let timeStr = hours + ':' + minutes + ':00';
+      const outAP = checkout.getHours() < 12 ? ' AM' : ' PM';
+      const local_checkout = (checkout.getMonth() + 1) + '/' + checkout.getDate() + '/' + (checkout.getYear()-100) + ' '+hours + ':' + minutes + outAP;
+
       const othertext = (data.othertext && data['Other']) ? data.othertext : '';
+
+      const inHours = checkin.getHours() < 13 ? checkin.getHours() : checkin.getHours() - 12;
+      const inMinutes = checkin.getMinutes() < 9 ? '0' + checkin.getMinutes() : checkin.getMinutes();
+      const inAP = (checkin.getHours < 12) ? ' AM' : ' PM'
+      const local_checkin = (checkin.getMonth()+1) + '/' + checkin.getDate() + '/' + (checkin.getYear()-100) + ' ' + inHours + ':' + inMinutes + inAP;
       
       this.notification.cancel(1);
       clearInterval(this.runner);
       if (update) {
         localStorage.setItem('toast','Timesheet updated');
       } else {
-        localStorage.setItem('toast','Timesheet added to Current Invoice');
+        localStorage.setItem('toast','Timesheet Added to Current Invoice');
       }
       
       //this.invoices.getInitialInvoiceId(checkin).then( id => {
@@ -167,7 +179,9 @@ export class CheckinService extends DetailService {
                 ltc_check_out_datetime__c: endInst,
                 ltc_hourly_rate__c: data.rate__c,
                 ltc_activities_for_daily_living__c: adlStr,
-                ltc_value_for_other__c: othertext
+                ltc_value_for_other__c: othertext,
+                ltc_local_check_in_date_and_time__c: local_checkin,
+                ltc_local_check_out_date_and_time__c: local_checkout,
                 //,ltc_related_claim_invoice__c: invoiceId
               }).then( data => {
                 this.returnHome(nav, claim, update);
@@ -189,7 +203,9 @@ export class CheckinService extends DetailService {
                 ltc_check_in_datetime__c: startInst,
                 ltc_check_out_datetime__c: endInst,
                 ltc_activities_for_daily_living__c: adlStr,
-                ltc_value_for_other__c: othertext
+                ltc_value_for_other__c: othertext,
+                ltc_local_check_in_date_and_time__c: local_checkin,
+                ltc_local_check_out_date_and_time__c: local_checkout
                 //,ltc_related_claim_invoice__c: invoiceId
               }).then( data => {
                 this.returnHome(nav, claim, update);
@@ -207,7 +223,9 @@ export class CheckinService extends DetailService {
             ltc_check_in_datetime__c: startInst,
             ltc_check_out_datetime__c: endDate,
             ltc_activities_for_daily_living__c: adlStr,
-            ltc_value_for_other__c: othertext
+            ltc_value_for_other__c: othertext,
+            ltc_local_check_in_date_and_time__c: local_checkin,
+            ltc_local_check_out_date_and_time__c: local_checkout
             //,ltc_related_claim_invoice__c: invoiceId
           }).then( data => {
             this.returnHome(nav, claim, update);
@@ -219,7 +237,9 @@ export class CheckinService extends DetailService {
             ltc_check_in_datetime__c: data.checkin__c,
             ltc_check_out_datetime__c: checkout,
             ltc_related_invoice__c: manual,
-            RecordTypeId: null
+            RecordTypeId: null,
+            ltc_local_check_in_date_and_time__c: local_checkin,
+            ltc_local_check_out_date_and_time__c: local_checkout
           };
   
           this.invoices.getRecordType().then(recordTypes => {
@@ -239,7 +259,9 @@ export class CheckinService extends DetailService {
             ltc_check_out_datetime__c: checkout,
             ltc_hourly_rate__c: data.rate__c,
             ltc_activities_for_daily_living__c: adlStr,
-            ltc_value_for_other__c: othertext
+            ltc_value_for_other__c: othertext,
+            ltc_local_check_in_date_and_time__c: local_checkin,
+            ltc_local_check_out_date_and_time__c: local_checkout
             //,ltc_related_claim_invoice__c: invoiceId
           }).then( data => {
             this.returnHome(nav, claim, update);

@@ -95,7 +95,7 @@
               <mat-label>Other</mat-label>
               <input matInput formControlName="othertext" maxlength="255" >
             </mat-form-field>
-            <span class="error" *ngIf="otherTextError && otherTextError.length > 0" style="margin-top:8px; padding-bottom:8px">
+            <span class="error" *ngIf="otherTextError && otherTextError.length > 0 && form.value.Other" style="margin-top:8px; padding-bottom:8px">
               {{ otherTextError }}
             </span>
             <div style="text-align: center; padding-top: 16px; color:rgba(0,0,0,0.54);">

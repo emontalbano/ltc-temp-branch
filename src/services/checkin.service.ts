@@ -134,17 +134,11 @@ export class CheckinService extends DetailService {
         RecordTypeId: null
       };*/
 
-      const hours = checkout.getHours() < 13 ? checkout.getHours() : checkout.getHours() - 12;
-      const minutes = checkout.getMinutes() < 9 ? '0' + checkout.getMinutes() : checkout.getMinutes();
-      const outAP = checkout.getHours() < 12 ? ' AM' : ' PM';
-      const local_checkout = (checkout.getMonth() + 1) + '/' + checkout.getDate() + '/' + (checkout.getYear()-100) + ' '+hours + ':' + minutes + outAP;
-
       const othertext = (data.othertext && data['Other']) ? data.othertext : '';
-
-      const inHours = checkin.getHours() < 13 ? checkin.getHours() : checkin.getHours() - 12;
-      const inMinutes = checkin.getMinutes() < 9 ? '0' + checkin.getMinutes() : checkin.getMinutes();
-      const inAP = (checkin.getHours < 12) ? ' AM' : ' PM'
-      const local_checkin = (checkin.getMonth()+1) + '/' + checkin.getDate() + '/' + (checkin.getYear()-100) + ' ' + inHours + ':' + inMinutes + inAP;
+      const timestamps = this.getTimeStamps(checkin, checkout);
+      const local_checkin = timestamps[0];
+      const local_checkout = timestamps[1];
+      
       
       this.notification.cancel(1);
       clearInterval(this.runner);
@@ -174,6 +168,9 @@ export class CheckinService extends DetailService {
               endInst.setMinutes(59);
               endInst.setSeconds(59);
               endInst.setTime( endInst.getTime() + 1000);
+
+              const smallCheckin = this.getTimeStamps(checkin, endInst);
+
               this.update({
                 id: data.id,
                 ltc_check_out_datetime__c: endInst,
@@ -181,7 +178,7 @@ export class CheckinService extends DetailService {
                 ltc_activities_for_daily_living__c: adlStr,
                 ltc_value_for_other__c: othertext,
                 ltc_local_check_in_date_and_time__c: local_checkin,
-                ltc_local_check_out_date_and_time__c: local_checkout,
+                ltc_local_check_out_date_and_time__c: smallCheckin[1],
                 //,ltc_related_claim_invoice__c: invoiceId
               }).then( data => {
                 this.returnHome(nav, claim, update);
@@ -197,6 +194,7 @@ export class CheckinService extends DetailService {
               endInst.setMinutes(59);
               endInst.setSeconds(59);
               endInst.setTime( endInst.getTime() + 1000);
+              const smallCheckin = this.getTimeStamps(startInst, endInst);
               this.create({
                 ltc_hourly_rate__c: data.rate__c,
                 ltc_related_claim__c: claim_id,
@@ -204,8 +202,8 @@ export class CheckinService extends DetailService {
                 ltc_check_out_datetime__c: endInst,
                 ltc_activities_for_daily_living__c: adlStr,
                 ltc_value_for_other__c: othertext,
-                ltc_local_check_in_date_and_time__c: local_checkin,
-                ltc_local_check_out_date_and_time__c: local_checkout
+                ltc_local_check_in_date_and_time__c: smallCheckin[0],
+                ltc_local_check_out_date_and_time__c: smallCheckin[1]
                 //,ltc_related_claim_invoice__c: invoiceId
               }).then( data => {
                 this.returnHome(nav, claim, update);
@@ -217,6 +215,10 @@ export class CheckinService extends DetailService {
           startInst.setMinutes(0);
           startInst.setSeconds(0);
           startInst.setMilliseconds(0);
+
+          
+          const endCheckin = this.getTimeStamps(startInst, checkout);
+
           this.create({
             ltc_hourly_rate__c: data.rate__c,
             ltc_related_claim__c: claim_id,
@@ -224,7 +226,7 @@ export class CheckinService extends DetailService {
             ltc_check_out_datetime__c: endDate,
             ltc_activities_for_daily_living__c: adlStr,
             ltc_value_for_other__c: othertext,
-            ltc_local_check_in_date_and_time__c: local_checkin,
+            ltc_local_check_in_date_and_time__c: endCheckin[0],
             ltc_local_check_out_date_and_time__c: local_checkout
             //,ltc_related_claim_invoice__c: invoiceId
           }).then( data => {
@@ -270,6 +272,19 @@ export class CheckinService extends DetailService {
         //nav.setRoot()
       //});
     }
+  }
+
+  getTimeStamps(checkin, checkout) {
+    const hours = checkout.getHours() < 13 ? (checkout.getHours() === 0 ? 12 : checkout.getHours()) : checkout.getHours() - 12;
+    const minutes = checkout.getMinutes() < 9 ? '0' + checkout.getMinutes() : checkout.getMinutes();
+    const outAP = checkout.getHours() < 12 ? ' AM' : ' PM';
+    const local_checkout = (checkout.getMonth() + 1) + '/' + checkout.getDate() + '/' + (checkout.getYear()-100) + ' '+hours + ':' + minutes + outAP;
+
+    const inHours = checkin.getHours() < 13 ? (checkin.getHours() === 0 ? 12 : checkin.getHours()) : checkin.getHours() - 12;
+    const inMinutes = checkin.getMinutes() < 9 ? '0' + checkin.getMinutes() : checkin.getMinutes();
+    const inAP = (checkin.getHours < 12) ? ' AM' : ' PM'
+    const local_checkin = (checkin.getMonth()+1) + '/' + checkin.getDate() + '/' + (checkin.getYear()-100) + ' ' + inHours + ':' + inMinutes + inAP;
+    return [local_checkin, local_checkout];
   }
 
   minusOne(dateObj) {

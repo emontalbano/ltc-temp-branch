@@ -7,6 +7,14 @@ jh-contacts {
     bottom: 16px;
   }
 
+  .mat-line {
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 2.5rem;
+    text-overflow: initial;
+    display: block;
+    width: 90%;
+  }
   .standard {
     .pendingContent {
       display: none;
@@ -29,7 +37,7 @@ jh-contacts {
 
   mat-list {
     padding: 0;    
-    margin:-16px -24px -24px;
+    margin:16px -24px -24px;
     mat-list-item:first-child {
       &:not(.active) button[mat-raised-button] {
         padding-top: 24px!important;

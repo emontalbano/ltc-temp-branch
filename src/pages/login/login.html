@@ -4,7 +4,8 @@
       <div class="logo-wrapper">
         <img src="assets/imgs/jh.png" />
       </div>
-      <h1>Long-Term Care Provider Login</h1>
+      <mat-icon svgIcon="care"></mat-icon>
+      <h1>CareGiver Log In</h1>
       <div class="error" *ngIf="error">
         {{ error }}
       </div>
@@ -20,7 +21,7 @@
     
       <div class="centered">
         <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!model.username || model.username.length === 0 || !model.password || model.password.length === 0">LOGIN</button>
-        <div><a (click)="setTab(2)">Forgot password?</a></div>
+        <!--<div><a (click)="setTab(2)">Forgot password?</a></div>-->
         <div><a (click)="loginWithSalesforce()">Temp Login</a></div>
       </div>
     </div>

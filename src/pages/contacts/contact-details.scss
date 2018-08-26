@@ -35,7 +35,7 @@ jh-contact-details, jh-view-invoice {
     display: none;
   }
   .ng-animate {
-    button[mat-fab] {      
+    button.mat-checkin {      
       bottom:0;
     }
     .mat-tab-body-content {
@@ -80,7 +80,7 @@ jh-contact-details, jh-view-invoice {
   }
 
   .loading {
-    .emptyView, .standardView, button[mat-fab] {
+    .emptyView, .standardView, button.mat-checkin {
       display: none!important;
     }
     .pendingContent {
@@ -88,7 +88,7 @@ jh-contact-details, jh-view-invoice {
     }
   }
 
-  .checkedIn button[mat-fab] {
+  .checkedIn button.mat-checkin {
     display: none;
   }
 
@@ -179,7 +179,7 @@ jh-contact-details, jh-view-invoice {
     font-size:14px;
   }
 
-  .standard button[mat-fab], .nodata button[mat-fab] {
+  .standard button.mat-checkin, .nodata button.mat-checkin {
     transition: all .3s ease-in-out;
     position: fixed;
     left: 50%;

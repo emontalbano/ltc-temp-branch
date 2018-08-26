@@ -19,14 +19,26 @@ jh-login {
     text-align: center;
     left: 0;
     right: 0;
-    top: 10%;
+    top: 3%;
     transition: all .3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  }
+
+  mat-icon {
+    color: white;
+    height: 80px;
+    width: 80px;
+    display: block;
+    position: absolute;
+    top: 84px;
+    left: 50%;
+    margin-left: -32px;
+    font-size: 64px!important;
   }
 
   h1 {
     color: white;
     font-weight: 200;
-    margin:60% 0 16px;
+    margin:70% 0 16px;
     font-size: 24px;
     transition-delay: .15s;
     transition: all .3s cubic-bezier(0.455, 0.03, 0.515, 0.955);

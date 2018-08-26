@@ -167,7 +167,6 @@ export class CheckinService extends DetailService {
               endInst.setHours(23)
               endInst.setMinutes(59);
               endInst.setSeconds(59);
-
               const smallCheckin = this.getTimeStamps(checkin, endInst);
 
               this.update({
@@ -192,7 +191,6 @@ export class CheckinService extends DetailService {
               endInst.setHours(23)
               endInst.setMinutes(59);
               endInst.setSeconds(59);
-
               const smallCheckin = this.getTimeStamps(startInst, endInst);
               this.create({
                 ltc_hourly_rate__c: data.rate__c,

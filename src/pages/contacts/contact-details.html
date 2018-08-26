@@ -29,8 +29,7 @@
         </div>
         
         <div class="emptyView">
-          <h4>Provide Care for {{ contact.associated_policy__r.insured__r.name }}</h4>
-          <span>Check In</span>
+          <h4>Begin Care for {{ contact.associated_policy__r.insured__r.name }}</h4>
         </div>
 
 
@@ -85,13 +84,13 @@
 
             </mat-card-content>
         </div>
-        <button mat-fab (click)="checkin()" [disabled]='checking_in' *ngIf="!hasActive && !submittingInvoice">
-          <mat-icon>play_arrow</mat-icon>
+        <button mat-button (click)="checkin()" [disabled]='checking_in' *ngIf="!hasActive && !submittingInvoice" class="mat-checkin">
+          Check In
         </button>
       </div>
       <button mat-button class="bottom-button" (click)="viewInvoices()" *ngIf="!hasActive">
         <mat-icon>history</mat-icon>
-        All Invoices
+        Invoice History
       </button>
       <jh-toast></jh-toast>
 </ion-content>
